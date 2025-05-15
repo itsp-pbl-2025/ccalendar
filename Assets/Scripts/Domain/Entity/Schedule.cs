@@ -9,31 +9,19 @@ namespace Domain.Entity
         public string Title { get; }
     }
 
-    public class DateSchedule : ISchedule
+    public record DateSchedule(int Id, string Title) : ISchedule
     {
-        public DateSchedule(int id, string title)
-        {
-            Id = id;
-            Title = title;
-        }
-        
-        public int Id { get; }
+        public int Id { get; } = Id;
         
         public ScheduleType Type => ScheduleType.Date;
-        public string Title { get; }
+        public string Title { get; } = Title;
     }
 
-    public class DurationSchedule : ISchedule
+    public record DurationSchedule(int Id, string Title) : ISchedule
     {
-        public DurationSchedule(int id, string title)
-        {
-            Id = id;
-            Title = title;
-        }
-        
-        public int Id { get; }
+        public int Id { get; } = Id;
         
         public ScheduleType Type => ScheduleType.Duration;
-        public string Title { get; }
+        public string Title { get; } = Title;
     }
 }
