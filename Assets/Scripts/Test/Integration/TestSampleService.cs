@@ -4,7 +4,7 @@ using Infrastructure.Data.DAO;
 using NUnit.Framework;
 using Test.MockData;
 
-namespace Test
+namespace Test.Integration
 {
     public class TestSampleService
     {
@@ -15,14 +15,16 @@ namespace Test
 
             foreach (var d in MockSchedule.GetMockSchedules())
             {
-                ctx.ScheduleRepo.InsertUpdate(ScheduleDao.FromDomain(d));
+                ctx.ScheduleRepo.InsertUpdate(d.FromDomain());
             }
             
             var service = ctx.GetService<SampleService>();
             var schedules = service.GetSchedules().ToDictionary(x => x.Id);
-            foreach (var i in MockSchedule.GetMockSchedules())
+            foreach (var ds in MockSchedule.GetMockSchedules())
             {
-                Assert.IsTrue(schedules.Remove(i.Id));
+                Assert.IsTrue(schedules.TryGetValue(ds.Id, out var s));
+                Assert.AreEqual(s, ds.FromDomain()); // interface同士の比較なのでoperator ==を使えない
+                Assert.IsTrue(schedules.Remove(ds.Id));
             }
             Assert.IsTrue(schedules.Count == 0);
             

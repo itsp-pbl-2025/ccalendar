@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
 
         public bool InsertUpdate(ISchedule schedule)
         {
-            var dSchedule = ScheduleDao.FromDomain(schedule);
+            var dSchedule = schedule.FromDomain();
             return _col.Upsert(dSchedule);
         }
         
@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories
             var result = new List<ISchedule>();
             foreach (var schedule in _col.FindAll())
             {
-                result.Add(ScheduleDao.FromDomain(schedule));
+                result.Add(schedule.FromDomain());
             }
             return result;
         }

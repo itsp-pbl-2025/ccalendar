@@ -7,7 +7,7 @@ namespace Infrastructure.Data.DAO
 {
     public static class ScheduleDao
     {
-        public static DSchedule FromDomain(ISchedule sc)
+        public static DSchedule FromDomain(this ISchedule sc)
         {
             return sc.Type switch
             {
@@ -27,7 +27,7 @@ namespace Infrastructure.Data.DAO
             };
         }
 
-        public static ISchedule FromDomain(DSchedule sc)
+        public static ISchedule FromDomain(this DSchedule sc)
         {
             return sc.Type switch
             {
