@@ -60,8 +60,6 @@ namespace Test
             }
         }
         
-        private static TestContext? _context;
-
-        public static IContext Context => _context ??= new TestContext();
+        public static IContext Context => new TestContext();
     }
 }

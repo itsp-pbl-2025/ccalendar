@@ -17,7 +17,7 @@ namespace Infrastructure.Data
         /// </summary>
         public LiteDBManager()
         {
-            const int sizeMax = 1024 * 1024 * 256; // 256 MB
+            const int sizeMax = 1024 * 1024; // 1 MB
             _mem = new MemoryStream(sizeMax);
             DB = new LiteDatabase(_mem);
         }
