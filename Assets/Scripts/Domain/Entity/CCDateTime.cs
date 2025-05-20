@@ -36,6 +36,22 @@ namespace Domain.Entity
         public int Minute => minute.Value;
         public int Second => second.Value;
     }
+    
+    public bool IsGreaterThan(CCDateTime other)
+    {
+        if (Year != other.Year) return Year > other.Year;
+        if (Month != other.Month) return Month > other.Month;
+        if (Day != other.Day) return Day > other.Day;
+        if (Hour != other.Hour) return Hour > other.Hour;
+        if (Minute != other.Minute) return Minute > other.Minute;
+        return Second > other.Second;
+    }
+    
+    public bool IsEqualTo(CCDateTime other)
+    {
+        return Year == other.Year && Month == other.Month && Day == other.Day &&
+               Hour == other.Hour && Minute == other.Minute && Second == other.Second;
+    }
 
     // 各ラッパークラス
     internal class Year
