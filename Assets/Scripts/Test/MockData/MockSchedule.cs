@@ -5,6 +5,23 @@ namespace Test.MockData
 {
     public static class MockSchedule
     {
+        public static List<DSchedule> GetMockSchedulesWithoutId()
+        {
+            return new List<DSchedule>
+            {
+                new DSchedule
+                {
+                    Type = Domain.Enum.ScheduleType.Date,
+                    Title = "Date Schedule"
+                },
+                new DSchedule
+                {
+                    Type = Domain.Enum.ScheduleType.Duration,
+                    Title = "Duration Schedule"
+                }
+            };
+        }
+        
         public static List<DSchedule> GetMockSchedules()
         {
             return new List<DSchedule>

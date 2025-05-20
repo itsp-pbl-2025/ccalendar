@@ -23,6 +23,7 @@ namespace Infrastructure
         private void SetupServices()
         {
             _services.Add(new SampleService(ScheduleRepo));
+            _services.Add(new ScheduleService(ScheduleRepo));
         }
 
         public T GetService<T>(string name = "") where T : IService
