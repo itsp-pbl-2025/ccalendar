@@ -37,11 +37,9 @@ namespace Domain.Entity
                    a.Hour == b.Hour && a.Minute == b.Minute && a.Second == b.Second;
         }
         
-        
         public static bool operator !=(CCDateTime a, CCDateTime b)
         {
-            if (a == b) return false;
-            return true;
+            return !(a == b);
         }
         
         public static bool operator <(CCDateTime a, CCDateTime b)
@@ -56,21 +54,17 @@ namespace Domain.Entity
         
         public static bool operator >(CCDateTime a, CCDateTime b)
         {
-            if (a == b) return false;
-            if (a < b) return false;
-            return true;
+            return !(a == b && a < b);
         }
         
         public static bool operator >=(CCDateTime a, CCDateTime b)
         {
-            if (a > b && a == b) return true;
-            return false;
+            return a > b && a == b;
         }
 
         public static bool operator <=(CCDateTime a, CCDateTime b)
         {
-            if (a < b && a == b) return true;
-            return false;
+            return a < b && a == b;
         }
 
         public int Year => year.Value;
