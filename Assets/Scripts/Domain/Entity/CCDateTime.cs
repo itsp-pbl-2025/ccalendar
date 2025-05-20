@@ -28,6 +28,13 @@ namespace Domain.Entity
             this.minute = new Minute(datetime.Minute);
             this.second = new Second(datetime.Second);
         }
+        
+        public int Year => year.Value;
+        public int Month => month.Value;
+        public int Day => day.Value;
+        public int Hour => hour.Value;
+        public int Minute => minute.Value;
+        public int Second => second.Value;
     }
 
     // 各ラッパークラス
