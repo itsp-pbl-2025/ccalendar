@@ -1,66 +1,107 @@
 namespace Domain.Entity
 {
-    public class CCDateTime(int year, int month, int day, int hour, int minute, int second)
+    public class CCDateTime
     {
-        private readonly Year year { get; } = new Year(year);
-        private readonly Month month { get; } = new Month(month);
-        private readonly Day day { get; } = new Day(day);
-        private readonly Hour hour { get; } = new Hour(hour);
-        private readonly Minute minute { get; } = new Minute(minute);
-        private readonly Second second { get; } = new Second(second);
+        private readonly Year year;
+        private readonly Month month;
+        private readonly Day day;
+        private readonly Hour hour;
+        private readonly Minute minute;
+        private readonly Second second;
+
+        public CCDateTime(int year, int month, int day, int hour, int minute, int second)
+        {
+            this.year = new Year(year);
+            this.month = new Month(month);
+            this.day = new Day(day);
+            this.hour = new Hour(hour);
+            this.minute = new Minute(minute);
+            this.second = new Second(second);
+        }
     }
 
-    private class Year(int year): Year
+    // 各ラッパークラス
+    internal class Year
     {
-        private readonly int year { get; } = year;
-        if (year < 0)
+        public int Value { get; }
+
+        public Year(int year)
         {
-            throw new ArgumentOutOfRangeException(nameof(year), "Year cannot be negative.");
+            if (year < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(year), "Year cannot be negative.");
+            }
+            Value = year;
         }
     }
-    
-    private class Month(int month): Month
+
+    internal class Month
     {
-        private readonly int month { get; } = month;
-        if (month < 1 || month > 12)
+        public int Value { get; }
+
+        public Month(int month)
         {
-            throw new ArgumentOutOfRangeException(nameof(month), "Month must be between 1 and 12.");
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentOutOfRangeException(nameof(month), "Month must be between 1 and 12.");
+            }
+            Value = month;
         }
     }
-    
-    private class Day(int day): Day
+
+    internal class Day
     {
-        private readonly int day { get; } = day;
-        if (day < 1 || day > 31)
+        public int Value { get; }
+
+        public Day(int day)
         {
-            throw new ArgumentOutOfRangeException(nameof(day), "Day must be between 1 and 31.");
+            if (day < 1 || day > 31)
+            {
+                throw new ArgumentOutOfRangeException(nameof(day), "Day must be between 1 and 31.");
+            }
+            Value = day;
         }
     }
-    
-    private class Hour(int hour): Hour
+
+    internal class Hour
     {
-        private readonly int hour { get; } = hour;
-        if (hour < 0 || hour > 23)
+        public int Value { get; }
+
+        public Hour(int hour)
         {
-            throw new ArgumentOutOfRangeException(nameof(hour), "Hour must be between 0 and 23.");
+            if (hour < 0 || hour > 23)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hour), "Hour must be between 0 and 23.");
+            }
+            Value = hour;
         }
     }
-    
-    private class Minute(int minute): Minute
+
+    internal class Minute
     {
-        private readonly int minute { get; } = minute;
-        if (minute < 0 || minute > 59)
+        public int Value { get; }
+
+        public Minute(int minute)
         {
-            throw new ArgumentOutOfRangeException(nameof(minute), "Minute must be between 0 and 59.");
+            if (minute < 0 || minute > 59)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minute), "Minute must be between 0 and 59.");
+            }
+            Value = minute;
         }
     }
-    
-    private class Second(int second): Second
+
+    internal class Second
     {
-        private readonly int second { get; } = second;
-        if (second < 0 || second > 59)
+        public int Value { get; }
+
+        public Second(int second)
         {
-            throw new ArgumentOutOfRangeException(nameof(second), "Second must be between 0 and 59.");
+            if (second < 0 || second > 59)
+            {
+                throw new ArgumentOutOfRangeException(nameof(second), "Second must be between 0 and 59.");
+            }
+            Value = second;
         }
     }
 }
