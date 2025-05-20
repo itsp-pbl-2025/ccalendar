@@ -1,3 +1,5 @@
+using System;
+
 namespace Domain.Entity
 {
     public class CCDateTime
