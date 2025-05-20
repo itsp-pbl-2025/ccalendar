@@ -18,6 +18,16 @@ namespace Domain.Entity
             this.minute = new Minute(minute);
             this.second = new Second(second);
         }
+
+        public CCDateTime(Datetime datetime)
+        {
+            this.year = new Year(datetime.Year);
+            this.month = new Month(datetime.Month);
+            this.day = new Day(datetime.Day);
+            this.hour = new Hour(datetime.Hour);
+            this.minute = new Minute(datetime.Minute);
+            this.second = new Second(datetime.Second);
+        }
     }
 
     // 各ラッパークラス
@@ -33,6 +43,8 @@ namespace Domain.Entity
             }
             Value = year;
         }
+        
+        
     }
 
     internal class Month
