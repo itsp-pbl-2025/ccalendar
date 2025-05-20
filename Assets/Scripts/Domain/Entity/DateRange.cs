@@ -13,11 +13,7 @@ namespace Domain.Entity
 
         public bool IsBetween(CCDateTime date)
         {
-            if (this.startDate <= date && date <= this.endDate)
-            {
-                return true;
-            }
-            return false;
+            return this.startDate <= date && date <= this.endDate;
         }
     }
 }
