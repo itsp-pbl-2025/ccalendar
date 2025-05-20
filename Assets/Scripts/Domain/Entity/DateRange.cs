@@ -1,0 +1,23 @@
+namespace Domain.Entity
+{
+    public class DateRange
+    {
+        private readonly CCDateTime startDate;
+        private readonly CCDateTime endDate;
+
+        public DateRange(CCDateTime startDate, CCDateTime endDate)
+        {
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+
+        public bool IsBetween(CCDateTime date)
+        {
+            if (this.startDate <= date && date <= this.endDate)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+}
