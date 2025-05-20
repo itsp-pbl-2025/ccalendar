@@ -30,35 +30,58 @@ namespace Domain.Entity
             this.minute = new Minute(datetime.Minute);
             this.second = new Second(datetime.Second);
         }
+
+        public static bool operator ==(CCDateTime a, CCDateTime b)
+        {
+            return a.Year == b.Year && a.Month == b.Month && a.Day == b.Day &&
+                   a.Hour == b.Hour && a.Minute == b.Minute && a.Second == b.Second;
+        }
         
+        
+        public static bool operator !=(CCDateTime a, CCDateTime b)
+        {
+            if (a == b) return false;
+            return true;
+        }
+        
+        public static bool operator <(CCDateTime a, CCDateTime b)
+        {
+            if (a.Year != b.Year) return a.Year < b.Year;
+            if (a.Month != b.Month) return a.Month < b.Month;
+            if (a.Day != b.Day) return a.Day < b.Day;
+            if (a.Hour != b.Hour) return a.Hour < b.Hour;
+            if (a.Minute != b.Minute) return a.Minute < b.Minute;
+            return a.Second < b.Second;
+        }
+        
+        public static bool operator >(CCDateTime a, CCDateTime b)
+        {
+            if (a == b) return false;
+            if (a < b) return false;
+            return true;
+        }
+        
+        public static bool operator >=(CCDateTime a, CCDateTime b)
+        {
+            if (a > b && a == b) return true;
+            return false;
+        }
+
+        public static bool operator <=(CCDateTime a, CCDateTime b)
+        {
+            if (a < b && a == b) return true;
+            return false;
+        }
+
         public int Year => year.Value;
         public int Month => month.Value;
         public int Day => day.Value;
         public int Hour => hour.Value;
         public int Minute => minute.Value;
         public int Second => second.Value;
-        
-        public bool IsGreaterThan(CCDateTime other)
-        {
-            if (Year != other.Year) return Year > other.Year;
-            if (Month != other.Month) return Month > other.Month;
-            if (Day != other.Day) return Day > other.Day;
-            if (Hour != other.Hour) return Hour > other.Hour;
-            if (Minute != other.Minute) return Minute > other.Minute;
-            return Second > other.Second;
-        }
-    
-        public bool IsEqualTo(CCDateTime other)
-        {
-            return Year == other.Year && Month == other.Month && Day == other.Day &&
-                   Hour == other.Hour && Minute == other.Minute && Second == other.Second;
-        }
     }
     
-    
-
-    // 各ラッパークラス
-    internal class Year
+    class Year
     {
         public int Value { get; }
 
@@ -70,11 +93,9 @@ namespace Domain.Entity
             }
             Value = year;
         }
-        
-        
     }
 
-    internal class Month
+    class Month
     {
         public int Value { get; }
 
@@ -88,7 +109,7 @@ namespace Domain.Entity
         }
     }
 
-    internal class Day
+    class Day
     {
         public int Value { get; }
 
@@ -102,7 +123,7 @@ namespace Domain.Entity
         }
     }
 
-    internal class Hour
+    class Hour
     {
         public int Value { get; }
 
@@ -116,7 +137,7 @@ namespace Domain.Entity
         }
     }
 
-    internal class Minute
+    class Minute
     {
         public int Value { get; }
 
@@ -130,7 +151,7 @@ namespace Domain.Entity
         }
     }
 
-    internal class Second
+    class Second
     {
         public int Value { get; }
 
