@@ -21,7 +21,7 @@ namespace Domain.Entity
             this.second = new Second(second);
         }
 
-        public CCDateTime(Datetime datetime)
+        public CCDateTime(DateTime datetime)
         {
             this.year = new Year(datetime.Year);
             this.month = new Month(datetime.Month);
