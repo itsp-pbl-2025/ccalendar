@@ -213,7 +213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5610404413123877877, guid: 8759f2b0f5dddef42b84a7fb341a5647, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1102,6 +1102,11 @@ MonoBehaviour:
   - {fileID: 1277644916362552146, guid: 0b85a480e700b0e43869d02343fee32a, type: 3}
   - {fileID: 8467366303805021869, guid: 55690050eb5d5f947bf051c3517f2820, type: 3}
   - {fileID: 620832128341572855, guid: 9a88cd2e86c55a0449f9e56215fbfb16, type: 3}
+  - {fileID: 7105861861434654324, guid: c63246948e265da48a9f991081f455d6, type: 3}
+  - {fileID: 6401517083615377172, guid: 82ccff31226ae564290e593af62357f3, type: 3}
+  - {fileID: 6525427224962687807, guid: 6e2d83a425635e642a469dd529810f09, type: 3}
+  - {fileID: 6622331669428101594, guid: 528f1ab95bbc06d45b223d169053d3e9, type: 3}
+  - {fileID: 7507382594026559913, guid: 916aeba1bd4e03f4e8dc6cb5f89ede26, type: 3}
   pageParent: {fileID: 1682039082}
 --- !u!1 &1515359325
 GameObject:

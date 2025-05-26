@@ -25,7 +25,7 @@ namespace Presentation.Views.Sample
 
         public void SetPage(int page)
         {
-            _autoPaginator.ScrollPageTo(page);
+            _autoPaginator.ScrollPageTo(page-1);
         }
 
         public void ApplicationQuit()
