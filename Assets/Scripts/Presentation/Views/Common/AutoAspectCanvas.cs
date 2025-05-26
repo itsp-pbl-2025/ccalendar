@@ -51,7 +51,8 @@ namespace Presentation.Views.Common
 
             foreach (var fullRect in _fullRectTransform)
             {
-                fullRect.anchorMax = canvasRect.rect.size;
+                // TODO: どの子要素でも常に背景と同じ大きさになるような調整方法に変更できるとUIの自由度が高まる
+                fullRect.anchorMax = Vector2.one;
             }
             
             foreach (var safeRect in _safeRectTransforms)
@@ -69,6 +70,7 @@ namespace Presentation.Views.Common
         public void AddSafeRectTransform(RectTransform rctf)
         {
             if (rctf) _safeRectTransforms.Add(rctf);
+            AdjustArea();
         }
 
         public bool RemoveSafeRectTransform(RectTransform rctf)
@@ -79,6 +81,7 @@ namespace Presentation.Views.Common
         public void AddFullRectTransform(RectTransform rctf)
         {
             if (rctf) _fullRectTransform.Add(rctf);
+            AdjustArea();
         }
 
         public bool RemoveFullRectTransform(RectTransform rctf)
@@ -89,6 +92,7 @@ namespace Presentation.Views.Common
         public void AddFixedRectTransform(RectTransform rctf)
         {
             if (rctf) _fixedRectTransforms.Add(rctf);
+            AdjustArea();
         }
 
         public bool RemoveFixedRectTransform(RectTransform rctf)
@@ -96,14 +100,14 @@ namespace Presentation.Views.Common
             return _fixedRectTransforms.Remove(rctf);
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
+#if UNITY_EDITOR
             // Prefabモードでは実行しない
             if (PrefabStageUtility.GetCurrentPrefabStage() != null) return;
+#endif
             
             AdjustArea();
         }
-#endif
     }
 }
