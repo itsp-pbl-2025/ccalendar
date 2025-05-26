@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64
-  m_fontSizeBase: 64
+  m_fontSize: 48
+  m_fontSizeBase: 48
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 48
@@ -293,6 +293,34 @@ PrefabInstance:
     - target: {fileID: 2903100906354992576, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
       propertyPath: m_Name
       value: PositiveButton Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988032014052710070, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988032014052710070, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988032014052710070, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: -5078908753310567957}
+    - target: {fileID: 4988032014052710070, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988032014052710070, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseWindow
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988032014052710070, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.SingleButtonPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988032014052710070, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
