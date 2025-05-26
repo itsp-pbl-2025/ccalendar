@@ -20,8 +20,8 @@ namespace Presentation.Views.Popup
         public T ShowPopup<T>(T popup) where T : PopupWindow
         {
             var window = Instantiate(popup, popupParent);
-            window.OnOpenWindow();
             window.SetupWithCanvas(autoAspectCanvas);
+            window.OnOpenWindow();
             _showingPopups.Push(window);
             return window;
         }

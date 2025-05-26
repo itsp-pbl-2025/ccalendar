@@ -13,6 +13,9 @@ namespace Presentation.Views.Common
         [SerializeField] private List<RectTransform> safeRectTransforms;
         [SerializeField] private List<RectTransform> fixedRectTransforms;
         
+        public Canvas Canvas => canvas;
+        public RectTransform CanvasRect => canvasRect;
+        
         private readonly HashSet<RectTransform> _fullRectTransform = new();
         private readonly HashSet<RectTransform> _safeRectTransforms = new();
         private readonly HashSet<RectTransform> _fixedRectTransforms = new();
