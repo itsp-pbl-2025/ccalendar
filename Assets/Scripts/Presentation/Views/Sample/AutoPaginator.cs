@@ -2,6 +2,7 @@
 using DG.Tweening;
 using Presentation.Views.Extensions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Presentation.Views.Sample
@@ -41,6 +42,9 @@ namespace Presentation.Views.Sample
         /// </summary>
         private void ReorderButtons()
         {
+            // ボタンを完全に再配置するので、選択状態をリセット
+            EventSystem.current.SetSelectedGameObject(null);
+            
             // 全てのページボタンと3点リーダを消す
             foreach (var (_, button) in _pageButtons)
             {
@@ -102,7 +106,7 @@ namespace Presentation.Views.Sample
         /// 特定のページに移動するメソッド
         /// </summary>
         /// <param name="index">移動先ページ</param>
-        private void ScrollPageTo(int index)
+        public void ScrollPageTo(int index)
         {
             // このメソッドでしか使わない定数はローカルで宣言する
             const float timeScroll = 0.2f;
