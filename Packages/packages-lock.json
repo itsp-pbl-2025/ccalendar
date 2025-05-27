@@ -7,7 +7,14 @@
       "dependencies": {
         "com.unity.modules.imgui": "1.0.0"
       },
-      "hash": "6af3cc5c1941fe21bfe0fe3472f2c2dfaa881469"
+      "hash": "fbc12b2c0b6a1ee5ce7d534f9db936bc59069219"
+    },
+    "com.cysharp.unitask": {
+      "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f213ff497e4ff462a77319cf677cf20cc0860ca9"
     },
     "com.unity.2d.animation": {
       "version": "10.1.4",
@@ -108,6 +115,17 @@
       "dependencies": {
         "com.unity.profiling.core": "1.0.2",
         "com.unity.modules.subsystems": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.adaptiveperformance.google.android": {
+      "version": "5.1.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.androidjni": "1.0.0",
+        "com.unity.modules.subsystems": "1.0.0",
+        "com.unity.adaptiveperformance": "5.1.0"
       },
       "url": "https://packages.unity.com"
     },
