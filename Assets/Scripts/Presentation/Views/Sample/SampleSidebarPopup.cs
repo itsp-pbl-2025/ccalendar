@@ -27,6 +27,12 @@ namespace Presentation.Views.Sample
         {
             _autoPaginator.ScrollPageTo(page-1);
         }
+        
+        public void OpenURL(string url)
+        {
+            // URLを開く
+            Application.OpenURL(url);
+        }
 
         public void ApplicationQuit()
         {
