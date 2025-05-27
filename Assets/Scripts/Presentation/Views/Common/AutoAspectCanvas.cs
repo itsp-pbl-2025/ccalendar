@@ -110,9 +110,9 @@ namespace Presentation.Views.Common
 #if UNITY_EDITOR
             // Prefabモードでは実行しない
             if (PrefabStageUtility.GetCurrentPrefabStage() != null) return;
-#endif
             
             AdjustArea();
+#endif
         }
     }
 }

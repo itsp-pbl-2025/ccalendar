@@ -47,11 +47,15 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+# Unity Performance Testing cache
+Assets/Resources/PerformanceTestRunInfo.json
+
 # Builds
 *.apk
 *.aab
 *.unitypackage
 *.app
+.utmp/
 
 # Crashlytics generated file
 crashlytics-build.properties
