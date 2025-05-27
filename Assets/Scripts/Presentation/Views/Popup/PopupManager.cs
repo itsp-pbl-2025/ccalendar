@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Presentation.Views.Common;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Presentation.Views.Popup
 {
@@ -20,8 +21,8 @@ namespace Presentation.Views.Popup
         public T ShowPopup<T>(T popup) where T : PopupWindow
         {
             var window = Instantiate(popup, popupParent);
-            window.OnOpenWindow();
             window.SetupWithCanvas(autoAspectCanvas);
+            window.OnOpenWindow();
             _showingPopups.Push(window);
             return window;
         }
@@ -50,7 +51,7 @@ namespace Presentation.Views.Popup
 
         private void Update()
         {
-            if (Input.GetKeyUp(KeyCode.Escape))
+            if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
             {
                 var window = _showingPopups.Pop();
                 if (window.EnableClosingByButton())
