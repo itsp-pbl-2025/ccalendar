@@ -31,17 +31,6 @@ namespace Domain.Entity
             this.second = new Second(datetime.Second);
         }
 
-        public static bool operator ==(CCDateTime a, CCDateTime b)
-        {
-            return a.Year == b.Year && a.Month == b.Month && a.Day == b.Day &&
-                   a.Hour == b.Hour && a.Minute == b.Minute && a.Second == b.Second;
-        }
-        
-        public static bool operator !=(CCDateTime a, CCDateTime b)
-        {
-            return !(a == b);
-        }
-        
         public static bool operator <(CCDateTime a, CCDateTime b)
         {
             if (a.Year != b.Year) return a.Year < b.Year;
