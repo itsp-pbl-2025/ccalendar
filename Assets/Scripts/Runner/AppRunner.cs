@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using Presentation.Presenter;
+using Presentation.Utilities;
 using UnityEngine;
 
 namespace Runner
@@ -22,6 +23,7 @@ namespace Runner
             }
         
             Context = new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
+            EventDispatcher = new EventDispatcher();
         }
     }
 }
