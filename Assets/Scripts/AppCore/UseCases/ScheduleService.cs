@@ -17,22 +17,22 @@ namespace AppCore.UseCases
             _scheduleRepo = repo;
         }
 
-        public void CreateSchedule(ISchedule schedule)
+        public void CreateSchedule(Schedule schedule)
         {
             _scheduleRepo.Insert(schedule);
         }
         
-        public bool UpdateSchedule(ISchedule schedule)
+        public bool UpdateSchedule(Schedule schedule)
         {
             return _scheduleRepo.Update(schedule);
         }
         
-        public bool DeleteSchedule(ISchedule schedule)
+        public bool DeleteSchedule(Schedule schedule)
         {
             return _scheduleRepo.Remove(schedule);
         }
         
-        public List<ISchedule> GetSchedules()
+        public List<Schedule> GetSchedules()
         {
             return _scheduleRepo.GetAll().ToList();
         }

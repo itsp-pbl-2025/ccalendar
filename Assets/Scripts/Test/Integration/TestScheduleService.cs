@@ -17,13 +17,13 @@ namespace Test.Integration
             
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
-                service.CreateSchedule(ds.FromDomain());
+                service.CreateSchedule(ds.ToDomain());
             }
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 Assert.Throws<LiteException>(() =>
                 {
-                    service.CreateSchedule(ds.FromDomain());
+                    service.CreateSchedule(ds.ToDomain());
                 });
             }
             
@@ -36,15 +36,15 @@ namespace Test.Integration
             var ctx = InTestContext.Context;
             var service = ctx.GetService<ScheduleService>();
             
-            Assert.IsFalse(service.UpdateSchedule(MockSchedule.GetMockSchedules().First().FromDomain()));
+            Assert.IsFalse(service.UpdateSchedule(MockSchedule.GetMockSchedules().First().ToDomain()));
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
-                service.CreateSchedule(ds.FromDomain());
+                service.CreateSchedule(ds.ToDomain());
             }
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 ds.Title += "(Updated)";
-                Assert.IsTrue(service.UpdateSchedule(ds.FromDomain()));
+                Assert.IsTrue(service.UpdateSchedule(ds.ToDomain()));
             }
             
             ctx.Dispose();
@@ -56,14 +56,14 @@ namespace Test.Integration
             var ctx = InTestContext.Context;
             var service = ctx.GetService<ScheduleService>();
             
-            Assert.IsFalse(service.DeleteSchedule(MockSchedule.GetMockSchedules().First().FromDomain()));
+            Assert.IsFalse(service.DeleteSchedule(MockSchedule.GetMockSchedules().First().ToDomain()));
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
-                service.CreateSchedule(ds.FromDomain());
+                service.CreateSchedule(ds.ToDomain());
             }
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
-                Assert.IsTrue(service.DeleteSchedule(ds.FromDomain()));
+                Assert.IsTrue(service.DeleteSchedule(ds.ToDomain()));
             }
             Assert.IsTrue(service.GetSchedules().Count == 0);
             
@@ -77,7 +77,7 @@ namespace Test.Integration
 
             foreach (var d in MockSchedule.GetMockSchedules())
             {
-                ctx.ScheduleRepo.InsertUpdate(d.FromDomain());
+                ctx.ScheduleRepo.InsertUpdate(d.ToDomain());
             }
             
             var service = ctx.GetService<ScheduleService>();
@@ -85,7 +85,7 @@ namespace Test.Integration
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 Assert.IsTrue(schedules.TryGetValue(ds.Id, out var s));
-                Assert.AreEqual(s, ds.FromDomain()); // interface同士の比較なのでoperator ==を使えない
+                Assert.AreEqual(s, ds.ToDomain()); // interface同士の比較なのでoperator ==を使えない
                 Assert.IsTrue(schedules.Remove(ds.Id));
             }
             Assert.IsTrue(schedules.Count == 0);
