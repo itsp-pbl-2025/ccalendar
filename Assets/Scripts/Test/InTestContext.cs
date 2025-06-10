@@ -27,6 +27,7 @@ namespace Test
             {
                 _serviceFactories.Add(typeof(SampleService), name => new SampleService(ScheduleRepo, name));
                 _serviceFactories.Add(typeof(ScheduleService), name => new ScheduleService(ScheduleRepo, name));
+                _serviceFactories.Add(typeof(HolidayService), name => new HolidayService(ScheduleRepo, name));
             }
             
             public T GetService<T>(string name = "") where T : IService
