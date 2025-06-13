@@ -7,5 +7,6 @@ namespace AppCore.Interfaces
     {
         public T GetService<T>(string name = "") where T : IService;
         public IScheduleRepository ScheduleRepo { get; }
+        public IHistoryRepository HistoryRepo { get; }
     }
 }

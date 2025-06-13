@@ -44,6 +44,9 @@ namespace Infrastructure
         private ScheduleRepository? _scheduleRepo;
         public IScheduleRepository ScheduleRepo => _scheduleRepo ??= new ScheduleRepository(_liteDb.DB);
         
+        private HistoryRepository? _historyRepo;
+        public IHistoryRepository HistoryRepo => _historyRepo ??= new HistoryRepository(_liteDb.DB);
+        
         public void Dispose()
         {
             _liteDb.Dispose();
