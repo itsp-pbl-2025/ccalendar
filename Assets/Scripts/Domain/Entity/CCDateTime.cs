@@ -31,6 +31,12 @@ namespace Domain.Entity
             Minute = new Minute(datetime.Minute);
             Second = new Second(datetime.Second);
         }
+        
+        public CCDateTime(CCDateOnly date, CCTimeOnly time)
+            : this(date.Year.Value, date.Month.Value, date.Day.Value,
+                time.Hour.Value, time.Minute.Value, time.Second.Value)
+        {
+        }
 
         public DateTime ToDateTime()
         {
