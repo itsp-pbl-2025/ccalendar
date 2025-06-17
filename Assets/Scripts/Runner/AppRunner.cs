@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using Presentation.Presenter;
+using Presentation.Resources;
 using UnityEngine;
 
 namespace Runner
@@ -7,6 +8,8 @@ namespace Runner
     public class AppRunner : InAppContext
     {
         private static AppRunner _instance;
+
+        [SerializeField] private PrefabDictionary prefabDictionary;
         
         private void Awake()
         {
@@ -22,6 +25,7 @@ namespace Runner
             }
         
             Context = new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
+            Prefabs = new PrefabBundle(prefabDictionary);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Presentation.Presenter;
 using Presentation.Views.Common;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,8 +14,9 @@ namespace Presentation.Views.Popup
 
         [SerializeField] private Transform popupParent;
         [SerializeField] private AutoAspectCanvas autoAspectCanvas;
-        [SerializeField] private SingleButtonPopup prefabSingleButtonPopup;
-        [SerializeField] private DoubleButtonPopup prefabDoubleButtonPopup;
+        
+        private SingleButtonPopup _prefabSingleButtonPopup;
+        private DoubleButtonPopup _prefabDoubleButtonPopup;
 
         private readonly Stack<PopupWindow> _showingPopups = new();
         
@@ -78,7 +80,8 @@ namespace Presentation.Views.Popup
 
         public void ShowSinglePopup(string description, string ok = "OK", Action callback = null)
         {
-            var window = ShowPopup(prefabSingleButtonPopup);
+            _prefabSingleButtonPopup ??= InAppContext.Prefabs.GetPopup<SingleButtonPopup>();
+            var window = ShowPopup(_prefabSingleButtonPopup);
             window.Init(description, ok, callback);
         }
 
@@ -86,7 +89,8 @@ namespace Presentation.Views.Popup
             string positive = "Accept", Action positiveCallback = null,
             string negative = "Cancel", Action negativeCallback = null)
         {
-            var window = ShowPopup(prefabDoubleButtonPopup);
+            _prefabDoubleButtonPopup ??= InAppContext.Prefabs.GetPopup<DoubleButtonPopup>();
+            var window = ShowPopup(_prefabDoubleButtonPopup);
             window.Init(description, positive, positiveCallback, negative, negativeCallback);
         }
     }
