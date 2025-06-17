@@ -32,12 +32,12 @@ namespace Presentation.Views.Popup
                     return;
                 }
                 
-                // DBにスケジュールを追加
+                // DBにスケジュールを追加(終日周期スケジュールを仮登録)
                 Schedule schedule = new Schedule(
                     0,
                     _title,
                     _description,
-                    new ScheduleDuration(DateTime.Today, DateTime.Today.AddDays(1).AddMinutes(-1), false),
+                    new ScheduleDuration(),
                     new SchedulePeriodic(SchedulePeriodicType.EveryWeek, 1));
                 InAppContext.Context.GetService<ScheduleService>().CreateSchedule(schedule);
                 

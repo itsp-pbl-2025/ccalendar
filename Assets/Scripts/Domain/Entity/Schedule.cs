@@ -2,7 +2,7 @@
 
 namespace Domain.Entity
 {
-    public record Schedule(int Id, string Title, string Description, ScheduleDuration Duration, SchedulePeriodic? Periodic)
+    public record Schedule(int Id, string Title, string Description, ScheduleDuration Duration, SchedulePeriodic? Periodic = null)
     {
         public int Id { get; } = Id;
         public string Title { get; } = Title;
