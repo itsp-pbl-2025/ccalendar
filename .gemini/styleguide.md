@@ -1,3 +1,5 @@
+## 以下のファイルは全て英文で書かれていますが、コードレビューは全て日本語で行ってください。
+
 ### ✅ **Technical Requirements**
 
 * **Code Quality**
@@ -44,12 +46,15 @@
     * Provide a clear description of the code's purpose and where it fits into the overall system.
     * Indicate specific areas or concerns to focus on (e.g., readability, performance, architecture).
 
+* **Language & Style**
+
+  * Post a code review in Japanese.
+  * All comments should be simple and concise, and focus on the code's functionality, readability, and maintainability.
+
 * **Tone & Communication**
 
     * Feedback should be constructive, polite, and solution-oriented.
     * Tailor the level of explanation based on the developer's skill level (e.g., beginner-friendly or advanced).
-    * Post a code review in Japanese.
-    * All comments should be simple and concise, and focus on the code's functionality, readability, and maintainability.
 
 * **Categorization of Comments**
 
