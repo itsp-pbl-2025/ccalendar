@@ -1,11 +1,11 @@
 namespace Domain.Entity
 {
-    public class DateRange
+    public class CCTimeSpan
     {
         private readonly CCDateTime startDate;
         private readonly CCDateTime endDate;
 
-        public DateRange(CCDateTime startDate, CCDateTime endDate)
+        public CCTimeSpan(CCDateTime startDate, CCDateTime endDate)
         {
             this.startDate = startDate;
             this.endDate = endDate;

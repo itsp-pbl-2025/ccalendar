@@ -12,7 +12,7 @@ namespace Test.Unit
 
             var startDate = new CCDateTime(2025, 5, 20, 15, 2, 30);
             var endDate = new CCDateTime(2025, 5, 20, 16, 2, 30);
-            var range = new DateRange(startDate, endDate);
+            var range = new CCTimeSpan(startDate, endDate);
 
             Assert.IsTrue(range.IsBetween(startDate));
             Assert.IsTrue(range.IsBetween(endDate));
