@@ -64,6 +64,7 @@ namespace Domain.Entity
 
         public CCDateTime AddTo(CCDateTime dateTime) => 
             new(dateTime.ToDateTime().AddSeconds(TotalSeconds));
+        
         public bool IsBetween(CCDateTime target)
         {
             if (TotalSeconds < 0)
@@ -75,7 +76,6 @@ namespace Domain.Entity
             var targetDate = target.ToDateTime();
             return targetDate >= startDate && targetDate <= endDate;
         }
-
 
         public override string ToString()
         {

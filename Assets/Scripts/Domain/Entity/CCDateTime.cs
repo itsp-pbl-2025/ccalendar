@@ -87,6 +87,7 @@ namespace Domain.Entity
             dateTime.Add(timeSpan);
         public static CCDateTime operator -(CCDateTime dateTime, CCTimeSpan timeSpan) =>
             dateTime.Add(timeSpan.Negate());
+        
         public static bool operator <(CCDateTime left, CCDateTime right) => left.CompareTo(right) < 0;
         public static bool operator >(CCDateTime left, CCDateTime right) => left.CompareTo(right) > 0;
         public static bool operator <=(CCDateTime left, CCDateTime right) => left.CompareTo(right) <= 0;
@@ -258,6 +259,5 @@ namespace Domain.Entity
                 .AddSeconds(seconds);
             return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
         }
-
     }
 }
