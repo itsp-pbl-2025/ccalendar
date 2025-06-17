@@ -66,7 +66,21 @@ namespace Domain.Entity
 
             return Second.CompareTo(other.Second);
         }
-
+        
+        public CCDateTime Add(CCTimeSpan timeSpan) => new(ToDateTime().AddSeconds(timeSpan.TotalSeconds));
+        
+        public CCDateTime AddSeconds(double seconds) => Add(CCTimeSpan.FromSeconds(seconds));
+        public CCDateTime AddMinutes(double minutes) => Add(CCTimeSpan.FromMinutes(minutes));
+        public CCDateTime AddHours(double hours) => Add(CCTimeSpan.FromHours(hours));
+        public CCDateTime AddDays(double days) => Add(CCTimeSpan.FromDays(days));
+        public CCDateTime AddYears(double years) => Add(CCTimeSpan.FromYears(years));
+        
+        public static CCTimeSpan operator -(CCDateTime left, CCDateTime right) =>
+            CCTimeSpan.FromSeconds((left.ToDateTime() - right.ToDateTime()).TotalSeconds);
+        public static CCDateTime operator +(CCDateTime dateTime, CCTimeSpan timeSpan) =>
+            dateTime.Add(timeSpan);
+        public static CCDateTime operator -(CCDateTime dateTime, CCTimeSpan timeSpan) =>
+            dateTime.Add(timeSpan.Negate());
         public static bool operator <(CCDateTime left, CCDateTime right) => left.CompareTo(right) < 0;
         public static bool operator >(CCDateTime left, CCDateTime right) => left.CompareTo(right) > 0;
         public static bool operator <=(CCDateTime left, CCDateTime right) => left.CompareTo(right) <= 0;
