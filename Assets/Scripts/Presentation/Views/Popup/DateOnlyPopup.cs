@@ -12,7 +12,7 @@ namespace Presentation.Views.Popup
         [SerializeField, Tooltip("7x6")] private List<ButtonWithLabel> dateButtons;
         [SerializeField] private ButtonRP monthLeft, monthRight, monthDefault;
         
-        private Action<DateTime> _onDateTimeDefined;
+        private Action<DateTime> _onDateDefined;
 
         private readonly Dictionary<int, DateTime> _targetDateDictionary = new();
         
@@ -22,7 +22,7 @@ namespace Presentation.Views.Popup
         
         public void Init(Action<DateTime> onDateTimeDefined, DateTime target = default)
         {
-            _onDateTimeDefined = onDateTimeDefined;
+            _onDateDefined = onDateTimeDefined;
             if (target == default) target = DateTime.Now;
             
             SetMonth(target.Year, target.Month);
@@ -104,7 +104,7 @@ namespace Presentation.Views.Popup
 
         public void OnPressDefineButton()
         {
-            _onDateTimeDefined?.Invoke(_selectedDateTime);
+            _onDateDefined?.Invoke(_selectedDateTime);
             CloseWindow();
         }
 
