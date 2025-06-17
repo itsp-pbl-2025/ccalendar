@@ -24,6 +24,8 @@ namespace Infrastructure
         {
             _services.Add(new SampleService(ScheduleRepo));
             _services.Add(new ScheduleService(ScheduleRepo));
+            _services.Add(new HolidayService(ScheduleRepo));
+            _services.Add(new HistoryService(HistoryRepo));
         }
 
         public T GetService<T>(string name = "") where T : IService
@@ -42,6 +44,9 @@ namespace Infrastructure
         
         private ScheduleRepository? _scheduleRepo;
         public IScheduleRepository ScheduleRepo => _scheduleRepo ??= new ScheduleRepository(_liteDb.DB);
+        
+        private HistoryRepository? _historyRepo;
+        public IHistoryRepository HistoryRepo => _historyRepo ??= new HistoryRepository(_liteDb.DB);
         
         public void Dispose()
         {
