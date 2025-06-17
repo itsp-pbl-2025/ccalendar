@@ -5,7 +5,9 @@
         "AppCore",
         "Domain",
         "Infrastructure",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "UniTask",
+        "WebRequest"
     ],
     "includePlatforms": [
         "Editor"
