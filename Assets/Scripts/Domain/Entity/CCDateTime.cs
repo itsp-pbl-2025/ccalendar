@@ -34,7 +34,7 @@ namespace Domain.Entity
 
         public DateTime ToDateTime()
         {
-            return new DateTime(this.Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value);
+            return new DateTime(this.Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value).ToLocalTime();
         }
 
         public CCDateOnly ToDateOnly()
