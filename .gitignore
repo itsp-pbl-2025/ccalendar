@@ -179,3 +179,5 @@ fabric.properties
 # Statistics csv data
 Assets/Docs/**/*.csv
 Assets/Docs/**/*.csv.meta
+
+.DS_Store
