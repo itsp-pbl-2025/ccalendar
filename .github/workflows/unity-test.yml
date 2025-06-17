@@ -17,7 +17,7 @@ jobs:
     steps:
       # Unityライセンスのアクティベート
       - name: Activate Unity (Personal License)
-        uses: game-ci/unity-activate@v4
+        uses: game-ci/unity-activate@v2
         with:
           unityVersion: 6000.0.48f1
           username: ${{ secrets.UNITY_EMAIL }}
@@ -39,7 +39,7 @@ jobs:
 
       # テストの実行
       - name: Run Unity Tests
-        uses: game-ci/unity-test-runner@v4
+        uses: game-ci/unity-test-runner@v2
         with:
           unityVersion: 6000.0.48f1
           githubToken: ${{ secrets.GITHUB_TOKEN }}
