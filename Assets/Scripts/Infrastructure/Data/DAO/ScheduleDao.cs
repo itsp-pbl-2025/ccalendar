@@ -14,9 +14,9 @@ namespace Infrastructure.Data.DAO
                 Description = sc.Description,
                 Duration = new DScheduleDuration()
                 {
-                    StartTime = new CCDateTime(sc.Duration.StartTime),
-                    EndTime = new CCDateTime(sc.Duration.EndTime),
-                    IsAllDay = new CCDateTime(sc.Duration.IsAllDay),
+                    StartTime = sc.Duration.StartTime.ToDateTime(),
+                    EndTime = sc.Duration.EndTime.ToDateTime(),
+                    IsAllDay = sc.Duration.IsAllDay,
                 },
                 Periodic = sc.Periodic is null
                     ? null

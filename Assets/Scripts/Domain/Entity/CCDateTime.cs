@@ -21,6 +21,16 @@ namespace Domain.Entity
             Minute = new Minute(minute);
             Second = new Second(second);
         }
+        
+        public CCDateTime(int year, int month, int day)
+        {
+            Year = new Year(year);
+            Month = new Month(month);
+            Day = new Day(day);
+            Hour = new Hour(0);
+            Minute = new Minute(0);
+            Second = new Second(0);
+        }
 
         public CCDateTime(DateTime datetime)
         {
@@ -102,6 +112,9 @@ namespace Domain.Entity
         public static bool operator >(CCDateTime left, CCDateTime right) => left.CompareTo(right) > 0;
         public static bool operator <=(CCDateTime left, CCDateTime right) => left.CompareTo(right) <= 0;
         public static bool operator >=(CCDateTime left, CCDateTime right) => left.CompareTo(right) >= 0;
+        
+        public static CCDateTime Today => new(DateTime.Today);
+        public static CCDateTime Now => new(DateTime.Now);
 
         public int YearValue => Year.Value;
         public int MonthValue => Month.Value;

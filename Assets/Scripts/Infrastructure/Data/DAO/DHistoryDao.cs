@@ -12,13 +12,13 @@ namespace Infrastructure.Data.DAO
             {
                 Id = (int)history.Type,
                 Data = history.Data,
-                UpdatedAt = history.UpdatedAt
+                UpdatedAt = history.UpdatedAt.ToDateTime()
             };
         }
 
         public static HistoryContainer ToDomain(this DHistoryContainer history)
         {
-            return new HistoryContainer((HistoryType)history.Id, history.Data, history.UpdatedAt);
+            return new HistoryContainer((HistoryType)history.Id, history.Data, new CCDateTime(history.UpdatedAt));
         }
     }
 }
