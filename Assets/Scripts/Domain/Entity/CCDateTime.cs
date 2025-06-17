@@ -80,66 +80,85 @@ namespace Domain.Entity
         public int SecondValue => Second.Value;
     }
 
-    public readonly record struct Year(int Value) : IComparable<Year>
+    public readonly record struct Year : IComparable<Year>
     {
-        public Year(int value) : this(value)
+        public int Value { get; }
+
+        public Year(int value)
         {
-            if (Value < 0)
-                throw new ArgumentOutOfRangeException(nameof(Value), "Year cannot be negative.");
+            if (value < 0)
+                throw new ArgumentOutOfRangeException(nameof(value), "Year cannot be negative.");
+            Value = value;
         }
         public int CompareTo(Year other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Month(int Value) : IComparable<Month>
+
+    public readonly record struct Month : IComparable<Month>
     {
-        public Month(int value) : this(value)
+        public int Value { get; }
+
+        public Month(int value)
         {
-            if (Value < 1 || Value > 12)
-                throw new ArgumentOutOfRangeException(nameof(Value), "Month must be between 1 and 12.");
+            if (value < 1 || value > 12)
+                throw new ArgumentOutOfRangeException(nameof(value), "Month must be between 1 and 12.");
+            Value = value;
         }
         public int CompareTo(Month other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Day(int Value) : IComparable<Day>
+    public readonly record struct Day : IComparable<Day>
     {
-        public Day(int value) : this(value)
+        public int Value { get; }
+
+        public Day(int value)
         {
-            if (Value < 1 || Value > 31)
-                throw new ArgumentOutOfRangeException(nameof(Value), "Day must be between 1 and 31.");
+            if (value < 1 || value > 31)
+                throw new ArgumentOutOfRangeException(nameof(value), "Day must be between 1 and 31.");
+            Value = value;
         }
         public int CompareTo(Day other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Hour(int Value) : IComparable<Hour>
+    public readonly record struct Hour : IComparable<Hour>
     {
-        public Hour(int value) : this(value)
+        public int Value { get; }
+
+        public Hour(int value)
         {
-            if (Value < 0 || Value > 23)
-                throw new ArgumentOutOfRangeException(nameof(Value), "Hour must be between 0 and 23.");
+            if (value < 0 || value > 23)
+                throw new ArgumentOutOfRangeException(nameof(value), "Hour must be between 0 and 23.");
+            Value = value;
         }
         public int CompareTo(Hour other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Minute(int Value) : IComparable<Minute>
+    public readonly record struct Minute : IComparable<Minute>
     {
-        public Minute(int value) : this(value)
+        public int Value { get; }
+
+        public Minute(int value)
         {
-            if (Value < 0 || Value > 59)
-                throw new ArgumentOutOfRangeException(nameof(Value), "Minute must be between 0 and 59.");
+            if (value < 0 || value > 59)
+                throw new ArgumentOutOfRangeException(nameof(value), "Minute must be between 0 and 59.");
+            Value = value;
         }
         public int CompareTo(Minute other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Second(int Value) : IComparable<Second>
+    public readonly record struct Second : IComparable<Second>
     {
-        public Second(int value) : this(value)
+        public int Value { get; }
+
+        public Second(int value)
         {
-            if (Value < 0 || Value > 59)
-                throw new ArgumentOutOfRangeException(nameof(Value), "Second must be between 0 and 59.");
+            if (value < 0 || value > 59)
+                throw new ArgumentOutOfRangeException(nameof(value), "Second must be between 0 and 59.");
+            Value = value;
         }
         public int CompareTo(Second other) => Value.CompareTo(other.Value);
     }
-
+    
     public readonly record struct CCDateOnly : IComparable<CCDateOnly>
     {
         public Year Year { get; }
@@ -152,8 +171,20 @@ namespace Domain.Entity
             Month = new Month(month);
             Day = new Day(day);
         }
+
+        public int CompareTo(CCDateOnly other)
+        {
+            int yearComparison = Year.CompareTo(other.Year);
+            if (yearComparison != 0) return yearComparison;
+
+            int monthComparison = Month.CompareTo(other.Month);
+            if (monthComparison != 0) return monthComparison;
+
+            return Day.CompareTo(other.Day);
+        }
     }
 
+// CCTimeOnlyにCompareTo実装を追加
     public readonly record struct CCTimeOnly : IComparable<CCTimeOnly>
     {
         public Hour Hour { get; }
@@ -165,6 +196,17 @@ namespace Domain.Entity
             Hour = new Hour(hour);
             Minute = new Minute(minute);
             Second = new Second(second);
+        }
+
+        public int CompareTo(CCTimeOnly other)
+        {
+            int hourComparison = Hour.CompareTo(other.Hour);
+            if (hourComparison != 0) return hourComparison;
+
+            int minuteComparison = Minute.CompareTo(other.Minute);
+            if (minuteComparison != 0) return minuteComparison;
+
+            return Second.CompareTo(other.Second);
         }
     }
 }
