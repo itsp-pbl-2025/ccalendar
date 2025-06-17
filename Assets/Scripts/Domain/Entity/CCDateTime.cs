@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Domain.Entity
 {
-    public readonly record struct CCDateTime : IComparable<CCDateTime>
+    public readonly struct CCDateTime : IComparable<CCDateTime>
     {
         public Year Year { get; }
         public Month Month { get; }
@@ -80,7 +80,7 @@ namespace Domain.Entity
         public int SecondValue => Second.Value;
     }
 
-    public readonly record struct Year : IComparable<Year>
+    public readonly struct Year : IComparable<Year>
     {
         public int Value { get; }
 
@@ -94,7 +94,7 @@ namespace Domain.Entity
     }
 
 
-    public readonly record struct Month : IComparable<Month>
+    public readonly struct Month : IComparable<Month>
     {
         public int Value { get; }
 
@@ -107,7 +107,7 @@ namespace Domain.Entity
         public int CompareTo(Month other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Day : IComparable<Day>
+    public readonly struct Day : IComparable<Day>
     {
         public int Value { get; }
 
@@ -120,7 +120,7 @@ namespace Domain.Entity
         public int CompareTo(Day other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Hour : IComparable<Hour>
+    public readonly struct Hour : IComparable<Hour>
     {
         public int Value { get; }
 
@@ -133,7 +133,7 @@ namespace Domain.Entity
         public int CompareTo(Hour other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Minute : IComparable<Minute>
+    public readonly struct Minute : IComparable<Minute>
     {
         public int Value { get; }
 
@@ -146,7 +146,7 @@ namespace Domain.Entity
         public int CompareTo(Minute other) => Value.CompareTo(other.Value);
     }
 
-    public readonly record struct Second : IComparable<Second>
+    public readonly struct Second : IComparable<Second>
     {
         public int Value { get; }
 
@@ -159,7 +159,7 @@ namespace Domain.Entity
         public int CompareTo(Second other) => Value.CompareTo(other.Value);
     }
     
-    public readonly record struct CCDateOnly : IComparable<CCDateOnly>
+    public readonly struct CCDateOnly : IComparable<CCDateOnly>
     {
         public Year Year { get; }
         public Month Month { get; }
@@ -185,7 +185,7 @@ namespace Domain.Entity
     }
 
 // CCTimeOnlyにCompareTo実装を追加
-    public readonly record struct CCTimeOnly : IComparable<CCTimeOnly>
+    public readonly struct CCTimeOnly : IComparable<CCTimeOnly>
     {
         public Hour Hour { get; }
         public Minute Minute { get; }
