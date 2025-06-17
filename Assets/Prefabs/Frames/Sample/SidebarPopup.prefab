@@ -542,6 +542,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 26516994485553406, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 664770401565331518, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -573,6 +577,10 @@ PrefabInstance:
     - target: {fileID: 1947112351581636360, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
       propertyPath: m_Name
       value: SidebarPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051247188442884801, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5281206361761490911, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
       propertyPath: m_Pivot.x

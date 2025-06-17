@@ -15,7 +15,7 @@ namespace Test.Integration
 
             foreach (var d in MockSchedule.GetMockSchedules())
             {
-                ctx.ScheduleRepo.InsertUpdate(d.FromDomain());
+                ctx.ScheduleRepo.InsertUpdate(d.ToDomain());
             }
             
             var service = ctx.GetService<SampleService>();
@@ -23,7 +23,7 @@ namespace Test.Integration
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 Assert.IsTrue(schedules.TryGetValue(ds.Id, out var s));
-                Assert.AreEqual(s, ds.FromDomain()); // interface同士の比較なのでoperator ==を使えない
+                Assert.AreEqual(s, ds.ToDomain());
                 Assert.IsTrue(schedules.Remove(ds.Id));
             }
             Assert.IsTrue(schedules.Count == 0);

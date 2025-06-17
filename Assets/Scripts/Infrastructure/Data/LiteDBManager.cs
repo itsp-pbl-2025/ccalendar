@@ -20,6 +20,7 @@ namespace Infrastructure.Data
             const int sizeMax = 1024 * 1024; // 1 MB
             _mem = new MemoryStream(sizeMax);
             DB = new LiteDatabase(_mem);
+            BsonMapper.Global.EmptyStringToNull = false;
         }
         
         /// <summary>
@@ -39,6 +40,7 @@ namespace Infrastructure.Data
                 Filename = path,
                 Password = key,
             });
+            BsonMapper.Global.EmptyStringToNull = false;
         }
 
         #region Destructor

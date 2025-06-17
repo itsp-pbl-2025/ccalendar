@@ -13,36 +13,36 @@ namespace Infrastructure.Repositories
 
         public ScheduleRepository(LiteDatabase db) => _col = db.GetCollection<DSchedule>("schedule");
 
-        public ISchedule Insert(ISchedule schedule)
+        public Schedule Insert(Schedule schedule)
         {
             var dSchedule = schedule.FromDomain();
             dSchedule.Id = _col.Insert(dSchedule).AsInt32;
-            return dSchedule.FromDomain();
+            return dSchedule.ToDomain();
         }
         
-        public bool Update(ISchedule schedule)
+        public bool Update(Schedule schedule)
         {
             var dSchedule = schedule.FromDomain();
             return _col.Update(dSchedule);
         }
         
-        public bool InsertUpdate(ISchedule schedule)
+        public bool InsertUpdate(Schedule schedule)
         {
             var dSchedule = schedule.FromDomain();
             return _col.Upsert(dSchedule);
         }
         
-        public bool Remove(ISchedule schedule)
+        public bool Remove(Schedule schedule)
         {
             return _col.Delete(schedule.Id);
         }
         
-        public ICollection<ISchedule> GetAll()
+        public ICollection<Schedule> GetAll()
         {
-            var result = new List<ISchedule>();
+            var result = new List<Schedule>();
             foreach (var schedule in _col.FindAll())
             {
-                result.Add(schedule.FromDomain());
+                result.Add(schedule.ToDomain());
             }
             return result;
         }

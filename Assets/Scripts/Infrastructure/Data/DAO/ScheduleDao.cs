@@ -1,40 +1,41 @@
-﻿using System;
-using Domain.Entity;
-using Domain.Enum;
+﻿using Domain.Entity;
 using Infrastructure.Data.Schema;
 
 namespace Infrastructure.Data.DAO
 {
     public static class ScheduleDao
     {
-        public static DSchedule FromDomain(this ISchedule sc)
+        public static DSchedule FromDomain(this Schedule sc)
         {
-            return sc.Type switch
+            return new DSchedule()
             {
-                ScheduleType.Date => new DSchedule()
+                Id = sc.Id,
+                Title = sc.Title,
+                Description = sc.Description,
+                Duration = new DScheduleDuration()
                 {
-                    Id = sc.Id,
-                    Type = ScheduleType.Date,
-                    Title = sc.Title
+                    StartTime = sc.Duration.StartTime,
+                    EndTime = sc.Duration.EndTime,
+                    IsAllDay = sc.Duration.IsAllDay,
                 },
-                ScheduleType.Duration => new DSchedule()
-                {
-                    Id = sc.Id,
-                    Type = ScheduleType.Duration,
-                    Title = sc.Title
-                },
-                _ => throw new ArgumentOutOfRangeException()
+                Periodic = sc.Periodic is null
+                    ? null
+                    : new DSchedulePeriodic()
+                    {
+                        PeriodicType = sc.Periodic.PeriodicType,
+                        Span = sc.Periodic.Span,
+                    },
             };
         }
 
-        public static ISchedule FromDomain(this DSchedule sc)
+        public static Schedule ToDomain(this DSchedule sc)
         {
-            return sc.Type switch
-            {
-                ScheduleType.Date => new DateSchedule(sc.Id, sc.Title),
-                ScheduleType.Duration => new DurationSchedule(sc.Id, sc.Title),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            ScheduleDuration duration =
+                new ScheduleDuration(sc.Duration.StartTime, sc.Duration.EndTime, sc.Duration.IsAllDay);
+            SchedulePeriodic periodic = sc.Periodic is null
+                ? null
+                : new SchedulePeriodic(sc.Periodic.PeriodicType, sc.Periodic.Span);
+            return new Schedule(sc.Id, sc.Title, sc.Description, duration, periodic);
         }
     }
 }

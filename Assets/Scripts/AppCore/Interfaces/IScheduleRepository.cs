@@ -5,10 +5,10 @@ namespace AppCore.Interfaces
 {
     public interface IScheduleRepository
     {
-        public ISchedule Insert(ISchedule schedule);
-        public bool Update(ISchedule schedule);
-        public bool InsertUpdate(ISchedule schedule);
-        public bool Remove(ISchedule schedule);
-        public ICollection<ISchedule> GetAll();
+        public Schedule Insert(Schedule schedule);
+        public bool Update(Schedule schedule);
+        public bool InsertUpdate(Schedule schedule);
+        public bool Remove(Schedule schedule);
+        public ICollection<Schedule> GetAll();
     }
 }

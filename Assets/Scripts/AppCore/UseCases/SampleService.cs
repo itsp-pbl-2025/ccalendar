@@ -16,7 +16,7 @@ namespace AppCore.UseCases
             _scheduleRepo = repo;
         }
 
-        public ICollection<ISchedule> GetSchedules()
+        public ICollection<Schedule> GetSchedules()
         {
             return _scheduleRepo.GetAll();
         }
