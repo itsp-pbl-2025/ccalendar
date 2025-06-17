@@ -196,9 +196,18 @@ namespace Domain.Entity
 
             return Day.CompareTo(other.Day);
         }
+        
+        public CCDateOnly AddDays(double days) => 
+            new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
+                .AddDays(days)
+                .ToDateOnly();
+
+        public CCDateOnly AddYears(double years) =>
+            new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
+                .AddYears(years)
+                .ToDateOnly();
     }
 
-// CCTimeOnlyにCompareTo実装を追加
     public readonly struct CCTimeOnly : IComparable<CCTimeOnly>
     {
         public Hour Hour { get; }
@@ -222,5 +231,27 @@ namespace Domain.Entity
 
             return Second.CompareTo(other.Second);
         }
+        
+        public CCTimeOnly AddHours(double hours)
+        {
+            var dateTime = new CCDateTime(1, 1, 1, Hour.Value, Minute.Value, Second.Value)
+                .AddHours(hours);
+            return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
+        }
+
+        public CCTimeOnly AddMinutes(double minutes)
+        {
+            var dateTime = new CCDateTime(1, 1, 1, Hour.Value, Minute.Value, Second.Value)
+                .AddMinutes(minutes);
+            return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
+        }
+
+        public CCTimeOnly AddSeconds(double seconds)
+        {
+            var dateTime = new CCDateTime(1, 1, 1, Hour.Value, Minute.Value, Second.Value)
+                .AddSeconds(seconds);
+            return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
+        }
+
     }
 }
