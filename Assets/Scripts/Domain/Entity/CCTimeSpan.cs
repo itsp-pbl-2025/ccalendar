@@ -64,6 +64,18 @@ namespace Domain.Entity
 
         public CCDateTime AddTo(CCDateTime dateTime) => 
             new(dateTime.ToDateTime().AddSeconds(TotalSeconds));
+        public bool IsBetween(CCDateTime target)
+        {
+            if (TotalSeconds < 0)
+            {
+                throw new InvalidOperationException("Invalid time span for date range check.");
+            }
+            var startDate = target.ToDateTime();
+            var endDate = startDate.AddSeconds(TotalSeconds);
+            var targetDate = target.ToDateTime();
+            return targetDate >= startDate && targetDate <= endDate;
+        }
+
 
         public override string ToString()
         {
