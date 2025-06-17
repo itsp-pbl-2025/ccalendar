@@ -2,6 +2,7 @@
 using Domain.Enum;
 using Infrastructure;
 using Presentation.Presenter;
+using Presentation.Resources;
 using Presentation.Utilities;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace Runner
     public class AppRunner : InAppContext
     {
         private static AppRunner _instance;
+
+        [SerializeField] private PrefabDictionary prefabDictionary;
         
         private void Awake()
         {
@@ -26,6 +29,7 @@ namespace Runner
         
             Context = new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
             EventDispatcher = new EventDispatcher();
+            Prefabs = new PrefabBundle(prefabDictionary);
         }
 
         private void OnApplicationQuit()

@@ -1,4 +1,5 @@
 ﻿using AppCore.Interfaces;
+using Presentation.Resources;
 using Presentation.Utilities;
 using UnityEngine;
 
@@ -9,5 +10,7 @@ namespace Presentation.Presenter
         public static IContext Context { get; protected set; }
         
         public static EventDispatcher EventDispatcher { get; protected set; }
+        
+        public static PrefabBundle Prefabs { get; protected set; }
     }
 }
