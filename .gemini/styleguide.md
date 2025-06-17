@@ -1,80 +1,79 @@
-## 以下のファイルは全て英文で書かれていますが、コードレビューは全て日本語で行ってください。
+## ✅ **技術的要件**
 
-### ✅ **Technical Requirements**
+### **コードの品質**
 
-* **Code Quality**
+* 既存のコーディング規約（例：PEP8、Googleスタイルガイド）に従うこと
+* 変数、関数、クラスに一貫性があり意味のある命名をすること
+* 未使用のコード、変数、インポートを削除すること
 
-    * Follow established coding standards (e.g., PEP8, Google Style Guide).
-    * Ensure consistent and meaningful naming conventions for variables, functions, and classes.
-    * Eliminate unused code, variables, and imports.
+### **可読性 & 保守性**
 
-* **Readability & Maintainability**
+* コメントやドキュメントは簡潔で有用であること
+* 複雑なロジックや直感的でない判断には補足説明をつけること
+* 関数やクラスは\*\*単一責任の原則（SRP）\*\*に従って構成すること
 
-    * Ensure comments and documentation are present, concise, and useful.
-    * Add explanations for complex logic or non-obvious decisions.
-    * Functions and classes should follow the Single Responsibility Principle (SRP).
+### **セキュリティ**
 
-* **Security**
+* ユーザー入力や外部データは適切に**検証・サニタイズ**すること
+* ハードコードされた秘密情報、認証情報、トークンを避けること
+* SQLインジェクション、XSSなどのリスクに注意を払うこと
 
-    * Validate and sanitize user inputs and external data properly.
-    * Avoid hard-coded secrets, credentials, or tokens.
-    * Watch for security risks like SQL injection, XSS, etc.
+### **パフォーマンス**
 
-* **Performance**
+* 潜在的なボトルネックを特定し、最適化を行うこと
+* ループ内での冗長な計算や重い処理を避けること
 
-    * Identify and optimize potential bottlenecks.
-    * Avoid redundant computations or heavy operations in tight loops.
+### **テスト & CI/CD**
 
-* **Testing & CI/CD**
+* 単体テスト・統合テストが適切に用意されていることを確認すること
+* 特に重要なロジックに対するテストカバレッジが高いこと
+* CI/CDパイプラインが構築されていて、テストログにアクセスできること
 
-    * Verify that unit and integration tests are provided and meaningful.
-    * Ensure high test coverage, especially for critical logic.
-    * Confirm that CI/CD pipelines are set up and test logs are accessible.
+### **依存関係 & 構成**
 
-* **Dependencies & Structure**
-
-    * Minimize unnecessary external dependencies.
-    * Confirm dependency versions are locked (`requirements.txt`, `package.json`, etc.).
-    * Maintain clear project structure and modularity.
+* 不要な外部ライブラリの依存を最小限に抑えること
+* `requirements.txt` や `package.json` においてバージョンをロックすること
+* プロジェクト構成が明確でモジュール化されていること
 
 ---
 
-### 🧭 **Non-Technical Requirements**
+## 🧭 **非技術的要件**
 
-* **Review Prompt Context**
+### **レビュー対象の文脈**
 
-    * Provide a clear description of the code's purpose and where it fits into the overall system.
-    * Indicate specific areas or concerns to focus on (e.g., readability, performance, architecture).
+* コードの目的や、システム全体における役割を明示すること
+* 特にレビューしてほしい観点（例：可読性、パフォーマンス、設計）を示すこと
 
-* **Language & Style**
+### **言語とスタイル**
 
-  * Post a code review in Japanese.
-  * All comments should be simple and concise, and focus on the code's functionality, readability, and maintainability.
+* コードレビューは**日本語**で記述すること
+* コメントはシンプルかつ簡潔にし、機能性、可読性、保守性に焦点を当てること
 
-* **Tone & Communication**
+### **トーン & コミュニケーション**
 
-    * Feedback should be constructive, polite, and solution-oriented.
-    * Tailor the level of explanation based on the developer's skill level (e.g., beginner-friendly or advanced).
+* フィードバックは**建設的・丁寧・解決志向**であること
+* 開発者のスキルレベルに応じて、説明の深さを調整すること（例：初心者向け or 上級者向け）
 
-* **Categorization of Comments**
+### **コメントの分類**
 
-    * Classify suggestions as:
+* 提案を以下のいずれかに分類すること：
 
-        * `Critical` (must fix)
-        * `Recommended` (should fix)
-        * `Optional` (nice to have)
-    * Keep the number of comments manageable and focused.
+  * `Critical`（必ず修正すべき）
+  * `Recommended`（修正を推奨）
+  * `Optional`（できれば修正）
 
-* **Review Iteration Handling**
+* コメント数は多すぎず、焦点を絞ること
 
-    * For follow-up reviews, check if previous feedback has been addressed.
-    * Emphasize diffs and changes since the last review.
+### **レビューの繰り返し対応**
 
-* **Review Traceability**
+* 再レビューでは、**前回のフィードバックが反映されているか**を確認すること
+* 差分や変更点を重点的に確認すること
 
-    * Ensure the ability to track and reference past review comments and discussions.
+### **レビューの追跡性**
 
-* **Ethical Considerations**
+* 過去のレビューコメントや議論が追跡・参照可能な状態にすること
 
-    * Avoid any biased, discriminatory, or offensive language.
-    * Be cautious with Personally Identifiable Information (PII) or sensitive content in examples.
+### **倫理的配慮**
+
+* 偏見、差別的、攻撃的な言葉を避けること
+* 個人情報（PII）や機密情報の例示には細心の注意を払うこと
