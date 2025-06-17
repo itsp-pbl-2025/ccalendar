@@ -27,6 +27,8 @@ namespace Test
             {
                 _serviceFactories.Add(typeof(SampleService), name => new SampleService(ScheduleRepo, name));
                 _serviceFactories.Add(typeof(ScheduleService), name => new ScheduleService(ScheduleRepo, name));
+                _serviceFactories.Add(typeof(HolidayService), name => new HolidayService(ScheduleRepo, name));
+                _serviceFactories.Add(typeof(HistoryService), name => new HistoryService(HistoryRepo, name));
             }
             
             public T GetService<T>(string name = "") where T : IService
@@ -53,6 +55,9 @@ namespace Test
             
             private ScheduleRepository? _scheduleRepo;
             public IScheduleRepository ScheduleRepo => _scheduleRepo ??= new ScheduleRepository(_liteDb.DB);
+            
+            private HistoryRepository? _historyRepo;
+            public IHistoryRepository HistoryRepo => _historyRepo ??= new HistoryRepository(_liteDb.DB);
 
             public void Dispose()
             {
