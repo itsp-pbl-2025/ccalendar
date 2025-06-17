@@ -1,0 +1,53 @@
+# .github/workflows/unity-test.yml
+name: Unity Test
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  run-tests:
+    name: Run Unity Tests
+    runs-on: ubuntu-latest # ジョブを実行する仮想OS
+
+    steps:
+      # Unityライセンスのアクティベート
+      - name: Activate Unity (Personal License)
+        uses: game-ci/unity-activate@v4
+        with:
+          unityVersion: 6000.0.48f1
+          username: ${{ secrets.UNITY_EMAIL }}
+          password: ${{ secrets.UNITY_PASSWORD }}
+          personalLicense: true
+
+      # 仮想OSにチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # GitHubが提供するキャッシュストレージにLibraryを一時保存する
+      - name: Cache Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ runner.os }}-${{ hashFiles('**/Assets/**', '**/Packages/**', '**/ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ runner.os }}-
+
+      # テストの実行
+      - name: Run Unity Tests
+        uses: game-ci/unity-test-runner@v4
+        with:
+          unityVersion: 6000.0.48f1
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: all # all, editmode, playmode のいずれか
+          checkName: 'Unity Test Results'
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results
+          path: test-results
