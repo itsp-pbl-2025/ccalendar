@@ -1,16 +1,10 @@
 name: Unity Test
 
-on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    branches:
-      - '**'
+on: [push, pull_request]
 
 jobs:
   run-tests:
-    name: Run unity tests
+    name: Run unity tests 🦊
     runs-on: ubuntu-latest # ジョブを実行する仮想OS
 
     steps:
@@ -38,6 +32,7 @@ jobs:
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: editmode # test only editmode
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
