@@ -92,11 +92,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1416613790932458892, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: "\u30FBService\u3092\u547C\u3076\u30AF\u30E9\u30B9\u304C\u5165\u308B\r\n\u30FBScene\u306B\u914D\u7F6E\u3059\u308BScript\u304C\u5168\u90E8\u5165\u308B"
+      objectReference: {fileID: 0}
     - target: {fileID: 1732237199365350766, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: "\u30FBService\u3092\u547C\u3076\u30AF\u30E9\u30B9\u304C\u5165\u308B\n\u30FBScene\u306B\u914D\u7F6E\u3059\u308BScript\u304C\u5168\u90E8\u5165\u308B"
       objectReference: {fileID: 0}
     - target: {fileID: 2755613017963517548, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: Presentation.View.**
+      objectReference: {fileID: 0}
+    - target: {fileID: 8351783212943900871, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: Presentation.View.**
       objectReference: {fileID: 0}
@@ -210,17 +218,29 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u30FB\u672C\u6765\u306FMVP\u306EP\u304C\u5B9F\u88C5\u3055\u308C\u308B\n\u30FBInAppContext\u306E\u5B9F\u88C5"
       objectReference: {fileID: 0}
+    - target: {fileID: 2044396551365997127, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: "\u30FB\u672C\u6765\u306FMVP\u306EP\u304C\u5B9F\u88C5\u3055\u308C\u308B\r\n\u30FBInAppContext\u306E\u5B9F\u88C5"
+      objectReference: {fileID: 0}
     - target: {fileID: 3011239197595842983, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text
       value: Presentation.Presenter
       objectReference: {fileID: 0}
+    - target: {fileID: 3293396843867080514, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: "namespace <b>Presentation</b>\r"
+      objectReference: {fileID: 0}
     - target: {fileID: 7484556004339640391, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_Name
-      value: NamespaceExplainRect Variant
+      value: NamespacePresentation
       objectReference: {fileID: 0}
     - target: {fileID: 8766874076581917376, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text
       value: namespace <b>Presentation</b>
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939799179355582220, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: Presentation.Presenter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

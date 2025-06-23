@@ -47,7 +47,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5605531244748737607}
   - component: {fileID: 761854907077382214}
-  - component: {fileID: 8766874076581917376}
+  - component: {fileID: 3293396843867080514}
   m_Layer: 5
   m_Name: Label-BaseNamespace
   m_TagString: Untagged
@@ -82,7 +82,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8298078947581857956}
   m_CullTransparentMesh: 1
---- !u!114 &8766874076581917376
+--- !u!114 &3293396843867080514
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8298078947581857956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281545523
-  m_fontColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_fontColor: {r: 0.19921875, g: 0.19921875, b: 0.19921875, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -173,6 +173,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  mColorType: 21
 --- !u!1001 &1150658057651810251
 PrefabInstance:
   m_ObjectHideFlags: 0

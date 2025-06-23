@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7708843740351060789}
   - component: {fileID: 4316412127633439250}
-  - component: {fileID: 4866143777533308748}
+  - component: {fileID: 6437962875035651216}
   m_Layer: 5
   m_Name: Description-1
   m_TagString: Untagged
@@ -120,7 +120,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254755842197212518}
   m_CullTransparentMesh: 1
---- !u!114 &4866143777533308748
+--- !u!114 &6437962875035651216
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1254755842197212518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281545523
-  m_fontColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_fontColor: {r: 0.19921875, g: 0.19921875, b: 0.19921875, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -211,6 +211,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  mColorType: 21
 --- !u!1 &5502734368429448117
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +295,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 773552864403601603, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: "Scene\u4E0A\u3067\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u52D5\u4F5C\u3055\u305B\u308B\u305F\u3081\u306B\u306F\u3001MonoBehav-iour\u3092\u7D99\u627F\u3055\u305B\u305F\u30AF\u30E9\u30B9\u3092\u5B9F\u88C5\u3059\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002\r\n\u901A\u5E38\u306E\u30AF\u30E9\u30B9\u306F\u5B9F\u4F53\u304C\u30E1\u30E2\u30EA\u4E0A\u306B\u3042\u308A\u307E\u3059\u304C\u3001MonoBehavio-ur\u3092\u7D99\u627F\u3057\u305F\u30B9\u30AF\u30EA\u30D7\u30C8\u306F\u3001\u3000Unity\u306B\u3088\u3063\u3066Scene\u4E0A\u3067\u7BA1\u7406\u3055\u308C\u3066\u3044\u308B\u3088\u3046\u306B\u6271\u308F\u308C\u307E\u3059\u3002\r\n\u8A66\u3057\u306B\u3001Hierarchy\u30D3\u30E5\u30FC\u304B\u3089
+        \"SampleSceneRunner\"\u3092\u898B\u3064\u3051\u3066\u3001\u305D\u308C\u306BAttach\u3055\u308C\u3066\u3044\u308B
+        \"SampleSceneManager\"\u3092\t\u958B\u3044\u3066\u307F\u307E\u3057\u3087\u3046\u3002"
+      objectReference: {fileID: 0}
     - target: {fileID: 973624898193158229, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -373,6 +380,10 @@ PrefabInstance:
     - target: {fileID: 973624898193158229, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2003634879153994454, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: MonoBehaviour
       objectReference: {fileID: 0}
     - target: {fileID: 3967636716707773433, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_text
