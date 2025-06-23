@@ -22,6 +22,7 @@ namespace Presentation.Utilities
         public Color GetColor(ColorOf type)
         {
             return type switch {
+                ColorOf.Original => new Color(1f, 1f, 1f),
                 ColorOf.Primary => _theme.primary,
                 ColorOf.Secondary => _theme.secondary,
                 ColorOf.Tertiary => _theme.tertiary,
@@ -51,6 +52,12 @@ namespace Presentation.Utilities
                 ColorOf.Link => _theme.textLink,
                 _ => Color.magenta,
             };
+        }
+
+        public Color GetColor(ColorOf type, float alpha)
+        {
+            var color = GetColor(type);
+            return new Color(color.r, color.g, color.b, alpha);
         }
     }
 }

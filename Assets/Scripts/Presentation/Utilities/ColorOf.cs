@@ -2,6 +2,8 @@
 {
     public enum ColorOf
     {
+        Original,        // 画像などで利用する、「そのまま」の意味の色
+        
         // 汎用的な役割の色
         Primary,         // ブランドのメインカラー
         Secondary,       // 補足的なブランドカラー
