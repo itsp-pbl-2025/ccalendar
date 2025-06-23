@@ -165,16 +165,16 @@ namespace Presentation.Views.Common
         {
             var to = state switch
             {
-                ButtonRP.ButtonSelectionState.Normal => colorAssigns.normalColor,
-                ButtonRP.ButtonSelectionState.Highlighted => colorAssigns.highlightedColor,
-                ButtonRP.ButtonSelectionState.Pressed => colorAssigns.pressedColor,
-                ButtonRP.ButtonSelectionState.Selected => colorAssigns.selectedColor,
-                _ => colorAssigns.disabledColor,
-            } * colorAssigns.colorMultiplier;
+                ButtonRP.ButtonSelectionState.Normal => colorTints.normalColor,
+                ButtonRP.ButtonSelectionState.Highlighted => colorTints.highlightedColor,
+                ButtonRP.ButtonSelectionState.Pressed => colorTints.pressedColor,
+                ButtonRP.ButtonSelectionState.Selected => colorTints.selectedColor,
+                _ => colorTints.disabledColor,
+            } * colorTints.colorMultiplier;
 
             targetGraphic.CrossFadeColor(
                 to,
-                instant ? 0f : colorAssigns.fadeDuration,
+                instant ? 0f : colorTints.fadeDuration,
                 true, true
             );
         }

@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonRP: {fileID: 8311308529287832343}
-  transitionMode: 2
+  transitionMode: 1
   targetGraphic: {fileID: 4721541533035767365}
   colorTints:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
