@@ -1,4 +1,5 @@
-﻿using Presentation.Presenter;
+﻿using System;
+using Presentation.Presenter;
 using Presentation.Resources;
 using UnityEngine;
 
@@ -58,6 +59,36 @@ namespace Presentation.Utilities
         {
             var color = GetColor(type);
             return new Color(color.r, color.g, color.b, alpha);
+        }
+        
+        public ColorOf FindNearestColorType(Color targetColor)
+        {
+            const float distanceThreshold = 15f;
+            var minDistanceSq = distanceThreshold * distanceThreshold;
+            var nearestColorType = ColorOf.Custom;
+
+            foreach (ColorOf type in Enum.GetValues(typeof(ColorOf)))
+            {
+                if (type is ColorOf.Custom) continue;
+
+                var themeColor = GetColor(type);
+                var distanceSq = CalculateColorDistanceSq(targetColor, themeColor);
+
+                if (!(distanceSq < minDistanceSq)) continue;
+                minDistanceSq = distanceSq;
+                nearestColorType = type;
+            }
+
+            return nearestColorType;
+        }
+
+        private static float CalculateColorDistanceSq(Color color1, Color color2)
+        {
+            var dr = color1.r - color2.r;
+            var dg = color1.g - color2.g;
+            var db = color1.b - color2.b;
+
+            return dr * dr + dg * dg + db * db;
         }
     }
 }
