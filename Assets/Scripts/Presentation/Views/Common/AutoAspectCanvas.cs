@@ -11,12 +11,14 @@ namespace Presentation.Views.Common
     {
         [SerializeField] private Canvas canvas;
         [SerializeField] private RectTransform canvasRect;
+        [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private List<RectTransform> fullRectBoxColliders;
         [SerializeField] private List<RectTransform> safeRectTransforms;
         [SerializeField] private List<RectTransform> fixedRectTransforms;
         
         public Canvas Canvas => canvas;
         public RectTransform CanvasRect => canvasRect;
+        public CanvasGroup CanvasGroup => canvasGroup;
         
         private readonly HashSet<RectTransform> _fullRectTransform = new();
         private readonly HashSet<RectTransform> _safeRectTransforms = new();
@@ -26,7 +28,10 @@ namespace Presentation.Views.Common
         {
 #if UNITY_EDITOR
             if (PrefabStageUtility.GetCurrentPrefabStage() == null) canvas.worldCamera = Camera.main;
+#else
+            canvas.worldCamera = Camera.main;
 #endif
+            
             foreach (var safeRect in safeRectTransforms)
             {
                 _safeRectTransforms.Add(safeRect);

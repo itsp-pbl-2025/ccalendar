@@ -4,6 +4,7 @@ using Infrastructure;
 using Presentation.Presenter;
 using Presentation.Resources;
 using Presentation.Utilities;
+using Presentation.Views.Common;
 using UnityEngine;
 
 namespace Runner
@@ -12,6 +13,7 @@ namespace Runner
     {
         private static AppRunner _instance;
 
+        [SerializeField] private SceneLoader sceneLoader;
         [SerializeField] private PrefabDictionary prefabDictionary;
         
         private void Awake()
@@ -30,6 +32,7 @@ namespace Runner
             Context = new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
             EventDispatcher = new EventDispatcher();
             Prefabs = new PrefabBundle(prefabDictionary);
+            SceneLoader = sceneLoader;
         }
 
         private void OnApplicationQuit()
