@@ -7,10 +7,12 @@ namespace Presentation.Resources
     public class PrefabBundle
     {
         private readonly List<PopupWindow> _popupPrefabs;
+        private readonly List<ColorTheme> _builtinThemes;
         
         public PrefabBundle(PrefabDictionary prefabDict)
         {
             _popupPrefabs = prefabDict.PopupPrefabs;
+            _builtinThemes = prefabDict.BuiltinThemes;
         }
         
         public T GetPopup<T>(string name = "") where T : PopupWindow
@@ -24,6 +26,23 @@ namespace Presentation.Resources
                 }
             }
             throw new InvalidOperationException($"No prefab found for type {typeof(T)}");
+        }
+
+        public List<ColorTheme> GetThemeAll()
+        {
+            return new List<ColorTheme>(_builtinThemes);
+        }
+
+        public ColorTheme GetThemeByName(string name)
+        {
+            foreach (var theme in _builtinThemes)
+            {
+                if (theme.name == name)
+                {
+                    return theme;
+                }
+            }
+            return _builtinThemes[0];
         }
     }
 }
