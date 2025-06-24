@@ -31,7 +31,7 @@ namespace AppCore.UseCases
         public bool UpdateHistory<T>(HistoryType type, T value)
         {
             var str = EncodeSpecified(value);
-            return _historyRepo.InsertUpdate(new HistoryContainer(type, str, new CCDateTime(DateTime.UtcNow)));
+            return _historyRepo.InsertUpdate(new HistoryContainer(type, str, DateTime.UtcNow));
         }
 
         /// <summary>
