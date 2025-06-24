@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1476863840814444771}
   - component: {fileID: 14248035143817397}
-  - component: {fileID: 6024814797173459355}
+  - component: {fileID: 4856251738956305467}
   m_Layer: 5
   m_Name: Label-Description
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6381504718260609867}
   m_CullTransparentMesh: 1
---- !u!114 &6024814797173459355
+--- !u!114 &4856251738956305467
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6381504718260609867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281545523
-  m_fontColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_fontColor: {r: 0.19921875, g: 0.19921875, b: 0.19921875, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  mColorType: 21
 --- !u!1001 &4589167224172403104
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -228,11 +229,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1416613790932458892, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: "\u30FBSchema\u3068Domain\u306E\u76F8\u4E92\u5909\u63DB\u5B9A\u7FA9"
+      objectReference: {fileID: 0}
     - target: {fileID: 1732237199365350766, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: "\u30FBSchema\u3068Domain\u306E\u76F8\u4E92\u5909\u63DB\u5B9A\u7FA9"
       objectReference: {fileID: 0}
     - target: {fileID: 2755613017963517548, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: Infrastructure.Data.DAO
+      objectReference: {fileID: 0}
+    - target: {fileID: 8351783212943900871, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: Infrastructure.Data.DAO
       objectReference: {fileID: 0}
@@ -346,6 +355,22 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u30FBDB\u306B\u4FDD\u5B58\u3059\u308B\u30AF\u30E9\u30B9\u306E\u5B9A\u7FA9"
       objectReference: {fileID: 0}
+    - target: {fileID: 2044396551365997127, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: "\u30FBDB\u306B\u4FDD\u5B58\u3059\u308B\u30AF\u30E9\u30B9\u306E\u5B9A\u7FA9"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3293396843867080514, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: namespace <b>Infrastructure</b>
+      objectReference: {fileID: 0}
+    - target: {fileID: 3293396843867080514, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_fontSize
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3293396843867080514, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 5605531244748737607, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -356,7 +381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7484556004339640391, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_Name
-      value: NamespaceExplainRect Variant
+      value: NamespaceInfrastructure
       objectReference: {fileID: 0}
     - target: {fileID: 8766874076581917376, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text
@@ -481,11 +506,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1416613790932458892, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: "\u30FB\u5404\u60C5\u5831\u306EIRepository\u3092\u5B9F\u88C5"
+      objectReference: {fileID: 0}
     - target: {fileID: 1732237199365350766, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: "\u30FB\u5404\u60C5\u5831\u306EIRepository\u3092\u5B9F\u88C5"
       objectReference: {fileID: 0}
     - target: {fileID: 2755613017963517548, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: Infrastructure.Repository
+      objectReference: {fileID: 0}
+    - target: {fileID: 8351783212943900871, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: Infrastructure.Repository
       objectReference: {fileID: 0}

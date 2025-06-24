@@ -8,10 +8,10 @@ namespace Presentation.Views.Extensions
     {
         [SerializeField] private RectTransform rectTransform;
         [SerializeField] private ButtonRP button;
-        [SerializeField] private TextMeshProUGUI label;
+        [SerializeField] private LabelRx label;
         
-        public Button Button => button;
+        public ButtonRP Button => button;
         public RectTransform RectTransform => rectTransform;
-        public TextMeshProUGUI Label => label;
+        public LabelRx Label => label;
     }
 }

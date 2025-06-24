@@ -1,5 +1,7 @@
+using System;
 using AppCore.UseCases;
 using Domain.Entity;
+using Domain.Enum;
 using Presentation.Presenter;
 using UnityEngine;
 
@@ -30,8 +32,13 @@ namespace Presentation.Views.Popup
                     return;
                 }
                 
-                // DBにスケジュールを追加
-                ISchedule schedule = new DateSchedule(0, _title);
+                // DBにスケジュールを追加(終日周期スケジュールを仮登録)
+                Schedule schedule = new Schedule(
+                    0,
+                    _title,
+                    _description,
+                    new ScheduleDuration(),
+                    new SchedulePeriodic(SchedulePeriodicType.EveryWeek, 1));
                 InAppContext.Context.GetService<ScheduleService>().CreateSchedule(schedule);
                 
                 Debug.Log("Created new task UwU");

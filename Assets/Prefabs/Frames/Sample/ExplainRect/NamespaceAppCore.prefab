@@ -100,17 +100,29 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u30FB\u4E0B\u4F4D\u5C64\u3067\u5229\u7528\u3059\u308Binterface\u306E\u5B9A\u7FA9\n\u30FB\u4E3B\u306B\u5404\u60C5\u5831\u306EIRepository\u3092\u66F8\u304F"
       objectReference: {fileID: 0}
+    - target: {fileID: 2044396551365997127, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: "\u30FB\u4E0B\u4F4D\u5C64\u3067\u5229\u7528\u3059\u308Binterface\u306E\u5B9A\u7FA9\r\n\u30FB\u4E3B\u306B\u5404\u60C5\u5831\u306EIRepository\u3092\u66F8\u304F"
+      objectReference: {fileID: 0}
     - target: {fileID: 3011239197595842983, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text
       value: AppCore.Interfaces
       objectReference: {fileID: 0}
+    - target: {fileID: 3293396843867080514, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: namespace <b>AppCore</b>
+      objectReference: {fileID: 0}
     - target: {fileID: 7484556004339640391, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_Name
-      value: NamespaceExplainRect Variant
+      value: NamespaceAppCore
       objectReference: {fileID: 0}
     - target: {fileID: 8766874076581917376, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text
       value: namespace <b>AppCore</b>
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939799179355582220, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: AppCore.Interfaces
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -217,11 +229,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1416613790932458892, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: "\u30FB\u5404\u6A5F\u80FD\u306EService\u3092\u5B9F\u88C5"
+      objectReference: {fileID: 0}
     - target: {fileID: 1732237199365350766, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: "\u30FB\u5404\u6A5F\u80FD\u306EService\u3092\u5B9F\u88C5"
       objectReference: {fileID: 0}
     - target: {fileID: 2755613017963517548, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: AppCore.UseCases
+      objectReference: {fileID: 0}
+    - target: {fileID: 8351783212943900871, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: AppCore.UseCases
       objectReference: {fileID: 0}

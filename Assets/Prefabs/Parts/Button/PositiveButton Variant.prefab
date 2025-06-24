@@ -8,6 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1355136688903163471, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_Color.b
+      value: 0.59765625
+      objectReference: {fileID: 0}
+    - target: {fileID: 1355136688903163471, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92578125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1355136688903163471, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1355136688903163471, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: mColorType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2172807902629466209, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_Name
       value: PositiveButton Variant
@@ -91,6 +107,26 @@ PrefabInstance:
     - target: {fileID: 2796041238334476888, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721541533035767365, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: mColorType
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721541533035767365, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.19921875
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721541533035767365, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.19921875
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721541533035767365, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.19921875
+      objectReference: {fileID: 0}
+    - target: {fileID: 4721541533035767365, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4281545523
       objectReference: {fileID: 0}
     - target: {fileID: 5545446840444426882, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_Name

@@ -12,5 +12,7 @@ namespace Presentation.Presenter
         public static EventDispatcher EventDispatcher { get; protected set; }
         
         public static PrefabBundle Prefabs { get; protected set; }
+        
+        public static ThemePalette Theme { get; protected set; }
     }
 }

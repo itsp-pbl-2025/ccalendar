@@ -30,6 +30,7 @@ namespace Runner
             Context = new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
             EventDispatcher = new EventDispatcher();
             Prefabs = new PrefabBundle(prefabDictionary);
+            Theme = new ThemePalette(Prefabs.GetThemeByName(Context.GetService<HistoryService>().GetHistoryOrDefault<string>(HistoryType.ThemeUsing)));
         }
 
         private void OnApplicationQuit()
