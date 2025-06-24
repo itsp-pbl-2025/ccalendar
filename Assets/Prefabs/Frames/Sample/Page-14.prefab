@@ -135,6 +135,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 773552864403601603, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: "\u3053\u3053\u307E\u3067\u306E\u77E5\u8B58\u3067\u3001\u4F9D\u5B58\u95A2\u4FC2\u3068\u30ED\u30B8\u30C3\u30AF\u30D5\u30ED\u30FC\u7D44\u307F\u5408\u308F\u305B\u308B\u3068\u5947\u5999\u306A\u3053\u3068\u306B\u6C17\u304C\u4ED8\u304D\u307E\u3059\u3002\r\n<voffset=3.4em>
+        </voffset>\r\nRepository\u306FInfrastructure\u306B\u5B9F\u88C5\u3055\u308C\u3066\u3044\u308B\u306E\u3067\u3001\u56F3\u306E\u77E2\u5370\u65B9\u5411\u306E\u79FB\u52D5\u3067\u306FPresentation\u3068Infrastructure\u306F\u304A\u4E92\u3044\u306B\u884C\u304D\u6765\u3067\u304D\u306A\u3044\u3088\u3046\u306B\u898B\u3048\u307E\u3059\u3002\r\n\u3053\u3053\u3067\u306F\u3001Interface\u304C\u975E\u5E38\u306B\u5927\u304D\u306A\u5F79\u5272\u3092\u679C\u305F\u3057\u3066\u3044\u307E\u3059\u3002\r\n\u3053\u3053\u4EE5\u5916\u3067\u3082\u826F\u304F\u4F7F\u308F\u308C\u307E\u3059\u3002\u81EA\u5206\u3067\u8ABF\u3079\u3066\u5B66\u3073\u307E\u3057\u3087\u3046\u3002"
+      objectReference: {fileID: 0}
     - target: {fileID: 973624898193158229, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -215,6 +220,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2003634879153994454, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: "Interface\u3068DI"
+      objectReference: {fileID: 0}
     - target: {fileID: 3967636716707773433, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_text
       value: "\u3053\u3053\u307E\u3067\u306E\u77E5\u8B58\u3067\u3001\u4F9D\u5B58\u95A2\u4FC2\u3068\u30ED\u30B8\u30C3\u30AF\u30D5\u30ED\u30FC\u7D44\u307F\u5408\u308F\u305B\u308B\u3068\u5947\u5999\u306A\u3053\u3068\u306B\u6C17\u304C\u4ED8\u304D\u307E\u3059\u3002\n<voffset=3.4em>
@@ -226,7 +235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9094055900606478230, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Name
-      value: Page-14 Variant
+      value: Page-14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -384,6 +393,17 @@ PrefabInstance:
     - target: {fileID: 839673871433648263, guid: 23ff9d8e3bb73f44dbc120efa8fcb22e, type: 3}
       propertyPath: m_Name
       value: QuoteSection
+      objectReference: {fileID: 0}
+    - target: {fileID: 1432103565789710744, guid: 23ff9d8e3bb73f44dbc120efa8fcb22e, type: 3}
+      propertyPath: m_text
+      value: "1. DB\u304C\u30C7\u30FC\u30BF\u3092\u6301\u3063\u3066\u308B\r\n2. Repository\u304C\u30C7\u30FC\u30BF\u3092\u53D6\u5F97\r\n3.
+        Sevice\u304C\u30C7\u30FC\u30BF\u3092\u52A0\u5DE5\r\n4. Presentation\u3067\u958B\u793A\r\n5.
+        Presentation\u304C\u64CD\u4F5C\u3092\u53D7\u3051\u308B\r\n6. Service\u304C\u30C7\u30FC\u30BF\u3092\u52A0\u5DE5\r\n7.
+        Repository\u304C\u30C7\u30FC\u30BF\u3092\u66F4\u65B0\r\n8. DB\u306B\u30C7\u30FC\u30BF\u304C\u6E21\u308B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1432103565789710744, guid: 23ff9d8e3bb73f44dbc120efa8fcb22e, type: 3}
+      propertyPath: m_paragraphSpacing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6292279831224458285, guid: 23ff9d8e3bb73f44dbc120efa8fcb22e, type: 3}
       propertyPath: m_Pivot.x

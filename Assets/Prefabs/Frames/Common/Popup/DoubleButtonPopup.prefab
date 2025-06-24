@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6544762160932265588}
   - component: {fileID: 6474315295724914577}
-  - component: {fileID: 4778295122611697307}
+  - component: {fileID: 6490605774883958152}
   m_Layer: 5
   m_Name: Text-Description
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4144357288228287994}
   m_CullTransparentMesh: 1
---- !u!114 &4778295122611697307
+--- !u!114 &6490605774883958152
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4144357288228287994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281545523
-  m_fontColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_fontColor: {r: 0.19921875, g: 0.19921875, b: 0.19921875, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  mColorType: 21
 --- !u!1 &8101476112775763536
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,15 +431,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8190fa10bc06ce4ea4c9d4d14fefa72, type: 3}
---- !u!114 &703285922795865568 stripped
+--- !u!114 &2267079794363002808 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4284217129247013568, guid: e8190fa10bc06ce4ea4c9d4d14fefa72, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3296708708042952856, guid: e8190fa10bc06ce4ea4c9d4d14fefa72, type: 3}
   m_PrefabInstance: {fileID: 3654119236502994720}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &8664231601932360613 stripped
@@ -607,15 +608,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
---- !u!114 &3357900142249906477 stripped
+--- !u!114 &4048018903676566389 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7015532337054480828, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8640427053035475940, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
   m_PrefabInstance: {fileID: 5748146867304130705}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &6874377653439795048 stripped
@@ -762,6 +763,6 @@ MonoBehaviour:
   fixedRect: {fileID: 2138695300269156182}
   outOfWindowRect: {fileID: 4698158624937181201}
   windowRect: {fileID: 5415946941737739971}
-  descriptionText: {fileID: 4778295122611697307}
-  positiveText: {fileID: 3357900142249906477}
-  negativeText: {fileID: 703285922795865568}
+  descriptionText: {fileID: 6490605774883958152}
+  positiveText: {fileID: 4048018903676566389}
+  negativeText: {fileID: 2267079794363002808}

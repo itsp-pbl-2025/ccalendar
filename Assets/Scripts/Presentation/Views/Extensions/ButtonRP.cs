@@ -5,6 +5,9 @@ namespace Presentation.Views.Extensions
 {
     public class ButtonRP : Button
     {
+        // ReSharper disable once InconsistentNaming
+        public ImageRx imageRx => image as ImageRx;
+
         public enum ButtonSelectionState
         {
             /// <summary>

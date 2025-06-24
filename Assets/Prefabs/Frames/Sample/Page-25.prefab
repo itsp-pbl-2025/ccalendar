@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 773552864403601603, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: "Repository\u3068\u540C\u69D8\u3001Service\u3082Context\u304B\u3089\u53D6\u5F97\u3067\u304D\u308B\u3088\u3046\u306B\u306A\u3089\u306A\u3051\u308C\u3070\u3044\u3051\u307E\u305B\u3093\u3002\r\n\u305F\u3060\u3001\u53D6\u5F97\u304C\u5C11\u3057\u7279\u6B8A\u3067\u3059\u3002\r\ngetContext\u95A2\u6570\u306B\u306F\u540D\u524D\u3092\u6E21\u3059\u3053\u3068\u304C\u3067\u304D\u307E\u3059\u3002\u5B9F\u88C5\u3092\u8AAD\u3081\u3070\u5206\u304B\u308A\u307E\u3059\u304C\u3001\u540D\u524D\u306E\u9055\u3046Service\u306F\u5225\u306E\u5B9F\u4F53\u3068\u3057\u3066\u6271\u308F\u308C\u307E\u3059\u3002\u3064\u307E\u308A\u3001\u540C\u6642\u306B\u8907\u6570\u306EService\u3092\u52D5\u4F5C\u3055\u305B\u3066\u3082\u554F\u984C\u3042\u308A\u307E\u305B\u3093\u3002\u6D3B\u7528\u3057\u3066\u304F\u3060\u3055\u3044\u3002\r\n\u307E\u305F\u3001Context\u306FService\u306E\u751F\u6210\u3092\u66F8\u304F\u306E\u306B\u5BFE\u3057\u3001TestContext\u306B\u306FService\u306E\u751F\u6210\u30E9\u30E0\u30C0\u95A2\u6570\u3092\u66F8\u3044\u3066\u304F\u3060\u3055\u3044\u3002"
+      objectReference: {fileID: 0}
     - target: {fileID: 973624898193158229, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -88,6 +92,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2003634879153994454, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: IContext.getService
+      objectReference: {fileID: 0}
     - target: {fileID: 3967636716707773433, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_text
       value: "Repository\u3068\u540C\u69D8\u3001Service\u3082Context\u304B\u3089\u53D6\u5F97\u3067\u304D\u308B\u3088\u3046\u306B\u306A\u3089\u306A\u3051\u308C\u3070\u3044\u3051\u307E\u305B\u3093\u3002\n\u305F\u3060\u3001\u53D6\u5F97\u304C\u5C11\u3057\u7279\u6B8A\u3067\u3059\u3002\ngetContext\u95A2\u6570\u306B\u306F\u540D\u524D\u3092\u6E21\u3059\u3053\u3068\u304C\u3067\u304D\u307E\u3059\u3002\u5B9F\u88C5\u3092\u8AAD\u3081\u3070\u5206\u304B\u308A\u307E\u3059\u304C\u3001\u540D\u524D\u306E\u9055\u3046Service\u306F\u5225\u306E\u5B9F\u4F53\u3068\u3057\u3066\u6271\u308F\u308C\u307E\u3059\u3002\u3064\u307E\u308A\u3001\u540C\u6642\u306B\u8907\u6570\u306EService\u3092\u52D5\u4F5C\u3055\u305B\u3066\u3082\u554F\u984C\u3042\u308A\u307E\u305B\u3093\u3002\u6D3B\u7528\u3057\u3066\u304F\u3060\u3055\u3044\u3002\n\u307E\u305F\u3001Context\u306FService\u306E\u751F\u6210\u3092\u66F8\u304F\u306E\u306B\u5BFE\u3057\u3001TestContext\u306B\u306FService\u306E\u751F\u6210\u30E9\u30E0\u30C0\u95A2\u6570\u3092\u66F8\u3044\u3066\u304F\u3060\u3055\u3044\u3002"
@@ -98,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9094055900606478230, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Name
-      value: Page-Common Variant
+      value: Page-25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

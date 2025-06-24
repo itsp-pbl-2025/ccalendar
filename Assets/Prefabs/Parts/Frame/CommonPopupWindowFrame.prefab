@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1164339076698280453}
   - component: {fileID: 8946761785254388558}
-  - component: {fileID: 4673989442178404230}
+  - component: {fileID: 3785027397743878986}
   m_Layer: 5
   m_Name: CommonPopupWindowFrame
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7617750695144091055}
   m_CullTransparentMesh: 1
---- !u!114 &4673989442178404230
+--- !u!114 &3785027397743878986
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,11 +54,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7617750695144091055}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 97346a4484134c849bf63ff04941f577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+  m_Color: {r: 0.96875, g: 0.9765625, b: 0.98828125, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -75,3 +75,4 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 16
+  mColorType: 6
