@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using Presentation.Views.Common;
 using UnityEngine;
 
@@ -11,12 +12,12 @@ namespace Presentation.Views.Scene
 {
     public class AdditiveScene : MonoBehaviour
     {
-        [SerializeField] private string sceneName;
+        [SerializeField] private SceneOf scene;
         [SerializeField] private Camera sceneCamera;
         [SerializeField] private AutoAspectCanvas canvas;
         [SerializeField] private CanvasTransitioner transitioner;
 
-        public string SceneName => sceneName;
+        public SceneOf Scene => scene;
         
         private void Awake()
         {
@@ -39,7 +40,7 @@ namespace Presentation.Views.Scene
 #if UNITY_EDITOR
         private async UniTask DebugAwake()
         {
-            await SceneManager.LoadSceneAsync(SceneSettings.SceneBase, LoadSceneMode.Additive);
+            await SceneManager.LoadSceneAsync(SceneOf.Base.ToName(), LoadSceneMode.Additive);
             
             // AppRunnerがInAppContextを完全にロードして完了するまで待機する
             while (true)
@@ -57,27 +58,34 @@ namespace Presentation.Views.Scene
             sceneCamera.enabled = false;
             canvas.Canvas.worldCamera = InAppContext.SceneLoader.Camera;
             
-            if (InAppContext.SceneLoader.NextTransition is null)
+            InAppContext.SceneLoader.SubmitScene(this);
+        }
+
+        public void SceneTransitionIn(SceneTransition st, Action completeCallback = null)
+        {
+            if (st is null)
             {
                 transitioner.ShowCanvasFast();
             }
             else
             {
-                transitioner.ShowCanvasWithAnimation(InAppContext.SceneLoader.NextTransition, null);
+                transitioner.ShowCanvasWithAnimation(st, completeCallback);
             }
-            
-            InAppContext.SceneLoader.SubmitScene(this);
         }
 
-        public void OnSceneUnload()
+        public void SceneTransitionOut(SceneTransition st, Action completeCallback = null)
         {
-            if (InAppContext.SceneLoader.NextTransition is null)
+            if (st is null)
             {
                 transitioner.HideCanvasFast();
                 return;
             }
             
-            transitioner.HideCanvasWithAnimation(InAppContext.SceneLoader.NextTransition, null);
+            transitioner.HideCanvasWithAnimation(st, completeCallback);
+        }
+
+        public void OnSceneUnload()
+        {
         }
     }
 }
