@@ -28,7 +28,7 @@ jobs:
       # Unity認証情報の確認
       - name: Verify Unity Credentials
         run: |
-          echo "Checking Unity credentials..."
+          echo "🔍 Checking Unity credentials..."
           if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then
             echo "❌ UNITY_LICENSE is not set"
             exit 1
@@ -43,6 +43,65 @@ jobs:
           fi
           echo "✅ All Unity credentials are configured"
 
+      # Personal ライセンス認証（Unity 6対応）
+      - name: Activate Unity Personal License
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        run: |
+          echo "🔑 Activating Unity Personal License..."
+          
+          # Personal License の場合の認証
+          if [ -n "$UNITY_LICENSE" ]; then
+            echo "📄 Using existing Personal License file"
+            echo "$UNITY_LICENSE" | base64 -d > /tmp/Unity_lic.ulf 2>/dev/null || echo "$UNITY_LICENSE" > /tmp/Unity_lic.ulf
+            
+            timeout 600 $UNITY_PATH -batchmode -quit \
+              -manualLicenseFile /tmp/Unity_lic.ulf \
+              -logFile /tmp/unity-activation.log \
+              2>&1 || ACTIVATION_RESULT=$?
+          else
+            echo "🎫 Requesting new Personal License (requires manual approval)"
+            
+            # Personal License のリクエスト認証
+            timeout 600 $UNITY_PATH -batchmode -quit \
+              -username "$UNITY_EMAIL" \
+              -password "$UNITY_PASSWORD" \
+              -createManualActivationFile \
+              -logFile /tmp/unity-activation.log \
+              2>&1 || ACTIVATION_RESULT=$?
+            
+            # 手動認証ファイルの確認
+            if [ -f "Unity_v*.alf" ]; then
+              echo "📁 Manual activation file created:"
+              ls -la Unity_v*.alf
+              echo "⚠️ Manual activation required at: https://license.unity3d.com/manual"
+              echo "💡 Upload the .alf file and get .ulf license, then set as UNITY_LICENSE secret"
+            fi
+          fi
+          
+          echo "📋 Activation result: ${ACTIVATION_RESULT:-0}"
+          
+          if [ -f /tmp/unity-activation.log ]; then
+            echo "📄 Activation log:"
+            cat /tmp/unity-activation.log
+            
+            # Personal License 特有のエラーチェック
+            if grep -q "Manual activation" /tmp/unity-activation.log; then
+              echo "ℹ️ Manual activation detected (normal for Personal License)"
+            fi
+            
+            if grep -q "License activated" /tmp/unity-activation.log; then
+              echo "✅ Personal License activation successful"
+            fi
+            
+            if grep -q "Invalid credentials" /tmp/unity-activation.log; then
+              echo "❌ Credentials invalid for Personal License"
+              echo "💡 Check UNITY_EMAIL and UNITY_PASSWORD"
+            fi
+          fi
+          
       # テストの実行
       - name: Run Tests
         uses: game-ci/unity-test-runner@v4
@@ -54,6 +113,7 @@ jobs:
           testMode: editmode # test only editmode
           artifactsPath: test-results
           unityVersion: 6000.0.48f1
+          customParameters: '-nographics -silent-crashes -logFile - -batchmode'
         continue-on-error: true
 
       # テスト結果のアップロード
