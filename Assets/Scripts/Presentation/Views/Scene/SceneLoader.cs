@@ -41,7 +41,8 @@ namespace Presentation.Views.Scene
         }
 
         /// <summary>
-        /// ロードが完了したAdditiveSceneが自分自身を報告するメソッド。使わない。
+        /// ロードが完了したAdditiveSceneが自分自身を報告するメソッド。
+        /// AdditiveScene.OnSceneLoaded()以外で呼ばないこと。
         /// </summary>
         /// <param name="scene">自分自身を報告</param>
         public void SubmitScene(AdditiveScene scene)
