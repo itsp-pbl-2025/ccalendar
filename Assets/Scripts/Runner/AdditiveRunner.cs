@@ -4,6 +4,7 @@ using Infrastructure;
 using Presentation.Presenter;
 using Presentation.Resources;
 using Presentation.Utilities;
+using SecureStringStorage;
 using UnityEngine;
 
 namespace Runner
@@ -33,10 +34,25 @@ namespace Runner
 
         protected virtual void Init()
         {
-            Context ??= new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
+            // データベースの初期化
+            var dbPath = System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db");
+            var dbKey = KeyStorage.Load();
+            if (dbKey == null)
+            {
+                dbKey = PasswordGenerator.Generate();
+                KeyStorage.Save(dbKey);
+            }
+            Context ??= new Context(dbPath, dbKey);
+            
+            // イベント管理クラスの作成
             EventDispatcher ??= new EventDispatcher();
+            
+            // プレハブ格納庫の作成
             Prefabs ??= new PrefabBundle(prefabDictionary);
-            Theme ??= new ThemePalette(Prefabs.GetThemeByName(Context.GetService<HistoryService>().GetHistoryOrDefault<string>(HistoryType.ThemeUsing)));
+            
+            // テーマの設定
+            var prevTheme = Context.GetService<HistoryService>().GetHistoryOrDefault<string>(HistoryType.ThemeUsing);
+            Theme ??= new ThemePalette(Prefabs.GetThemeOrDefault(prevTheme));
         }
 
         private void OnApplicationQuit()

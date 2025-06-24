@@ -13,9 +13,9 @@ namespace Infrastructure
         private readonly LiteDBManager _liteDb;
         private readonly List<IService> _services = new();
 
-        public Context(string dbPath)
+        public Context(string dbPath, string dbKey)
         {
-            _liteDb = new LiteDBManager(dbPath);
+            _liteDb = new LiteDBManager(dbPath, dbKey);
             
             SetupServices();
             Ready = true;
