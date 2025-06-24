@@ -29,11 +29,6 @@ namespace Presentation.Views.Scene
             SceneManager.UnloadSceneAsync(scene.SceneName);
         }
 
-        public void ChangeSceneFast(string sceneName)
-        {
-            
-        }
-
         public void ChangeFrontScene(string sceneName, SceneTransition nextTransition)
         {
             NextTransition = nextTransition;

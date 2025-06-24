@@ -14,12 +14,13 @@ namespace Presentation.Views.Scene
         [SerializeField] private string sceneName;
         [SerializeField] private Camera sceneCamera;
         [SerializeField] private AutoAspectCanvas canvas;
+        [SerializeField] private CanvasTransitioner transitioner;
 
         public string SceneName => sceneName;
         
         private void Awake()
         {
-            canvas.CanvasGroup.alpha = 0;
+            transitioner.HideCanvasFast();
             
 #if UNITY_EDITOR
             if (!InAppContext.SceneLoader)
@@ -56,20 +57,26 @@ namespace Presentation.Views.Scene
             sceneCamera.enabled = false;
             canvas.Canvas.worldCamera = InAppContext.SceneLoader.Camera;
             
+            InAppContext.SceneLoader.SubmitScene(this);
+            
             if (InAppContext.SceneLoader.NextTransition is null)
             {
-                canvas.CanvasGroup.alpha = 1f;
-                canvas.CanvasRect.sizeDelta = Vector2.zero;
+                transitioner.ShowCanvasFast();
                 return;
             }
             
-            Debug.Log("Scene Loaded successfully");
-            // Transition along SceneLoader.NextTransition
+            transitioner.ShowCanvasWithAnimation(InAppContext.SceneLoader.NextTransition, null);
         }
 
         public void OnSceneUnload()
         {
-            // Transition along SceneLoader.NextTransition
+            if (InAppContext.SceneLoader.NextTransition is null)
+            {
+                transitioner.HideCanvasFast();
+                return;
+            }
+            
+            transitioner.HideCanvasWithAnimation(InAppContext.SceneLoader.NextTransition, null);
         }
     }
 }

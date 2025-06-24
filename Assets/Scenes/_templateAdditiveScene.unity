@@ -341,6 +341,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5184038686445614573, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
   m_PrefabInstance: {fileID: 1048199307}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &1048199310 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 3264282429052293916, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
+  m_PrefabInstance: {fileID: 1048199307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1191628753
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397,6 +402,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Debug Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 8206623540145416764, guid: 70fd1607782178c4b9ee9a90445449fe, type: 3}
+      propertyPath: rootRect
+      value: 
+      objectReference: {fileID: 1048199309}
+    - target: {fileID: 8206623540145416764, guid: 70fd1607782178c4b9ee9a90445449fe, type: 3}
+      propertyPath: canvasGroup
+      value: 
+      objectReference: {fileID: 1048199310}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
