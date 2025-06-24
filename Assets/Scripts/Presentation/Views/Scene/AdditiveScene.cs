@@ -39,12 +39,12 @@ namespace Presentation.Views.Scene
 #if UNITY_EDITOR
         private async UniTask DebugAwake()
         {
-            await SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
+            await SceneManager.LoadSceneAsync(SceneSettings.SceneBase, LoadSceneMode.Additive);
             
             // AppRunnerがInAppContextを完全にロードして完了するまで待機する
             while (true)
             {
-                if ((InAppContext.Context?.Ready ?? false) && InAppContext.SceneLoader) break;
+                if (InAppContext.SceneLoader?.BaseSceneReady ?? false) break;
                 await UniTask.Yield();
             }
             
