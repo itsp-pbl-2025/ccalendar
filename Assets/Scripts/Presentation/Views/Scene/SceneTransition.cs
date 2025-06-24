@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using DG.Tweening;
+﻿using DG.Tweening;
+using UnityEngine;
 
-namespace Presentation.Views.Common
+namespace Presentation.Views.Scene
 {
     public enum TransitionType
     {

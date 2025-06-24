@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Presentation.Views.Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Presentation.Views.Common
+namespace Presentation.Views.Scene
 {
     public class SceneLoader : MonoBehaviour
     {

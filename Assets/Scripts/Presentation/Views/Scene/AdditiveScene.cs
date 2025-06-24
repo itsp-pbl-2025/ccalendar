@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Presentation.Views.Common;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -6,11 +7,12 @@ using Presentation.Presenter;
 using UnityEngine.SceneManagement;
 #endif
 
-namespace Presentation.Views.Common
+namespace Presentation.Views.Scene
 {
     public class AdditiveScene : MonoBehaviour
     {
         [SerializeField] private string sceneName;
+        [SerializeField] private Camera sceneCamera;
         [SerializeField] private AutoAspectCanvas canvas;
 
         public string SceneName => sceneName;
@@ -49,6 +51,7 @@ namespace Presentation.Views.Common
                 return;
             }
             
+            Debug.Log("Scene Loaded successfully");
             // Transition along SceneLoader.NextTransition
         }
 

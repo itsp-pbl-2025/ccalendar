@@ -1,4 +1,4 @@
-﻿namespace Presentation.Views.Common
+﻿namespace Presentation.Views.Scene
 {
     public enum SceneOf
     {

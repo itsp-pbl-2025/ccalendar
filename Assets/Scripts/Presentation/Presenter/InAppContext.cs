@@ -1,7 +1,7 @@
 ﻿using AppCore.Interfaces;
 using Presentation.Resources;
 using Presentation.Utilities;
-using Presentation.Views.Common;
+using Presentation.Views.Scene;
 using UnityEngine;
 
 namespace Presentation.Presenter
