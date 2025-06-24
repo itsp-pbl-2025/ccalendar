@@ -5,7 +5,7 @@ namespace Presentation.Resources
     [CreateAssetMenu(fileName = "ColorTheme", menuName = "Context/ColorTheme", order = 1)]
     public class ColorTheme : ScriptableObject
     {
-        [SerializeField] private string themeName;
+        [SerializeField] public string themeName;
         
         [SerializeField] public Color primary = new(87/256f, 204/256f, 153/256f);
         [SerializeField] public Color secondary = new(128/256f, 237/256f, 153/256f);

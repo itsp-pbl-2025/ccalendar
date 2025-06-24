@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Presentation.Views.Popup;
 
 namespace Presentation.Resources
@@ -35,9 +36,14 @@ namespace Presentation.Resources
 
         public ColorTheme GetThemeByName(string name)
         {
+            if (_builtinThemes.Count == 0)
+            {
+                throw new FileNotFoundException("No themes are available in the prefab bundle.");
+            }
+            
             foreach (var theme in _builtinThemes)
             {
-                if (theme.name == name)
+                if (theme.themeName == name)
                 {
                     return theme;
                 }

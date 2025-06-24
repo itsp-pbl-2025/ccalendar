@@ -84,9 +84,9 @@ namespace Presentation.Utilities
 
         private static float CalculateColorDistanceSq(Color color1, Color color2)
         {
-            var dr = color1.r - color2.r;
-            var dg = color1.g - color2.g;
-            var db = color1.b - color2.b;
+            var dr = (color1.r - color2.r) * 255f;
+            var dg = (color1.g - color2.g) * 255f;
+            var db = (color1.b - color2.b) * 255f;
 
             return dr * dr + dg * dg + db * db;
         }
