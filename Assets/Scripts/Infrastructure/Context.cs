@@ -18,8 +18,11 @@ namespace Infrastructure
             _liteDb = new LiteDBManager(dbPath);
             
             SetupServices();
+            Ready = true;
         }
         
+        public bool Ready { get; }
+
         private void SetupServices()
         {
             _services.Add(new SampleService(ScheduleRepo));

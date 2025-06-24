@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 #endif
@@ -9,16 +10,18 @@ namespace Presentation.Views.Common
     [ExecuteInEditMode]
     public class AutoAspectCanvas : MonoBehaviour
     {
+        private static readonly Vector2 PivotCenter = new(0.5f, 0.5f);
+        
         [SerializeField] private Canvas canvas;
         [SerializeField] private RectTransform canvasRect;
-        [SerializeField] private List<RectTransform> fullRectBoxColliders;
+        [SerializeField] private List<RectTransform> fullRectTransforms;
         [SerializeField] private List<RectTransform> safeRectTransforms;
         [SerializeField] private List<RectTransform> fixedRectTransforms;
         
         public Canvas Canvas => canvas;
         public RectTransform CanvasRect => canvasRect;
         
-        private readonly HashSet<RectTransform> _fullRectTransform = new();
+        private readonly HashSet<RectTransform> _fullRectTransforms = new();
         private readonly HashSet<RectTransform> _safeRectTransforms = new();
         private readonly HashSet<RectTransform> _fixedRectTransforms = new();
         
@@ -26,15 +29,18 @@ namespace Presentation.Views.Common
         {
 #if UNITY_EDITOR
             if (PrefabStageUtility.GetCurrentPrefabStage() == null) canvas.worldCamera = Camera.main;
+#else
+            canvas.worldCamera = Camera.main;
 #endif
+
+            foreach (var fullRect in fullRectTransforms)
+            {
+                _fullRectTransforms.Add(fullRect);
+            }
+            
             foreach (var safeRect in safeRectTransforms)
             {
                 _safeRectTransforms.Add(safeRect);
-            }
-
-            foreach (var fullRect in fullRectBoxColliders)
-            {
-                _fullRectTransform.Add(fullRect);
             }
 
             foreach (var fixedRect in fixedRectTransforms)
@@ -54,10 +60,10 @@ namespace Presentation.Views.Common
             var screen = Screen.safeArea;
             var anchorMax = new Vector2(1, (screen.position + screen.size).y / Screen.height);
 
-            foreach (var fullRect in _fullRectTransform)
+            foreach (var fullRect in _fullRectTransforms)
             {
-                // TODO: どの子要素でも常に背景と同じ大きさになるような調整方法に変更できるとUIの自由度が高まる
-                fullRect.anchorMax = Vector2.one;
+                fullRect.anchorMax = fullRect.anchorMin = PivotCenter;
+                fullRect.sizeDelta = canvasRect.sizeDelta;
             }
             
             foreach (var safeRect in _safeRectTransforms)
@@ -85,13 +91,13 @@ namespace Presentation.Views.Common
 
         public void AddFullRectTransform(RectTransform rctf)
         {
-            if (rctf) _fullRectTransform.Add(rctf);
+            if (rctf) _fullRectTransforms.Add(rctf);
             AdjustArea();
         }
 
         public bool RemoveFullRectTransform(RectTransform rctf)
         {
-           return  _fullRectTransform.Remove(rctf);
+           return  _fullRectTransforms.Remove(rctf);
         }
 
         public void AddFixedRectTransform(RectTransform rctf)
