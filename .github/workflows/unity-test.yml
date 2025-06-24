@@ -25,7 +25,25 @@ jobs:
           restore-keys: |
             Library-
 
-      # テストの実行(editmodeのみ)
+      # Unity認証情報の確認
+      - name: Verify Unity Credentials
+        run: |
+          echo "Checking Unity credentials..."
+          if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then
+            echo "❌ UNITY_LICENSE is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.UNITY_EMAIL }}" ]; then
+            echo "❌ UNITY_EMAIL is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.UNITY_PASSWORD }}" ]; then
+            echo "❌ UNITY_PASSWORD is not set"
+            exit 1
+          fi
+          echo "✅ All Unity credentials are configured"
+
+      # テストの実行
       - name: Run Tests
         uses: game-ci/unity-test-runner@v4
         env:
@@ -35,10 +53,10 @@ jobs:
         with:
           testMode: editmode # test only editmode
           artifactsPath: test-results
-          checkName: 'EditMode Test Results'
+          unityVersion: 6000.0.48f1
         continue-on-error: true
 
-      # テスト結果のアップロード(write権限がない場合はスキップ)
+      # テスト結果のアップロード
       - name : Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -55,7 +73,7 @@ jobs:
           editmode_result="❌ Failed"
           editmode_details=""
           
-          # EditModeテスト結果の確認
+          # テスト結果の確認
           if [ -f "test-results/editmode-results.xml" ]; then
             editmode_tests=$(grep -o 'tests="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
             editmode_failures=$(grep -o 'failures="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
