@@ -88,7 +88,6 @@ namespace Domain.Entity
         }
         
         public CCDateTime Add(CCTimeSpan timeSpan) => new(ToDateTime().AddSeconds(timeSpan.TotalSeconds));
-        public CCDateTime Add(int year, int month, int day, int hour, int minute, int second) => new (YearValue + year, MonthValue + month, DayValue + day, HourValue + hour, MinuteValue + minute, SecondValue + second);
         
         public CCDateTime AddSeconds(double seconds) => new(ToDateTime().AddSeconds((int)seconds));
         public CCDateTime AddMinutes(double minutes) => new(ToDateTime().AddMinutes((int)minutes));
