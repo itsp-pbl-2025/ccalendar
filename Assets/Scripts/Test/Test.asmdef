@@ -5,7 +5,6 @@
         "AppCore",
         "Domain",
         "Infrastructure",
-        "UnityEditor.TestRunner",
         "UniTask",
         "WebRequest"
     ],
