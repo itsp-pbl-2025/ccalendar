@@ -37,6 +37,7 @@ namespace Presentation.Views.Extensions
 #if UNITY_EDITOR
         
         [CustomEditor(typeof(LabelRx))]
+        [CanEditMultipleObjects]
         public class LabelRxEditor : TMP_EditorPanelUI
         {
             private SerializedProperty _colorProp;
@@ -57,10 +58,12 @@ namespace Presentation.Views.Extensions
                 {
                     serializedObject.ApplyModifiedProperties();
 
-                    var labelRx = (LabelRx)target;
-                    if (labelRx)
+                    foreach (var obj in targets)
                     {
-                        labelRx.RenewColorInEditor();
+                        if (obj is LabelRx rx)
+                        {
+                            rx.RenewColorInEditor();
+                        }
                     }
                 }
                 EditorGUILayout.Separator();

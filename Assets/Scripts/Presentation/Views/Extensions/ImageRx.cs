@@ -47,6 +47,7 @@ namespace Presentation.Views.Extensions
         }
         
         [CustomEditor(typeof(ImageRx))]
+        [CanEditMultipleObjects]
         public class ImageRxEditor : ImageEditor
         {
             private SerializedProperty _colorProp;
@@ -67,10 +68,12 @@ namespace Presentation.Views.Extensions
                 {
                     serializedObject.ApplyModifiedProperties();
 
-                    var imageRx = (ImageRx)target;
-                    if (imageRx)
+                    foreach (var obj in targets)
                     {
-                        imageRx.RenewColorInEditor();
+                        if (obj is ImageRx rx)
+                        {
+                            rx.RenewColorInEditor();
+                        }
                     }
                 }
                 EditorGUILayout.Separator();
