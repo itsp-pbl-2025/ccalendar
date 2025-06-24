@@ -3,5 +3,6 @@
     public enum GlobalEvent
     {
         OnLoggedIn,
+        OnThemeUpdated,
     }
 }

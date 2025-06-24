@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Presentation.Utilities;
 using Presentation.Views.Extensions;
-using TMPro;
 using UnityEngine;
 
 namespace Presentation.Views.Popup
 {
     public class DateOnlyPopup : PopupWindow
     {
-        [SerializeField] private TextMeshProUGUI dateText, monthText;
+        [SerializeField] private LabelRx dateText, monthText;
         [SerializeField, Tooltip("7x6")] private List<ButtonWithLabel> dateButtons;
         [SerializeField] private ButtonRP monthLeft, monthRight, monthDefault;
         
@@ -135,14 +135,17 @@ namespace Presentation.Views.Popup
                 var outOfRange = buttonDate < _sinceDateTime || buttonDate > _untilDateTime;
                 button.Label.text = buttonDate.Day.ToString();
                 button.Button.interactable = !outOfRange;
-                button.Button.image.color = Color.white;
+                button.Button.imageRx.colorType = ColorOf.Surface;
                 if (buttonDate == _selectedDateTime)
                 {
                     button.Button.Select();
-                    button.Button.image.color = Color.cyan;
+                    button.Button.imageRx.colorType = ColorOf.Secondary;
                 }
-                button.Label.color = outOfRange ? new Color(.5f, .5f,.5f) : 
-                    outOfMonth ? new Color(.3f, .3f, .3f) : new Color(.1f, .1f, .1f);
+                button.Label.colorType = 
+                    outOfRange ? ColorOf.TextDisabled :
+                    outOfMonth ? ColorOf.TextTertiary : 
+                    buttonDate.DayOfWeek is DayOfWeek.Saturday ? ColorOf.TextSaturday :
+                    buttonDate.DayOfWeek is DayOfWeek.Sunday ? ColorOf.TextHoliday : ColorOf.TextDefault;
             }
             
             monthLeft.interactable = month1.AddDays(-1) > _sinceDateTime;

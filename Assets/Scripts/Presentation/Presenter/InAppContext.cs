@@ -15,5 +15,7 @@ namespace Presentation.Presenter
         public static PrefabBundle Prefabs { get; protected set; }
         
         public static SceneLoader SceneLoader { get; protected set; }
+        
+        public static ThemePalette Theme { get; protected set; }
     }
 }

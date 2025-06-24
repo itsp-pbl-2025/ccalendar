@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 773552864403601603, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: "\u305D\u3082\u305D\u3082Prefab\u3068\u306F\u4F55\u304B\uFF1F\r\nPrefab\u3068\u3044\u3046\u306E\u306F\u3001Unity\u306EGameObject\u3092\u8907\u88FD\u3059\u308B\u305F\u3081\u306B\u4F7F\u3046\u4ED6\u306B\u3001Editor\u4E0A\u3067\u540C\u671F\u3057\u3066\u3044\u308B\u3001\u30B3\u30D4\u30DA\u306E\u4E0A\u4F4D\u4E92\u63DB\u3067\u3059\u3002\r\nProject\u4E0A\u306B\u3042\u308BPrefab\u3092Scene\u306B\u7F6E\u3044\u305F\u5F8C\u3001Project\u306EPrefab\u3092\u5909\u66F4\u3059\u308B\u3068\u3001\u305D\u306E\u5909\u66F4\u304CScene\u306B\u3042\u308B\u3059\u3079\u3066\u306E\u30B3\u30D4\u30FC\u306B\u9069\u7528\u3055\u308C\u307E\u3059\u3002\r\nPrefab
+        Variant\u3082\u3001\u305D\u308C\u3092\u968E\u5C64\u7684\u306B\u9069\u7528\u3055\u305B\u3089\u308C\u308B\u3088\u3046\u306B\u3057\u305F\u3082\u306E\u3067\u3001Prefab\u306B\u5BFE\u3059\u308B\u5909\u66F4\u3092\u3057\u305F\u3082\u306E\u3092\u307E\u305FPrefab\u3068\u3057\u3066\t\u6271\u3046\u305F\u3081\u306E\u30B7\u30B9\u30C6\u30E0\u3067\u3059\u3002"
+      objectReference: {fileID: 0}
     - target: {fileID: 973624898193158229, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -88,6 +93,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2003634879153994454, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: "Prefab\u3068Prefab Variant"
+      objectReference: {fileID: 0}
     - target: {fileID: 3967636716707773433, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_text
       value: "\u305D\u3082\u305D\u3082Prefab\u3068\u306F\u4F55\u304B\uFF1F\nPrefab\u3068\u3044\u3046\u306E\u306F\u3001Unity\u306EGameObject\u3092\u8907\u88FD\u3059\u308B\u305F\u3081\u306B\u4F7F\u3046\u4ED6\u306B\u3001Editor\u4E0A\u3067\u540C\u671F\u3057\u3066\u3044\u308B\u3001\u30B3\u30D4\u30DA\u306E\u4E0A\u4F4D\u4E92\u63DB\u3067\u3059\u3002\nProject\u4E0A\u306B\u3042\u308BPrefab\u3092Scene\u306B\u7F6E\u3044\u305F\u5F8C\u3001Project\u306EPrefab\u3092\u5909\u66F4\u3059\u308B\u3068\u3001\u305D\u306E\u5909\u66F4\u304CScene\u306B\u3042\u308B\u3059\u3079\u3066\u306E\u30B3\u30D4\u30FC\u306B\u9069\u7528\u3055\u308C\u307E\u3059\u3002\nPrefab
@@ -103,7 +112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9094055900606478230, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Name
-      value: Page-2 Variant
+      value: Page-3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

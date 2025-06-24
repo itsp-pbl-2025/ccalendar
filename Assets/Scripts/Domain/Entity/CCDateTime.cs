@@ -88,6 +88,16 @@ namespace Domain.Entity
         public static CCDateTime operator -(CCDateTime dateTime, CCTimeSpan timeSpan) =>
             dateTime.Add(timeSpan.Negate());
         
+        public bool IsBetween(CCDateTime start, CCDateTime end)
+        {
+            if (end < start)
+            {
+                throw new ArgumentException("End date must be greater than or equal to start date.");
+            }
+
+            return this >= start && this <= end;
+        }
+        
         public static bool operator <(CCDateTime left, CCDateTime right) => left.CompareTo(right) < 0;
         public static bool operator >(CCDateTime left, CCDateTime right) => left.CompareTo(right) > 0;
         public static bool operator <=(CCDateTime left, CCDateTime right) => left.CompareTo(right) <= 0;

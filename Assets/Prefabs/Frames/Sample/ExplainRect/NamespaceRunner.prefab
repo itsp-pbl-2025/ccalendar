@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 174666771229200646}
   - component: {fileID: 6474557614309720229}
-  - component: {fileID: 5793287703612369171}
+  - component: {fileID: 3715380532572067409}
   m_Layer: 5
   m_Name: Label-Description
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5033676816864975548}
   m_CullTransparentMesh: 1
---- !u!114 &5793287703612369171
+--- !u!114 &3715380532572067409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5033676816864975548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281545523
-  m_fontColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_fontColor: {r: 0.19921875, g: 0.19921875, b: 0.19921875, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -137,6 +137,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  mColorType: 21
 --- !u!1001 &8059454153300784620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -225,9 +226,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3293396843867080514, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: namespace <b>Runner</b>
+      objectReference: {fileID: 0}
     - target: {fileID: 7484556004339640391, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_Name
-      value: NamespaceExplainRect Variant
+      value: NamespaceRunner
       objectReference: {fileID: 0}
     - target: {fileID: 8766874076581917376, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text

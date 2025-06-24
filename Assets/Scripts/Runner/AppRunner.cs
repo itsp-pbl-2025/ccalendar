@@ -33,6 +33,7 @@ namespace Runner
             EventDispatcher = new EventDispatcher();
             Prefabs = new PrefabBundle(prefabDictionary);
             SceneLoader = sceneLoader;
+            Theme = new ThemePalette(Prefabs.GetThemeByName(Context.GetService<HistoryService>().GetHistoryOrDefault<string>(HistoryType.ThemeUsing)));
         }
 
         private void OnApplicationQuit()
