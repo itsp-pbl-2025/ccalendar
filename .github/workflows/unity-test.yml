@@ -42,7 +42,7 @@ jobs:
             exit 1
           fi
           echo "✅ All Unity credentials are configured"
-          
+   
       # テストの実行
       - name: Run Tests
         uses: game-ci/unity-test-runner@v4
@@ -54,7 +54,7 @@ jobs:
           testMode: editmode # test only editmode
           artifactsPath: test-results
           unityVersion: 6000.0.48f1
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          # githubToken: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
       # テスト結果のアップロード
