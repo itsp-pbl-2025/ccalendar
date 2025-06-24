@@ -216,8 +216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803df1c7d6254353bc4891c5174710a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLoader: {fileID: 8070010114852623339}
   prefabDictionary: {fileID: 11400000, guid: c9b65fd827c693643b8dc98087b3022c, type: 2}
+  sceneLoader: {fileID: 8070010114852623339}
 --- !u!114 &8070010114852623339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,3 +230,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17184ec2498d4a97b819993a460343eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 9108391153993935873}

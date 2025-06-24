@@ -44,6 +44,9 @@ namespace Presentation.Views.Scene
 
         private void OnSceneLoaded()
         {
+            sceneCamera.enabled = false;
+            canvas.Canvas.worldCamera = InAppContext.SceneLoader.Camera;
+            
             if (InAppContext.SceneLoader.NextTransition is null)
             {
                 canvas.CanvasGroup.alpha = 1f;

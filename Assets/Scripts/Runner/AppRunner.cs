@@ -1,45 +1,39 @@
-﻿using AppCore.UseCases;
-using Domain.Enum;
-using Infrastructure;
-using Presentation.Presenter;
-using Presentation.Resources;
-using Presentation.Utilities;
-using Presentation.Views.Scene;
+﻿using Presentation.Views.Scene;
 using UnityEngine;
 
 namespace Runner
 {
-    public class AppRunner : InAppContext
+    public class AppRunner : AdditiveRunner
     {
         private static AppRunner _instance;
 
         [SerializeField] private SceneLoader sceneLoader;
-        [SerializeField] private PrefabDictionary prefabDictionary;
         
-        private void Awake()
+        protected override void Awake()
         {
-            if (ReferenceEquals(_instance, null))
+            // まだAppRunnerが存在していないなら、自分を登録する
+            if (!_instance)
             {
-                DontDestroyOnLoad(gameObject);
                 _instance = this;
             }
+            // そうでないなら、消える
             else
             {
-                Destroy(gameObject);
+                Destroy(this);
                 return;
             }
         
-            Context = new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
-            EventDispatcher = new EventDispatcher();
-            Prefabs = new PrefabBundle(prefabDictionary);
-            SceneLoader = sceneLoader;
-            Theme = new ThemePalette(Prefabs.GetThemeByName(Context.GetService<HistoryService>().GetHistoryOrDefault<string>(HistoryType.ThemeUsing)));
+            Init();
         }
 
-        private void OnApplicationQuit()
+        protected override void Init()
         {
-            // 前回起動時にアプリバージョンを保存しておくとマイグレーションの役に立つ
-            Context.GetService<HistoryService>().UpdateHistory(HistoryType.PreviousAppVersion, Application.version);
+            if (!_instance)
+            {
+                additiveInstance = this;
+                base.Init();
+            }
+            SceneLoader = sceneLoader;
         }
     }
 }

@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8852441516298657887, guid: 58de53155e9301a4b9f7283aef748dcc, type: 3}
       propertyPath: m_Name
-      value: CommonBackground
+      value: FullAreaBackground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -338,6 +338,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2107786234}
+    - target: {fileID: 4567376349890465261, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -43220043
+      objectReference: {fileID: 0}
     - target: {fileID: 5184038686445614573, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_Pivot.x
       value: 0

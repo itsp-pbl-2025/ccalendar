@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Presentation.Views.Common;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +6,10 @@ namespace Presentation.Views.Scene
 {
     public class SceneLoader : MonoBehaviour
     {
+        [SerializeField] private Camera mainCamera;
+        
+        public Camera Camera => mainCamera;
+        
         private readonly Stack<AdditiveScene> _loadedScenes = new();
         
         public SceneTransition NextTransition { get; private set; }
