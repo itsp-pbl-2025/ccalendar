@@ -8,7 +8,9 @@ namespace Presentation.Resources
     public class PrefabDictionary : ScriptableObject
     {
         [SerializeField] private List<PopupWindow> popupPrefabs;
+        [SerializeField] private List<ColorTheme> themes;
 
         public List<PopupWindow> PopupPrefabs => new(popupPrefabs);
+        public List<ColorTheme> BuiltinThemes => new(themes);
     }
 }

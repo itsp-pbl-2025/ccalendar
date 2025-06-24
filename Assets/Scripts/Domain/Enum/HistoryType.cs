@@ -14,6 +14,12 @@
         /// </summary>
         PreviousAppVersion = 1,
         
+        /// <summary>
+        /// 使っているテーマ名
+        /// type: string
+        /// </summary>
+        ThemeUsing = 2,
+        
         // 1XX: Player Settings
         
         /// <summary>

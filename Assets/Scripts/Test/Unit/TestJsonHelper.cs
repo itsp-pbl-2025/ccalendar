@@ -22,8 +22,11 @@ namespace Test.Unit
                 "[{\"Key\":1,\"Value\":\"one\"},{\"Key\":2,\"Value\":\"two\"},{\"Key\":3,\"Value\":\"three\"},{\"Key\":4,\"Value\":\"four\"}]");
             
             // DateTime (sample test 1)
+            var utcDateTime = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
+            var tokyoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Tokyo");
+            var tokyoTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, tokyoTimeZone);
             Assert.AreEqual(
-                JsonHelper.ToJson(new DateTime(2024, 10, 1).ToLocalTime()),
+                JsonHelper.ToJson(tokyoTime),
                 "\"\\/Date(1727740800000+0900)\\/\"");
         }
 
@@ -42,9 +45,10 @@ namespace Test.Unit
                 JsonHelper.FromJson<Dictionary<int, string>>("[{\"Key\":1,\"Value\":\"one\"},{\"Key\":2,\"Value\":\"two\"},{\"Key\":3,\"Value\":\"three\"},{\"Key\":4,\"Value\":\"four\"}]"));
             
             // DateTime (sample test 1)
-            Assert.AreEqual(
-                new DateTime(2024, 10, 1).ToLocalTime(),
-                JsonHelper.FromJson<DateTime>("\"\\/Date(1727740800000+0900)\\/\""));
+            var utcDateTime = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
+            var tokyoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Tokyo");
+            var tokyoTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, tokyoTimeZone);
+            Assert.AreEqual(tokyoTime, JsonHelper.FromJson<DateTime>("\"\\/Date(1727740800000+0900)\\/\""));
         }
     }
 }

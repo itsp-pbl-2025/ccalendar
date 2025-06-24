@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6454773814946732956}
   - component: {fileID: 3289044768543851473}
-  - component: {fileID: 3569301679468536097}
+  - component: {fileID: 21949182962357127}
   m_Layer: 5
   m_Name: Label-Description
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7461164935143671}
   m_CullTransparentMesh: 1
---- !u!114 &3569301679468536097
+--- !u!114 &21949182962357127
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7461164935143671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281545523
-  m_fontColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_fontColor: {r: 0.19921875, g: 0.19921875, b: 0.19921875, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  mColorType: 21
 --- !u!1001 &1873049328140400784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -228,11 +229,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1416613790932458892, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: "\u30FB\u5168\u4F53\u3067\u4F7F\u3046enum\u3092\u7F6E\u304F"
+      objectReference: {fileID: 0}
     - target: {fileID: 1732237199365350766, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: "\u30FB\u5168\u4F53\u3067\u4F7F\u3046enum\u3092\u7F6E\u304F"
       objectReference: {fileID: 0}
     - target: {fileID: 2755613017963517548, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: Domain.Enum
+      objectReference: {fileID: 0}
+    - target: {fileID: 8351783212943900871, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: Domain.Enum
       objectReference: {fileID: 0}
@@ -338,11 +347,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1416613790932458892, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: "\u30FB\u5206\u985E\u306E\u8981\u6C42\u306B\u5FDC\u3058\u3066\u5897\u3084\u3059"
+      objectReference: {fileID: 0}
     - target: {fileID: 1732237199365350766, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: "\u30FB\u5206\u985E\u306E\u8981\u6C42\u306B\u5FDC\u3058\u3066\u5897\u3084\u3059"
       objectReference: {fileID: 0}
     - target: {fileID: 2755613017963517548, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
+      propertyPath: m_text
+      value: Domain.<b>*</b>
+      objectReference: {fileID: 0}
+    - target: {fileID: 8351783212943900871, guid: c635c1b73790fd64aaffc8a0d76c31d5, type: 3}
       propertyPath: m_text
       value: Domain.<b>*</b>
       objectReference: {fileID: 0}
@@ -456,17 +473,29 @@ PrefabInstance:
       propertyPath: m_text
       value: "\u30FB\u3069\u3053\u306B\u3082\u5C5E\u3055\u306A\u3044\u30AF\u30E9\u30B9\u3092\u7F6E\u304F"
       objectReference: {fileID: 0}
+    - target: {fileID: 2044396551365997127, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: "\u30FB\u3069\u3053\u306B\u3082\u5C5E\u3055\u306A\u3044\u30AF\u30E9\u30B9\u3092\u7F6E\u304F"
+      objectReference: {fileID: 0}
     - target: {fileID: 3011239197595842983, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text
       value: Domain.Entity
       objectReference: {fileID: 0}
+    - target: {fileID: 3293396843867080514, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: namespace <b>Domain</b>
+      objectReference: {fileID: 0}
     - target: {fileID: 7484556004339640391, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_Name
-      value: NamespaceExplainRect Variant
+      value: NamespaceDomain
       objectReference: {fileID: 0}
     - target: {fileID: 8766874076581917376, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
       propertyPath: m_text
       value: namespace <b>Domain</b>
+      objectReference: {fileID: 0}
+    - target: {fileID: 8939799179355582220, guid: f129f53eb95879045af55dee2e5c1e7c, type: 3}
+      propertyPath: m_text
+      value: Domain.Entity
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

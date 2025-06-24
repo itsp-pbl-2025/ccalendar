@@ -1,5 +1,5 @@
 ﻿using System;
-using TMPro;
+using Presentation.Views.Extensions;
 using UnityEngine;
 
 namespace Presentation.Views.Popup
@@ -9,7 +9,7 @@ namespace Presentation.Views.Popup
         private static readonly Vector2 DefaultSize = new(640f, 320f);
         
         [SerializeField] private RectTransform windowRect;
-        [SerializeField] private TextMeshProUGUI descriptionText, okText;
+        [SerializeField] private LabelRx descriptionText, okText;
         private Action _onClosingCallback;
 
         public void Init(string description, string ok, Action callback)
