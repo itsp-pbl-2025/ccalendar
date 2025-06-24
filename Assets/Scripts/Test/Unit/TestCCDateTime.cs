@@ -48,12 +48,14 @@ namespace Test.Unit
         [Test]
         public void TestAddTime()
         {
-            Assert.AreEqual(new CCDateTime(2025, 11, 30, 23, 59, 59).AddYears(2), new DateTime(2027, 11, 30, 23, 59, 59));
-            Assert.AreEqual(new CCDateTime(2025, 11, 30, 23, 59, 59).AddMonths(2), new DateTime(2026, 1, 30, 23, 59, 59));
-            Assert.AreEqual(new CCDateTime(2025, 11, 30, 23, 59, 59).AddDays(2), new CCDateTime(2025, 12, 1, 23, 59, 59));
-            Assert.AreEqual(new CCDateTime(2025, 11, 30, 23, 59, 59).AddHours(2), new DateTime(2025, 11, 31, 1, 59, 59));
-            Assert.AreEqual(new CCDateTime(2025, 11, 30, 23, 59, 59).AddMinutes(2), new DateTime(2025, 11, 31, 0, 1, 0));
-            Assert.AreEqual(new CCDateTime(2025, 11, 30, 23, 59, 59).AddSeconds(2), new DateTime(2025, 11, 31, 0, 0, 1));
+            Assert.AreEqual(new DateTime(2027, 11, 30, 23, 59, 59), new CCDateTime(2025, 11, 30, 23, 59, 59).AddYears(2).ToDateTime());
+            Assert.AreEqual(new DateTime(2026, 1, 30, 23, 59, 59), new CCDateTime(2025, 11, 30, 23, 59, 59).AddMonths(2).ToDateTime());
+            Assert.AreEqual(new DateTime(2025, 12, 2, 23, 59, 59), new CCDateTime(2025, 11, 30, 23, 59, 59).AddDays(2).ToDateTime());
+            Assert.AreEqual(new DateTime(2025, 12, 1, 1, 59, 59), new CCDateTime(2025, 11, 30, 23, 59, 59).AddHours(2).ToDateTime());
+            Assert.AreEqual(new DateTime(2025, 12, 1, 0, 1, 59), new CCDateTime(2025, 11, 30, 23, 59, 59).AddMinutes(2).ToDateTime());
+            Assert.AreEqual(new DateTime(2025, 12, 1, 0, 0, 1), new CCDateTime(2025, 11, 30, 23, 59, 59).AddSeconds(2).ToDateTime());
+            
+            Assert.AreEqual(new DateTime(2024, 2, 29, 0, 0, 0), new CCDateTime(2024, 1, 31).AddMonths(1).ToDateTime());
         }
     }
 }
