@@ -39,12 +39,14 @@ namespace Presentation.Views.Scene
         public void SubmitScene(AdditiveScene scene)
         {
             _loadedScenes.Push(scene);
+            InAppContext.SceneLoader.NextTransition = null;
         }
 
-        public bool AddScene(string sceneName)
+        public bool AddScene(string sceneName, SceneTransition sceneTransition = null)
         {
             if (CheckSceneExist(sceneName)) return false;
             
+            InAppContext.SceneLoader.NextTransition = sceneTransition;
             SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
             return true;
         }

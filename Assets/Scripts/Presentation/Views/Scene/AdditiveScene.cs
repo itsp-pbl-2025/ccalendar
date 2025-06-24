@@ -57,15 +57,16 @@ namespace Presentation.Views.Scene
             sceneCamera.enabled = false;
             canvas.Canvas.worldCamera = InAppContext.SceneLoader.Camera;
             
-            InAppContext.SceneLoader.SubmitScene(this);
-            
             if (InAppContext.SceneLoader.NextTransition is null)
             {
                 transitioner.ShowCanvasFast();
-                return;
+            }
+            else
+            {
+                transitioner.ShowCanvasWithAnimation(InAppContext.SceneLoader.NextTransition, null);
             }
             
-            transitioner.ShowCanvasWithAnimation(InAppContext.SceneLoader.NextTransition, null);
+            InAppContext.SceneLoader.SubmitScene(this);
         }
 
         public void OnSceneUnload()

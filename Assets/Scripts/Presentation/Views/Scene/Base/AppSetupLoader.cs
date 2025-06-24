@@ -29,7 +29,7 @@ namespace Presentation.Views.Scene.Base
             if (_initialized) return;
             _initialized = true;
             
-            InAppContext.SceneLoader.AddScene(SceneSettings.SceneSample);
+            InAppContext.SceneLoader.AddScene(SceneSettings.SceneSample, SceneTransition.FadeLeft);
         }
     }
 }
