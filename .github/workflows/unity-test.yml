@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   run-tests:
-    name: Run unity tests 🦊
+    name: 🦊 Run unity tests
     runs-on: ubuntu-latest # ジョブを実行する仮想OS
     permissions:
       contents: read
@@ -44,21 +44,44 @@ jobs:
       - name : Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
-        continue-on-error: true
         with:
           name: test-results
           path: test-results
 
+      # テスト結果の解析とサマリー作成
+      - name: Parse Test Results
+        id: parse-results
+        if: always()
+        run: |
+          # テスト結果XMLファイルを解析
+          editmode_result="❌ Failed"
+          editmode_details=""
+          
+          # EditModeテスト結果の確認
+          if [ -f "test-results/editmode-results.xml" ]; then
+            editmode_tests=$(grep -o 'tests="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
+            editmode_failures=$(grep -o 'failures="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
+            editmode_errors=$(grep -o 'errors="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
+            
+            if [ "$editmode_failures" = "0" ] && [ "$editmode_errors" = "0" ]; then
+              editmode_result="✅ Passed"
+            fi
+            editmode_details="Tests: $editmode_tests, Failures: $editmode_failures, Errors: $editmode_errors"
+          fi
+          
+          # 結果をGitHub環境変数に設定
+          echo "editmode_result=$editmode_result" >> $GITHUB_OUTPUT
+          echo "editmode_details=$editmode_details" >> $GITHUB_OUTPUT
+          
       # ジョブサマリーにテスト結果を表示
       - name: Job Summary
         if: always()
         run: |
           echo "## 🧿 Unity Test Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Test Mode | Result | Details |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------|---------|" >> $GITHUB_STEP_SUMMARY
-          echo "| EditMode | ${{ steps.parse-results.outputs.editmode_result }} | ${{ steps.parse-results.outputs.editmode_details }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| PlayMode | ${{ steps.parse-results.outputs.playmode_result }} | ${{ steps.parse-results.outputs.playmode_details }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Result | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ${{ steps.parse-results.outputs.editmode_result }} | ${{ steps.parse-results.outputs.editmode_details }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
