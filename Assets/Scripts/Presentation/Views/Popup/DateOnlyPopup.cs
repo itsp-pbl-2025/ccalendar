@@ -142,7 +142,8 @@ namespace Presentation.Views.Popup
                     button.Button.imageRx.colorType = ColorOf.Secondary;
                 }
                 button.Label.colorType = 
-                    outOfRange ? ColorOf.TextDisabled : outOfMonth ? ColorOf.TextTertiary : 
+                    outOfRange ? ColorOf.TextDisabled :
+                    outOfMonth ? ColorOf.TextTertiary : 
                     buttonDate.DayOfWeek is DayOfWeek.Saturday ? ColorOf.TextSaturday :
                     buttonDate.DayOfWeek is DayOfWeek.Sunday ? ColorOf.TextHoliday : ColorOf.TextDefault;
             }

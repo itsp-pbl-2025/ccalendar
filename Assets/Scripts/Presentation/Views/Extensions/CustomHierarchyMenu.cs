@@ -28,6 +28,11 @@ namespace Presentation.Views.Extensions
         public static void AddImageRx()
         {
             var selectedGameObject = Selection.activeGameObject;
+            if (!selectedGameObject)
+            {
+                selectedGameObject = FindCanvasForUIObject().gameObject;
+            }
+            
             var imageRxNew = new GameObject("ImageRx", typeof(RectTransform), typeof(CanvasRenderer), typeof(ImageRx));
             
             var rectTransform = imageRxNew.GetComponent<RectTransform>();
@@ -53,7 +58,6 @@ namespace Presentation.Views.Extensions
         public static void ReplaceImageToReactive()
         {
             var selectedGameObject = Selection.activeGameObject;
-
             if (!selectedGameObject)
             {
                 Debug.LogWarning("No GameObject selected for Image replacement.");
@@ -98,6 +102,11 @@ namespace Presentation.Views.Extensions
         public static void AddLabelRx()
         {
             var selectedGameObject = Selection.activeGameObject;
+            if (!selectedGameObject)
+            {
+                selectedGameObject = FindCanvasForUIObject().gameObject;
+            }
+            
             var labelRxObj = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(LabelRx));
             
             var rectTransform = labelRxObj.GetComponent<RectTransform>();
@@ -137,20 +146,19 @@ namespace Presentation.Views.Extensions
         public static void ReplaceLabelRx()
         {
             var selectedGameObject = Selection.activeGameObject;
-
             if (!selectedGameObject)
             {
-                Debug.LogWarning("No GameObject selected for Image replacement.");
+                Debug.LogWarning("No GameObject selected for Label replacement.");
                 return;
             }
 
             if (!selectedGameObject.TryGetComponent<TextMeshProUGUI>(out var oldLabel))
             {
-                Debug.LogWarning($"Selected GameObject '{selectedGameObject.name}' does not have an Image component.");
+                Debug.LogWarning($"Selected GameObject '{selectedGameObject.name}' does not have an Label component.");
                 return;
             }
 
-            Undo.RegisterCompleteObjectUndo(selectedGameObject, "Replace Image with ImageRx");
+            Undo.RegisterCompleteObjectUndo(selectedGameObject, "Replace Label with LabelRx");
             
             // 元のImageコンポーネントを削除して、ReactiveImageコンポーネントを追加する
             var serialize = JsonUtility.ToJson(oldLabel);
@@ -165,24 +173,17 @@ namespace Presentation.Views.Extensions
         
         #endregion
 
-        private static Canvas MakeCanvasForUIObject()
+        private static Canvas FindCanvasForUIObject()
         {
             var canvas = Object.FindAnyObjectByType<Canvas>();
             if (!canvas)
             {
                 // UnityのデフォルトUIオブジェクト生成パスを使用してCanvasを作成
-                var canvasObj = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+                var canvasObj = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Frames/Common/AutoAspectCanvas.prefab"));
                 canvas = canvasObj.GetComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceCamera; // デフォルトはOverlay
 
-                // EventSystem も同時に生成されることが多い
-                var eventSystem = Object.FindAnyObjectByType<EventSystem>();
-                if (!eventSystem)
-                {
-                    new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
-                }
-
-                Debug.Log("No Canvas found. A new Canvas and EventSystem have been created.");
+                Debug.Log("No Canvas found. A new Canvas have been created.");
             }
 
             return canvas;

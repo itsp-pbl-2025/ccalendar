@@ -36,6 +36,16 @@ namespace Presentation.Views.Extensions
 
 #if UNITY_EDITOR
         
+        public override Color color
+        {
+            get => base.color;
+            set
+            {
+                colorType = ColorOf.Custom;
+                base.color = value; 
+            }
+        }
+        
         [CustomEditor(typeof(ImageRx))]
         public class ImageRxEditor : ImageEditor
         {
@@ -78,7 +88,7 @@ namespace Presentation.Views.Extensions
         private void RenewColorInEditor()
         {
             if (colorType is ColorOf.Custom) return;
-            color = AssetInEditor.Theme.GetColor(colorType);
+            base.color = AssetInEditor.Theme.GetColor(colorType);
             
             SetVerticesDirty();
         }
@@ -117,7 +127,7 @@ namespace Presentation.Views.Extensions
         private void RenewColor()
         {
             if (colorType is ColorOf.Custom) return;
-            color = InAppContext.Theme.GetColor(colorType);
+            base.color = InAppContext.Theme.GetColor(colorType);
         }
     }
 }
