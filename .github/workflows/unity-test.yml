@@ -6,6 +6,9 @@ jobs:
   run-tests:
     name: Run unity tests 🦊
     runs-on: ubuntu-latest # ジョブを実行する仮想OS
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       # 仮想OSにチェックアウト
@@ -23,7 +26,7 @@ jobs:
           restore-keys: |
             Library-
 
-      # テストの実行
+      # テストの実行(editmodeのみ)
       - name: Run Tests
         uses: game-ci/unity-test-runner@v4
         env:
@@ -37,21 +40,25 @@ jobs:
           checkName: 'EditMode Test Results'
           continue-on-error: true
 
-      # テスト結果の表示
-      - name: Display Test Results
-        if: always()
-        run: |
-          echo "=== Test Results ==="
-          if [ -f "artifacts/editmode-results.xml" ]; then
-            cat artifacts/editmode-results.xml
-          else
-            echo "No test results file found"
-          fi
-          
-      # 結果の出力(write権限がない場合はスキップ)
+      # テスト結果のアップロード(write権限がない場合はスキップ)
       - name : Upload Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
-          name: Test results
+          name: test-results
           path: test-results
+
+      # ジョブサマリーにテスト結果を表示
+      - name: Job Summary
+        if: always()
+        run: |
+          echo "## 🧿 Unity Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Mode | Result | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| EditMode | ${{ steps.parse-results.outputs.editmode_result }} | ${{ steps.parse-results.outputs.editmode_details }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| PlayMode | ${{ steps.parse-results.outputs.playmode_result }} | ${{ steps.parse-results.outputs.playmode_details }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
