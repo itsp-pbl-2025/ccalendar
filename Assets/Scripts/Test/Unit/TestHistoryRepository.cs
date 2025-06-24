@@ -13,7 +13,7 @@ namespace Test.Unit
             var ctx = InTestContext.Context;
             var repo = ctx.HistoryRepo;
             
-            var time = new CCDateTime(2024, 10, 1);
+            var time = new DateTime(2024, 10, 1);
             Assert.IsFalse(repo.Update(new HistoryContainer((HistoryType)1, "", time)));
 
             repo.InsertUpdate(new HistoryContainer((HistoryType)1, "1", time));
@@ -31,7 +31,7 @@ namespace Test.Unit
             var ctx = InTestContext.Context;
             var repo = ctx.HistoryRepo;
             
-            var time = new CCDateTime(2024, 10, 1);
+            var time = new DateTime(2024, 10, 1);
             Assert.IsTrue(repo.InsertUpdate(new HistoryContainer((HistoryType)1, "", time)));
 
             var target = new HistoryContainer((HistoryType)1, "1", time);
@@ -51,7 +51,7 @@ namespace Test.Unit
             
             Assert.IsFalse(repo.Remove((HistoryType)1));
 
-            var time = new CCDateTime(2024, 10, 1);
+            var time = new DateTime(2024, 10, 1);
             repo.InsertUpdate(new HistoryContainer((HistoryType)1, "1", time));
             Assert.IsTrue(repo.Remove((HistoryType)1));
             Assert.IsFalse(repo.Remove((HistoryType)1));
@@ -70,7 +70,7 @@ namespace Test.Unit
             
             Assert.IsNull(repo.Get((HistoryType)1));
             
-            var time = new CCDateTime(2024, 10, 1);
+            var time = new DateTime(2024, 10, 1);
             repo.InsertUpdate(new HistoryContainer((HistoryType)1, "", time));
             Assert.IsNotNull(repo.Get((HistoryType)1));
             
