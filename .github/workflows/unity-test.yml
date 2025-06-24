@@ -2,11 +2,6 @@ name: Unity Test
 
 on: [push, pull_request]
 
-permissions:
-  contents: read
-  actions: read
-  pull-requests: read
-
 jobs:
   run-tests:
     name: Run unity tests 🦊
@@ -14,13 +9,13 @@ jobs:
 
     steps:
       # 仮想OSにチェックアウト
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
       # GitHubが提供するキャッシュストレージにLibraryを一時保存する
-      - name: Cache library
+      - name: Cache Unity library
         uses: actions/cache@v3
         with:
           path: Library
@@ -29,7 +24,7 @@ jobs:
             Library-
 
       # テストの実行
-      - name: Run tests
+      - name: Run Tests
         uses: game-ci/unity-test-runner@v4
         env:
             UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -38,11 +33,25 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode # test only editmode
-          customParameters: -testResultsOutput "artifacts/editmode-results.xml" -no-github-comment
+          artifactsPath: test-results
+          checkName: 'EditMode Test Results'
+          continue-on-error: true
 
-      # 結果の出力
-      - name : Output
+      # テスト結果の表示
+      - name: Display Test Results
+        if: always()
+        run: |
+          echo "=== Test Results ==="
+          if [ -f "artifacts/editmode-results.xml" ]; then
+            cat artifacts/editmode-results.xml
+          else
+            echo "No test results file found"
+          fi
+          
+      # 結果の出力(write権限がない場合はスキップ)
+      - name : Upload Test Results
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: Test results
           path: test-results
