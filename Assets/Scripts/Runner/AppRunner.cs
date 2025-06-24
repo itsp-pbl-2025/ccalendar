@@ -28,7 +28,7 @@ namespace Runner
 
         protected override void Init()
         {
-            if (!_instance)
+            if (!additiveInstance)
             {
                 additiveInstance = this;
                 base.Init();

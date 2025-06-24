@@ -19,8 +19,17 @@ namespace Presentation.Views.Scene
         
         private void Awake()
         {
+            canvas.CanvasGroup.alpha = 0;
+            
 #if UNITY_EDITOR
-            DebugAwake().Forget();
+            if (!InAppContext.SceneLoader)
+            {
+                DebugAwake().Forget();
+            }
+            else
+            {
+                OnSceneLoaded();
+            }
 #else
             OnSceneLoaded();
 #endif
@@ -31,10 +40,10 @@ namespace Presentation.Views.Scene
         {
             await SceneManager.LoadSceneAsync("BaseScene", LoadSceneMode.Additive);
             
-            // AppRunnerがInAppContextをロードするまで待機する
+            // AppRunnerがInAppContextを完全にロードして完了するまで待機する
             while (true)
             {
-                if (InAppContext.Context is not null) break;
+                if ((InAppContext.Context?.Ready ?? false) && InAppContext.SceneLoader) break;
                 await UniTask.Yield();
             }
             

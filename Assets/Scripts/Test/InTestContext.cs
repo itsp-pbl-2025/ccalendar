@@ -22,6 +22,8 @@ namespace Test
             
                 SetupServiceFactories();
             }
+            
+            public bool Ready => true;
         
             private void SetupServiceFactories()
             {
