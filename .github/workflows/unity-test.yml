@@ -1,4 +1,4 @@
-name: Unity Test
+name: Unity EditMode Tests
 
 on: [push, pull_request]
 
@@ -7,81 +7,138 @@ jobs:
     name: 🦊 Run unity tests
     runs-on: ubuntu-latest # ジョブを実行する仮想OS
     permissions:
-      contents: read
-      pull-requests: write
-
+      contents: read  # 読み取り権限のみ
+      
     steps:
-      # 仮想OSにチェックアウト
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          lfs: true
+    # リポジトリのチェックアウト
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        lfs: true
 
-      # GitHubが提供するキャッシュストレージにLibraryを一時保存する
-      - name: Cache Unity library
-        uses: actions/cache@v3
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+    # Unity Libraryのキャッシュ
+    - name: Cache Unity Library
+      uses: actions/cache@v3
+      with:
+        path: Library
+        key: Library-EditMode-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
+        restore-keys: |
+          Library-EditMode-
+          Library-
 
-      # テストの実行(editmodeのみ)
-      - name: Run Tests
-        uses: game-ci/unity-test-runner@v4
-        env:
-            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          testMode: editmode # test only editmode
-          artifactsPath: test-results
-          checkName: 'EditMode Test Results'
-          continue-on-error: true
+    # EditModeテスト実行
+    - name: Run EditMode Tests
+      uses: game-ci/unity-test-runner@v4
+      id: editmode-tests
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      with:
+        testMode: EditMode
+        artifactsPath: test-results
+        # githubToken削除でStatus Check無効化
+      continue-on-error: true
 
-      # テスト結果のアップロード(write権限がない場合はスキップ)
-      - name : Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: test-results
+    # テスト結果のアップロード
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: editmode-test-results
+        path: test-results
+        retention-days: 7
 
-      # テスト結果の解析とサマリー作成
-      - name: Parse Test Results
-        id: parse-results
-        if: always()
-        run: |
-          # テスト結果XMLファイルを解析
-          editmode_result="❌ Failed"
-          editmode_details=""
+    # テスト結果の解析
+    - name: Parse Test Results
+      id: parse-results
+      if: always()
+      run: |
+        echo "🔍 Parsing EditMode test results..."
+        
+        # デフォルト値
+        result="❌ Failed"
+        details="No test results found"
+        
+        # XMLファイルの確認
+        if [ -f "test-results/editmode-results.xml" ]; then
+          echo "✅ Test results file found"
           
-          # EditModeテスト結果の確認
-          if [ -f "test-results/editmode-results.xml" ]; then
-            editmode_tests=$(grep -o 'tests="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
-            editmode_failures=$(grep -o 'failures="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
-            editmode_errors=$(grep -o 'errors="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2)
-            
-            if [ "$editmode_failures" = "0" ] && [ "$editmode_errors" = "0" ]; then
-              editmode_result="✅ Passed"
-            fi
-            editmode_details="Tests: $editmode_tests, Failures: $editmode_failures, Errors: $editmode_errors"
+          # テスト数値の抽出
+          tests=$(grep -o 'tests="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2 | head -1)
+          failures=$(grep -o 'failures="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2 | head -1)
+          errors=$(grep -o 'errors="[0-9]*"' test-results/editmode-results.xml | cut -d'"' -f2 | head -1)
+          time=$(grep -o 'duration="[0-9.]*"' test-results/editmode-results.xml | cut -d'"' -f2 | head -1)
+          
+          # デフォルト値設定
+          tests=${tests:-0}
+          failures=${failures:-0}
+          errors=${errors:-0}
+          time=${time:-0}
+          
+          echo "📊 Tests: $tests, Failures: $failures, Errors: $errors, Duration: ${time}s"
+          
+          # 結果判定
+          if [ "$failures" = "0" ] && [ "$errors" = "0" ] && [ "$tests" != "0" ]; then
+            result="✅ Passed"
+            details="All $tests tests passed in ${time}s"
+          elif [ "$tests" = "0" ]; then
+            result="⚠️ No Tests"
+            details="No tests were executed"
+          else
+            result="❌ Failed"
+            details="$failures failed, $errors errors out of $tests tests (${time}s)"
           fi
-          
-          # 結果をGitHub環境変数に設定
-          echo "editmode_result=$editmode_result" >> $GITHUB_OUTPUT
-          echo "editmode_details=$editmode_details" >> $GITHUB_OUTPUT
-          
-      # ジョブサマリーにテスト結果を表示
-      - name: Job Summary
-        if: always()
-        run: |
-          echo "## 🧿 Unity Test Results" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Test results file not found"
+          result="⚠️ No Results"
+          details="Test execution may have failed"
+        fi
+        
+        # GitHub環境変数に設定
+        echo "result=$result" >> $GITHUB_OUTPUT
+        echo "details=$details" >> $GITHUB_OUTPUT
+        echo "tests=$tests" >> $GITHUB_OUTPUT
+        echo "failures=$failures" >> $GITHUB_OUTPUT
+        echo "errors=$errors" >> $GITHUB_OUTPUT
+
+    # ジョブサマリーに結果表示
+    - name: Display Results
+      if: always()
+      run: |
+        echo "# 🎮 Unity EditMode Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## 📊 Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ${{ steps.parse-results.outputs.result }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Details:** ${{ steps.parse-results.outputs.details }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # テスト実行時のみ詳細表示
+        if [ "${{ steps.parse-results.outputs.tests }}" != "0" ]; then
+          echo "## 📋 Test Breakdown" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Result | Details |" >> $GITHUB_STEP_SUMMARY
-          echo "|--------|---------|" >> $GITHUB_STEP_SUMMARY
-          echo "| ${{ steps.parse-results.outputs.editmode_result }} | ${{ steps.parse-results.outputs.editmode_details }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total Tests | ${{ steps.parse-results.outputs.tests }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Passed | $(( ${{ steps.parse-results.outputs.tests }} - ${{ steps.parse-results.outputs.failures }} - ${{ steps.parse-results.outputs.errors }} )) |" >> $GITHUB_STEP_SUMMARY
+          echo "| Failed | ${{ steps.parse-results.outputs.failures }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Errors | ${{ steps.parse-results.outputs.errors }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "## 📍 Build Info" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Workflow:** [View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+
+    # テスト失敗時はワークフローを失敗させる
+    - name: Fail on Test Failure
+      if: steps.parse-results.outputs.result == '❌ Failed'
+      run: |
+        echo "❌ EditMode tests failed"
+        echo "Check the job summary for detailed results"
+        exit 1
