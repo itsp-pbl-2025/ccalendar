@@ -17,5 +17,17 @@ namespace Presentation.Presenter
         public static SceneLoader SceneLoader { get; protected set; }
         
         public static ThemePalette Theme { get; protected set; }
+        
+#if UNITY_EDITOR
+        public static bool IsDebug { get; private set; }
+
+        public static void SetDebugFlag()
+        {
+            IsDebug = true;
+        }
+#else
+        // 万が一、誤ってUNITY_EDITOR外で呼び出してしまった時のために常にfalseを返すプロパティを用意しておく
+        public static bool IsDebug => false;
+#endif
     }
 }

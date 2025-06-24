@@ -41,6 +41,7 @@ namespace Presentation.Views.Scene
         private async UniTask DebugAwake()
         {
             await SceneManager.LoadSceneAsync(SceneOf.Base.ToName(), LoadSceneMode.Additive);
+            InAppContext.SetDebugFlag();
             
             // AppRunnerがInAppContextを完全にロードして完了するまで待機する
             while (true)

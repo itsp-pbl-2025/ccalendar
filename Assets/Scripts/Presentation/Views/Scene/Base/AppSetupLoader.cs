@@ -11,6 +11,9 @@ namespace Presentation.Views.Scene.Base
         
         private void Awake()
         {
+#if UNITY_EDITOR
+            if (InAppContext.IsDebug) return;
+#endif
             if (InAppContext.SceneLoader?.BaseSceneReady ?? false)
             {
                 LoadInitialScene();
