@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebRequest
+namespace Domain.Api
 {
     [Serializable]
     public class DataOf<T>
