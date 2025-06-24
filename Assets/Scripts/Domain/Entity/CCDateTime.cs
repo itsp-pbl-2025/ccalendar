@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 
 namespace Domain.Entity
 {
@@ -14,8 +13,8 @@ namespace Domain.Entity
 
         public CCDateTime(int year, int month, int day, int hour, int minute, int second)
         {
-            Year = new Year(year);
-            Month = new Month(month);
+            Year = new Year(year + month / 12);
+            Month = new Month(month % 12 + 1);
             Day = new Day(day);
             Hour = new Hour(hour);
             Minute = new Minute(minute);
@@ -24,8 +23,8 @@ namespace Domain.Entity
         
         public CCDateTime(int year, int month, int day)
         {
-            Year = new Year(year);
-            Month = new Month(month);
+            Year = new Year(year + month / 12);
+            Month = new Month(month % 12 + 1);
             Day = new Day(day);
             Hour = new Hour(0);
             Minute = new Minute(0);
@@ -51,6 +50,11 @@ namespace Domain.Entity
         public DateTime ToDateTime()
         {
             return new DateTime(this.Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value).ToLocalTime();
+        }
+
+        public string ToString(string format)
+        {
+            return ToDateTime().ToString(format);
         }
 
         public CCDateOnly ToDateOnly()
@@ -84,12 +88,14 @@ namespace Domain.Entity
         }
         
         public CCDateTime Add(CCTimeSpan timeSpan) => new(ToDateTime().AddSeconds(timeSpan.TotalSeconds));
+        public CCDateTime Add(int year, int month, int day, int hour, int minute, int second) => new (YearValue + year, MonthValue + month, DayValue + day, HourValue + hour, MinuteValue + minute, SecondValue + second);
         
         public CCDateTime AddSeconds(double seconds) => Add(CCTimeSpan.FromSeconds(seconds));
         public CCDateTime AddMinutes(double minutes) => Add(CCTimeSpan.FromMinutes(minutes));
         public CCDateTime AddHours(double hours) => Add(CCTimeSpan.FromHours(hours));
         public CCDateTime AddDays(double days) => Add(CCTimeSpan.FromDays(days));
-        public CCDateTime AddYears(double years) => Add(CCTimeSpan.FromYears(years));
+        public CCDateTime AddMonths(double months) => Add(0, (int)months, 0, 0, 0, 0);
+        public CCDateTime AddYears(double years) => Add((int)years, 0, 0, 0, 0, 0);
         
         public static CCTimeSpan operator -(CCDateTime left, CCDateTime right) =>
             CCTimeSpan.FromSeconds((left.ToDateTime() - right.ToDateTime()).TotalSeconds);
@@ -108,6 +114,8 @@ namespace Domain.Entity
             return this >= start && this <= end;
         }
         
+        public static bool operator ==(CCDateTime left, CCDateTime right) => left.CompareTo(right) == 0;
+        public static bool operator !=(CCDateTime left, CCDateTime right) => left.CompareTo(right) != 0;
         public static bool operator <(CCDateTime left, CCDateTime right) => left.CompareTo(right) < 0;
         public static bool operator >(CCDateTime left, CCDateTime right) => left.CompareTo(right) > 0;
         public static bool operator <=(CCDateTime left, CCDateTime right) => left.CompareTo(right) <= 0;
@@ -115,6 +123,9 @@ namespace Domain.Entity
         
         public static CCDateTime Today => new(DateTime.Today);
         public static CCDateTime Now => new(DateTime.Now);
+        public static CCDateTime MinValue => new(DateTime.MinValue);
+        public static CCDateTime MaxValue => new(DateTime.MaxValue);
+        public System.DayOfWeek DayOfWeek => ToDateTime().DayOfWeek;
 
         public int YearValue => Year.Value;
         public int MonthValue => Month.Value;

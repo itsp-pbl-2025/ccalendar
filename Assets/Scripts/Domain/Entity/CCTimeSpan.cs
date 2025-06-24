@@ -21,13 +21,10 @@ namespace Domain.Entity
         public static CCTimeSpan FromMinutes(double minutes) => new(minutes * SecondsPerMinute);
         public static CCTimeSpan FromHours(double hours) => new(hours * SecondsPerMinute * MinutesPerHour);
         public static CCTimeSpan FromDays(double days) => new(days * SecondsPerMinute * MinutesPerHour * HoursPerDay);
-        public static CCTimeSpan FromYears(double years) => new(years * SecondsPerMinute * MinutesPerHour * HoursPerDay * DaysPerYear);
 
         public static CCTimeSpan FromTimeSpan(TimeSpan timeSpan) => new(timeSpan.TotalSeconds);
         public TimeSpan ToTimeSpan() => TimeSpan.FromSeconds(TotalSeconds);
 
-        public int Years => (int)(TotalSeconds / (SecondsPerMinute * MinutesPerHour * HoursPerDay * DaysPerYear));
-        public int Days => (int)((TotalSeconds / (SecondsPerMinute * MinutesPerHour * HoursPerDay)) % DaysPerYear);
         public int Hours => (int)((TotalSeconds / (SecondsPerMinute * MinutesPerHour)) % HoursPerDay);
         public int Minutes => (int)((TotalSeconds / SecondsPerMinute) % MinutesPerHour);
         public int Seconds => (int)(TotalSeconds % SecondsPerMinute);
@@ -68,15 +65,7 @@ namespace Domain.Entity
         public override string ToString()
         {
             if (TotalSeconds == 0) return "0 seconds";
-
-            var parts = new List<string>();
-            if (Years != 0) parts.Add($"{Years} year{(Years != 1 ? "s" : "")}");
-            if (Days != 0) parts.Add($"{Days} day{(Days != 1 ? "s" : "")}");
-            if (Hours != 0) parts.Add($"{Hours} hour{(Hours != 1 ? "s" : "")}");
-            if (Minutes != 0) parts.Add($"{Minutes} minute{(Minutes != 1 ? "s" : "")}");
-            if (Seconds != 0) parts.Add($"{Seconds} second{(Seconds != 1 ? "s" : "")}");
-
-            return string.Join(", ", parts);
+            return $"{Hours}h {Minutes}m {Seconds}s";
         }
 
         public static CCTimeSpan Zero => new(0);
@@ -121,6 +110,5 @@ namespace Domain.Entity
         public static CCTimeSpan Minute => FromMinutes(1);
         public static CCTimeSpan Hour => FromHours(1);
         public static CCTimeSpan Day => FromDays(1);
-        public static CCTimeSpan Year => FromYears(1);
     }
 }
