@@ -1,25 +1,32 @@
-﻿using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace AppCore.Utilities
 {
     public static class JsonHelper
     {
+        [Serializable]
+        private class Datum<T>
+        {
+            public T data;
+        }
+        
         public static string ToJson<T>(T obj)
         {
-            var serializer = new DataContractJsonSerializer(typeof(T));
-            using var ms = new MemoryStream();
-            serializer.WriteObject(ms, obj);
-            return Encoding.UTF8.GetString(ms.ToArray());
+            return JsonConvert.SerializeObject(obj);
         }
 
         public static T FromJson<T>(string json)
         {
-            var serializer = new DataContractJsonSerializer(typeof(T));
-            var bytes = Encoding.UTF8.GetBytes(json);
-            using var ms = new MemoryStream(bytes);
-            return (T)serializer.ReadObject(ms)!;
+            if (typeof(T).IsArray || (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(List<>)))
+            {
+                return JsonConvert.DeserializeObject<Datum<T>>($"{{\"data\":{json}}}").data;
+            }
+            else
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
         }
     }
 }

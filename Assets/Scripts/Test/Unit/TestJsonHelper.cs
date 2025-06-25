@@ -19,15 +19,12 @@ namespace Test.Unit
             // Dictionary<int, string>
             Assert.AreEqual(
                 JsonHelper.ToJson(new Dictionary<int, string> { { 1, "one" }, { 2, "two" }, { 3, "three" }, { 4, "four" }}),
-                "[{\"Key\":1,\"Value\":\"one\"},{\"Key\":2,\"Value\":\"two\"},{\"Key\":3,\"Value\":\"three\"},{\"Key\":4,\"Value\":\"four\"}]");
+                "{\"1\":\"one\",\"2\":\"two\",\"3\":\"three\",\"4\":\"four\"}");
             
             // DateTime (sample test 1)
             var utcDateTime = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
             var tokyoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Tokyo");
-            var tokyoTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, tokyoTimeZone);
-            Assert.AreEqual(
-                JsonHelper.ToJson(tokyoTime),
-                "\"\\/Date(1727740800000+0900)\\/\"");
+            Assert.AreEqual(JsonHelper.ToJson(time.ToTimeZoneTokyo()), "\"2024-10-01T09:00:00\"");
         }
 
         [Test]
@@ -42,13 +39,13 @@ namespace Test.Unit
             // Dictionary<int, string>
             Assert.AreEqual(
                 new Dictionary<int, string> { { 1, "one" }, { 2, "two" }, { 3, "three" }, { 4, "four" }},
-                JsonHelper.FromJson<Dictionary<int, string>>("[{\"Key\":1,\"Value\":\"one\"},{\"Key\":2,\"Value\":\"two\"},{\"Key\":3,\"Value\":\"three\"},{\"Key\":4,\"Value\":\"four\"}]"));
+                JsonHelper.FromJson<Dictionary<int, string>>("{\"1\":\"one\",\"2\":\"two\",\"3\":\"three\",\"4\":\"four\"}"));
             
             // DateTime (sample test 1)
             var utcDateTime = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
             var tokyoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Tokyo");
             var tokyoTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, tokyoTimeZone);
-            Assert.AreEqual(tokyoTime, JsonHelper.FromJson<DateTime>("\"\\/Date(1727740800000+0900)\\/\""));
+            Assert.AreEqual(time.ToTimeZoneTokyo(), JsonHelper.FromJson<DateTime>("\"2024-10-01T09:00:00\""));
         }
     }
 }
