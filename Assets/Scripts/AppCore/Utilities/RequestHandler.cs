@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace AppCore.Utilities
 {
@@ -40,7 +41,6 @@ namespace AppCore.Utilities
             public Result(HttpResponseMessage response, string responseBody)
             {
                 StatusCode = response.StatusCode;
-                
                 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -95,7 +95,7 @@ namespace AppCore.Utilities
         {
             try
             {
-                var response = await CommonHttpClient.GetAsync(BuildUrl(relativePath));
+                var response = await _httpClient.GetAsync(BuildUrl(relativePath));
                 var responseBody = await response.Content.ReadAsStringAsync();
                 return new Result<TResponse>(response, responseBody);
             }
@@ -112,14 +112,9 @@ namespace AppCore.Utilities
                 var jsonData = JsonConvert.SerializeObject(postData);
                 var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
             
-                var response = await CommonHttpClient.PostAsync(BuildUrl(relativePath), content);
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseBody = await response.Content.ReadAsStringAsync();
-                    return new Result<TResponse>(response, responseBody);
-
-                }
-                return new Result<TResponse>(response, "");
+                var response = await _httpClient.PostAsync(BuildUrl(relativePath), content);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                return new Result<TResponse>(response, responseBody);
             }
             catch (Exception e)
             {
@@ -133,7 +128,7 @@ namespace AppCore.Utilities
             {
                 var jsonData = JsonConvert.SerializeObject(postData);
                 var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
-                await CommonHttpClient.PostAsync(BuildUrl(relativePath), content);
+                await _httpClient.PostAsync(BuildUrl(relativePath), content);
                 return new Result();
             }
             catch (Exception e)

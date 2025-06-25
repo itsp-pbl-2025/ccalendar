@@ -281,7 +281,7 @@ namespace AppCore.UseCases
                 return (T)val;
             }
 
-            return JsonConvert.DeserializeObject<T>(str)!;
+            return JsonConvert.DeserializeObject<T>(str) ?? throw new JsonSerializationException($"object {nameof(T)} could not be deserialized.");
         }
         
         public void Dispose()
