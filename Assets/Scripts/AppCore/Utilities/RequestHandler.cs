@@ -1,99 +1,145 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using Cysharp.Threading.Tasks;
-using Domain.Api;
 
 namespace AppCore.Utilities
 {
     public class RequestHandler
     {
-        public class Result
+        public abstract class ResultBase
         {
-            public Result(HttpResponseMessage response)
-            {
-                IsSuccess = response.IsSuccessStatusCode;
-                StatusCode = response.StatusCode;
-            }
+            public Exception Error { get; protected set; }
+            public HttpStatusCode StatusCode { get; protected set; }
             
-            public bool IsSuccess { get; }
-            public HttpStatusCode StatusCode { get; }
+            public bool IsSuccess => Error == null;
+
+            protected ResultBase()
+            {
+                Error = null;
+                StatusCode = HttpStatusCode.NoContent;
+            }
+
+            protected ResultBase(HttpStatusCode statusCode, Exception ex = null)
+            {
+                Error = ex;
+                StatusCode = statusCode;
+            }
         }
 
-        public class Result<T>
+        public class Result : ResultBase
         {
+            public Result() {}
+            public Result(HttpStatusCode statusCode, Exception ex = null) : base(statusCode, ex) {}
+        }
+
+        public class Result<T> : ResultBase
+        {
+            public T Data { get; }
+            
             public Result(HttpResponseMessage response, string responseBody)
             {
-                IsSuccess = response.IsSuccessStatusCode;
                 StatusCode = response.StatusCode;
-
-                if (IsSuccess)
+                
+                
+                if (!response.IsSuccessStatusCode)
                 {
-                    if (typeof(T).IsArray)
-                    {
-                        Data = JsonHelper.FromJson<DataOf<T>>($"{{\"data\":{responseBody}}}").data;
-                    }
-                    else
-                    {
-                        Data = JsonHelper.FromJson<T>(responseBody);
-                    }
+                    Error = new HttpRequestException($"HTTP {(int)response.StatusCode} {response.StatusCode} {responseBody}");
+                    Data = default;
+                    return;
                 }
-                else
+
+                try
                 {
+                    Data = JsonHelper.FromJson<T>(responseBody);
+                }
+                catch (Exception ex)
+                {
+                    Error = ex;
                     Data = default;
                 }
             }
-            
-            public bool IsSuccess { get; }
-            public HttpStatusCode StatusCode { get; }
-            public T Data { get; }
+
+            public Result(HttpStatusCode statusCode, Exception ex = null) : base(statusCode, ex)
+            {
+                Data = default;
+            }
         }
         
-        private readonly HttpClient _httpClient = new();
+        private static readonly HttpClient CommonHttpClient = new();
+        private readonly HttpClient _httpClient;
         
-        private string _baseUrl;
+        private Uri _baseUrl;
 
         public RequestHandler(string baseUrl)
         {
-            _baseUrl = baseUrl;
+            CommonHttpClient.Timeout = TimeSpan.FromSeconds(10);
+            _httpClient = CommonHttpClient;
+            _baseUrl = new Uri(baseUrl, UriKind.Absolute);
+        }
+
+        public RequestHandler(HttpClient httpClient, string baseUrl)
+        {
+            _httpClient = httpClient;
+            _baseUrl = new Uri(baseUrl, UriKind.Absolute);
         }
 
         public void SetBaseUrl(string baseUrl)
         {
-            _baseUrl = baseUrl;
+            _baseUrl = new Uri(baseUrl, UriKind.Absolute);
         }
+        
+        private Uri BuildUrl(string relativePath) => new Uri(_baseUrl, relativePath);
 
-        public async UniTask<Result<T>> GetAsync<T>(string url)
+        public async UniTask<Result<TResponse>> GetAsync<TResponse>(string relativePath)
         {
-            var response = await _httpClient.GetAsync(_baseUrl + url);
-            if (response.IsSuccessStatusCode)
+            try
             {
+                var response = await CommonHttpClient.GetAsync(BuildUrl(relativePath));
                 var responseBody = await response.Content.ReadAsStringAsync();
-                return new Result<T>(response, responseBody);
-
+                return new Result<TResponse>(response, responseBody);
             }
-            return new Result<T>(response, "");
+            catch (Exception e)
+            {
+                return new Result<TResponse>(HttpStatusCode.BadRequest, e);
+            }
         }
 
-        public async UniTask<Result<T1>> PostAsync<T1, T2>(string url, T2 postData)
+        public async UniTask<Result<TResponse>> PostAsync<TResponse, TRequest>(string relativePath, TRequest postData)
         {
-            var jsonData = JsonHelper.ToJson(postData);
-            var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+            try
+            {
+                var jsonData = JsonHelper.ToJson(postData);
+                var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
             
-            var response = await _httpClient.PostAsync(_baseUrl + url, content);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                return new Result<T1>(response, responseBody);
+                var response = await CommonHttpClient.PostAsync(BuildUrl(relativePath), content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    return new Result<TResponse>(response, responseBody);
 
+                }
+                return new Result<TResponse>(response, "");
             }
-            return new Result<T1>(response, "");
+            catch (Exception e)
+            {
+                return new Result<TResponse>(HttpStatusCode.BadRequest, e);
+            }
         }
 
-        public async UniTask PostAsync<T>(string url, T postData)
+        public async UniTask<Result> PostAsync<TRequest>(string relativePath, TRequest postData)
         {
-            var jsonData = JsonHelper.ToJson(postData);
-            var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
-            await _httpClient.PostAsync(_baseUrl + url, content);
+            try
+            {
+                var jsonData = JsonHelper.ToJson(postData);
+                var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+                await CommonHttpClient.PostAsync(BuildUrl(relativePath), content);
+                return new Result();
+            }
+            catch (Exception e)
+            {
+                return new Result(HttpStatusCode.BadRequest, e);
+            }
         }
     }
 }
