@@ -51,7 +51,7 @@ namespace AppCore.Utilities
 
                 try
                 {
-                    Data = JsonHelper.FromJson<T>(responseBody);
+                    Data = JsonConvert.DeserializeObject<T>(responseBody);
                 }
                 catch (Exception ex)
                 {
@@ -109,7 +109,7 @@ namespace AppCore.Utilities
         {
             try
             {
-                var jsonData = JsonHelper.ToJson(postData);
+                var jsonData = JsonConvert.SerializeObject(postData);
                 var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
             
                 var response = await CommonHttpClient.PostAsync(BuildUrl(relativePath), content);
@@ -131,7 +131,7 @@ namespace AppCore.Utilities
         {
             try
             {
-                var jsonData = JsonHelper.ToJson(postData);
+                var jsonData = JsonConvert.SerializeObject(postData);
                 var content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
                 await CommonHttpClient.PostAsync(BuildUrl(relativePath), content);
                 return new Result();
