@@ -22,8 +22,7 @@ namespace Test.Unit
                 "{\"1\":\"one\",\"2\":\"two\",\"3\":\"three\",\"4\":\"four\"}");
             
             // DateTime (sample test 1)
-            var utcDateTime = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
-            var tokyoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Tokyo");
+            var time = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
             Assert.AreEqual(JsonHelper.ToJson(time.ToTimeZoneTokyo()), "\"2024-10-01T09:00:00\"");
         }
 
@@ -42,9 +41,7 @@ namespace Test.Unit
                 JsonHelper.FromJson<Dictionary<int, string>>("{\"1\":\"one\",\"2\":\"two\",\"3\":\"three\",\"4\":\"four\"}"));
             
             // DateTime (sample test 1)
-            var utcDateTime = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
-            var tokyoTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Tokyo");
-            var tokyoTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, tokyoTimeZone);
+            var time = new DateTime(2024, 10, 1, 0, 0, 0, DateTimeKind.Utc);
             Assert.AreEqual(time.ToTimeZoneTokyo(), JsonHelper.FromJson<DateTime>("\"2024-10-01T09:00:00\""));
         }
     }
