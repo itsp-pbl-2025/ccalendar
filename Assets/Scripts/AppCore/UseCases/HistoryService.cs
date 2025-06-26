@@ -1,11 +1,10 @@
 ﻿#nullable enable
 using System;
-using System.ComponentModel;
 using System.Globalization;
 using AppCore.Interfaces;
-using AppCore.Utilities;
 using Domain.Entity;
 using Domain.Enum;
+using Newtonsoft.Json;
 
 namespace AppCore.UseCases
 {
@@ -233,7 +232,7 @@ namespace AppCore.UseCases
             if (t.IsPrimitive || t.IsEnum || t == typeof(decimal))
                 return Convert.ToString(value, CultureInfo.InvariantCulture)!;
 
-            return JsonHelper.ToJson(value);
+            return JsonConvert.SerializeObject(value);
         }
         
         /// <summary>
@@ -282,7 +281,7 @@ namespace AppCore.UseCases
                 return (T)val;
             }
 
-            return JsonHelper.FromJson<T>(str);
+            return JsonConvert.DeserializeObject<T>(str) ?? throw new JsonSerializationException($"object {nameof(T)} could not be deserialized.");
         }
         
         public void Dispose()
