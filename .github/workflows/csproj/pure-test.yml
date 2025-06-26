@@ -1,0 +1,25 @@
+﻿name: Pure C# Tests
+
+on:
+  push:
+    branches: [ main, feature/**, feat/** ]
+  pull_request:
+
+jobs:
+  dotnet-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore, Build & Test
+        run: |
+          cd .github/workflows/csproj
+          dotnet restore AutoTest.sln
+          dotnet build   AutoTest.sln --configuration Release
+          dotnet test    AutoTest.sln --configuration Release --no-build --verbosity normal

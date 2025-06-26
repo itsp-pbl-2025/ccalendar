@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="../../../Assets/Scripts/Infrastructure/**/*.cs" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="AppCore.csproj" />
+        <ProjectReference Include="Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="LiteDB">
+            <HintPath>../../../Assets/Plugins/LiteDB/LiteDB.dll</HintPath>
+            <Private>true</Private>
+        </Reference>
+    </ItemGroup>
+</Project>
