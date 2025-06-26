@@ -5,8 +5,7 @@
         "AppCore",
         "Domain",
         "Infrastructure",
-        "UniTask",
-        "WebRequest"
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor"
