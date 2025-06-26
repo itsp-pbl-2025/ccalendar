@@ -1,8 +1,8 @@
 ﻿using System;
 using AppCore.Interfaces;
+using AppCore.Utilities;
 using Cysharp.Threading.Tasks;
 using Domain.Api;
-using WebRequest;
 
 namespace AppCore.UseCases
 {
@@ -10,7 +10,6 @@ namespace AppCore.UseCases
     {
         private readonly IScheduleRepository _scheduleRepo;
         private readonly RequestHandler _api;
-        
         
         public string Name { get; }
         
@@ -24,14 +23,13 @@ namespace AppCore.UseCases
 
         public async UniTask<HolidayList> GetHolidays(DateTime startDate, DateTime endDate)
         {
-            var response = await LoadHolidays(startDate, endDate).ToUniTask();
-            return response.error ? null : response.result;
+            return await LoadHolidays(startDate, endDate);
         }
 
-        private ResponseHandler<HolidayList> LoadHolidays(DateTime startDate, DateTime endDate)
+        private async UniTask<HolidayList> LoadHolidays(DateTime startDate, DateTime endDate)
         {
-            return new ResponseHandler<HolidayList>(
-                _api.Get($"holidays?from={startDate:yyyy-MM-dd}&to={endDate:yyyy-MM-dd}"));
+            var result = await _api.GetAsync<HolidayList>($"holidays?from={startDate:yyyy-MM-dd}&to={endDate:yyyy-MM-dd}");
+            return result.Data;
         }
         
         public void Dispose()
