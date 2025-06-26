@@ -11,14 +11,14 @@
     <ItemGroup>
         <ProjectReference Include="Domain.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="UniTask" Version="2.*" />
-    </ItemGroup>
     
     <ItemGroup>
         <Reference Include="Newtonsoft.Json">
             <HintPath>../../../Assets/Packages/Newtonsoft.Json.13.0.3/lib/netstandard2.0/Newtonsoft.Json.dll</HintPath>
+            <Private>true</Private>
+        </Reference>
+        <Reference Include="Cysharp.Threading.Tasks">
+            <HintPath>assemblies/UniTask.dll</HintPath>
             <Private>true</Private>
         </Reference>
     </ItemGroup>

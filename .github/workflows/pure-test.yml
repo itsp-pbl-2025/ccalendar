@@ -20,8 +20,7 @@ jobs:
       - name: Restore, Build & Test
         working-directory: .github/workflows/csproj
         run: |
-          dotnet nuget locals all --clear
           dotnet clean   AutoTest.sln
-          dotnet restore AutoTest.sln --disable-parallel
-          dotnet build   AutoTest.sln /m:1
-          dotnet test    AutoTest.sln --no-build --verbosity normal
+          dotnet restore AutoTest.sln
+          dotnet build   AutoTest.sln --configuration Release
+          dotnet test    AutoTest.sln --configuration Release --no-build --verbosity normal

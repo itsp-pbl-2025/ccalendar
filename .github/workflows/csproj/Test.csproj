@@ -16,9 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="UniTask" Version="2.*" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
-        <PackageReference Include="NUnit" Version="3.*" />
+        <PackageReference Include="NUnit" Version="3.5.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.*" />
     </ItemGroup>
 
@@ -29,6 +28,10 @@
         </Reference>
         <Reference Include="LiteDB">
             <HintPath>../../../Assets/Plugins/LiteDB/LiteDB.dll</HintPath>
+            <Private>true</Private>
+        </Reference>
+        <Reference Include="Cysharp.Threading.Tasks">
+            <HintPath>assemblies/UniTask.dll</HintPath>
             <Private>true</Private>
         </Reference>
     </ItemGroup>
