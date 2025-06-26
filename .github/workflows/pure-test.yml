@@ -16,15 +16,12 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
-          
-      - name: Clear caches
-        run: |
-          dotnet nuget locals all --clear
-          dotnet clean   AutoTest.sln
 
       - name: Restore, Build & Test
         working-directory: .github/workflows/csproj
         run: |
+          dotnet nuget locals all --clear
+          dotnet clean   AutoTest.sln
           dotnet restore AutoTest.sln --disable-parallel
           dotnet build   AutoTest.sln /m:1
           dotnet test    AutoTest.sln --no-build --verbosity normal
