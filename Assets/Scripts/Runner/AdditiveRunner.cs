@@ -33,7 +33,12 @@ namespace Runner
 
         protected virtual void Init()
         {
-            Context ??= new Context(System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db"));
+#if UNITY_EDITOR
+            const string dbName = "DebugDatabase.db";
+#else
+            const string dbName = "AppDatabase.db";
+#endif
+            Context ??= new Context(System.IO.Path.Combine(Application.persistentDataPath, dbName));
             EventDispatcher ??= new EventDispatcher();
             Prefabs ??= new PrefabBundle(prefabDictionary);
             Theme ??= new ThemePalette(Prefabs.GetThemeByName(Context.GetService<HistoryService>().GetHistoryOrDefault<string>(HistoryType.ThemeUsing)));
