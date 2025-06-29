@@ -55,12 +55,9 @@ namespace Presentation.Views.Popup
         {
             if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
             {
-                var window = _showingPopups.Pop();
-                if (window.EnableClosingByButton())
+                if (_showingPopups.Count > 0 && _showingPopups.Peek().EnableClosingByButton())
                 {
-                    window.CloseWindow();
-                    Destroy(window.gameObject);
-                    Destroy(window);
+                    CloseFrontPopup();
                 }
             }
         }
@@ -70,7 +67,14 @@ namespace Presentation.Views.Popup
             if (!_showingPopups.TryPeek(out var front)) return false;
             if (front != window) return false;
             
-            _showingPopups.Pop();
+            return CloseFrontPopup();
+        }
+
+        private bool CloseFrontPopup()
+        {
+            if (_showingPopups.Count == 0) return false;
+            
+            var window = _showingPopups.Pop();
             window.CloseWindow();
             window.UnsetFromCanvas(autoAspectCanvas);
             Destroy(window.gameObject);

@@ -24,7 +24,7 @@ namespace Presentation.Views.Popup
         
         public override bool EnableClosingByButton()
         {
-            return false;
+            return true;
         }
 
         public override void CloseWindow()
