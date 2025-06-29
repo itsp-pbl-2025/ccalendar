@@ -48,6 +48,7 @@ namespace Infrastructure.Data
                 File.Delete(Regex.Replace(path, @"(?=\.[^\\/]+$)", "-log"));
 
                 DB = new LiteDatabase(conn);
+                Console.Error.WriteLine($"initialization failed, DB recreated. Error: {e.Message}");
             }
             BsonMapper.Global.EmptyStringToNull = false;
         }
