@@ -1,10 +1,10 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using Presentation.Presenter;
 using Presentation.Views.Common;
 using UnityEngine;
 
 #if UNITY_EDITOR
-using Presentation.Presenter;
 using UnityEngine.SceneManagement;
 #endif
 
