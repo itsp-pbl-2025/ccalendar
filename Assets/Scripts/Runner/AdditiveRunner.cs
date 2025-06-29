@@ -34,8 +34,14 @@ namespace Runner
 
         protected virtual void Init()
         {
+#if UNITY_EDITOR
+            const string dbName = "DebugDatabase.db";
+#else
+            const string dbName = "AppDatabase.db";
+#endif
+            
             // データベースの初期化
-            var dbPath = System.IO.Path.Combine(Application.persistentDataPath, "AppDatabase.db");
+            var dbPath = System.IO.Path.Combine(Application.persistentDataPath, dbName);
             var dbKey = KeyStorage.Load();
             if (dbKey == null)
             {
