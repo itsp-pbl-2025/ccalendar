@@ -191,7 +191,7 @@ var infinite = ValueEnumerable.Range(..);
 var alphabets = ValueEnumerable.Range(start: 'a', end: 'z', RightBound.Inclusive);
 
 // 5/13, 5/14, 5/15, 5/16, 5/17, 5/18, 5/19
-var daysOfweek = ValueEnumerable.Range(DateTime.Now, 7, TimeSpan.FromDays(1)); ;
+var daysOfweek = ValueEnumerable.Range(DateTime.Now, 7, TimeSpan.FromDays(1));
 
 // 5/1, 5/2,...,5/31
 var now = DateTime.Now;
@@ -600,7 +600,7 @@ var json = JsonNode.Parse("""
 // JsonNode
 var origin = json!["nesting"]!["level1"]!["level2"]!;
 
-// JsonNode axis, Children, Descendants, Anestors, BeforeSelf, AfterSelf and ***Self.
+// JsonNode axis, Children, Descendants, Ancestors, BeforeSelf, AfterSelf and ***Self.
 foreach (var item in origin.Descendants().Select(x => x.Node).OfType<JsonArray>())
 {
     // [true, false, true], ["fast", "accurate", "balanced"], [1, 1, 2, 3, 5, 8, 13]
@@ -788,7 +788,7 @@ You can chain query(LINQ to Objects). Also, you can filter by component using th
 // all filtered(tag == "foobar") objects
 var foobars = root.Descendants().Where(x => x.tag == "foobar");
 
-// get FooScript under self childer objects and self
+// get FooScript under self children objects and self
 var fooScripts = root.ChildrenAndSelf().OfComponent<FooScript>();
 ```
 
@@ -928,7 +928,7 @@ You can chain query(LINQ to Objects). Also, you can filter by node type using th
 ```csharp
 // get ancestors under a Window
 var ancestors = root.Ancestors().TakeWhile(x => x is not Window);
-// get FooScript under self childer objects and self
+// get FooScript under self children objects and self
 var fooScripts = root.ChildrenAndSelf().OfType<FooScript>();
 ```
 
@@ -991,7 +991,7 @@ public static class MyExtensions
         }
     }
 
-    public static ImmutableArray<T> ToImmutableArray<TEnumerator, T>(this ValueEnumerable<TEnumerator, T> source)
+    public static ImmutableArray<TSource> ToImmutableArray<TEnumerator, TSource>(this ValueEnumerable<TEnumerator, TSource> source)
         where TEnumerator : struct, IValueEnumerator<T>
 #if NET9_0_OR_GREATER
         , allows ref struct
