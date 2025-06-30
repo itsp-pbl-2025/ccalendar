@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using AppCore.UseCases;
+﻿using AppCore.UseCases;
 using Infrastructure.Data.DAO;
 using NUnit.Framework;
 using Test.MockData;
+using ZLinq;
 
 namespace Test.Integration
 {
@@ -19,7 +19,7 @@ namespace Test.Integration
             }
             
             var service = ctx.GetService<SampleService>();
-            var schedules = service.GetSchedules().ToDictionary(x => x.Id);
+            var schedules = service.GetSchedules().AsValueEnumerable().ToDictionary(x => x.Id);
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 Assert.IsTrue(schedules.TryGetValue(ds.Id, out var s));

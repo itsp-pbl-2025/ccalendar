@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using AppCore.Interfaces;
 using Domain.Entity;
+using ZLinq;
 
 namespace AppCore.UseCases
 {
@@ -34,7 +34,7 @@ namespace AppCore.UseCases
         
         public List<Schedule> GetSchedules()
         {
-            return _scheduleRepo.GetAll().ToList();
+            return _scheduleRepo.GetAll().AsValueEnumerable().ToList();
         }
         
         public void Dispose()
