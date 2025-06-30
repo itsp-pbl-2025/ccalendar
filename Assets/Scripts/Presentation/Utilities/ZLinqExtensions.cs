@@ -9,32 +9,7 @@ namespace Presentation.Utilities
     /// </summary>
     public static class ZLinqExtensions
     {
-        #region Common
-
-        private static TSource Average<TEnumerator, TSource>(this ValueEnumerable<TEnumerator, TSource> source, Func<TSource, TSource, TSource> sumFunc, Func<TSource, int, TSource> divFunc)
-            where TEnumerator : struct, IValueEnumerator<TSource>
-#if NET9_0_OR_GREATER
-        , allows ref struct
-#endif
-        {
-            using var e = source.GetEnumerator();
-            if (!e.MoveNext())
-            {
-                throw new InvalidOperationException("Source sequence is empty.");
-            }
-            
-            var sum = e.Current;
-            var count = 1;
-            while (e.MoveNext())
-            {
-                sum = sumFunc(sum, e.Current);
-                count++;
-            }
-
-            return divFunc(sum, count);
-        }
-        
-        #endregion
+        private const string MessageExceptionSourceSequenceEmpty = "Source Sequence is empty";
         
         #region Vector2
 
@@ -44,7 +19,24 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Average((v1, v2) => v1 + v2, (v, i) => v / i);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                throw new InvalidOperationException(MessageExceptionSourceSequenceEmpty);
+            }
+
+            double sumX = e.Current.x;
+            double sumY = e.Current.y;
+            long count = 1;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX += current.x;
+                sumY += current.y;
+                count++;
+            }
+
+            return new Vector2((float)(sumX / count), (float)(sumY / count));
         }
 
         public static Vector2 Sum<TEnumerator>(this ValueEnumerable<TEnumerator, Vector2> source)
@@ -53,7 +45,22 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Aggregate((v1, v2) => v1 + v2);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return Vector2.zero;
+            }
+
+            double sumX = e.Current.x;
+            double sumY = e.Current.y;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX += current.x;
+                sumY += current.y;
+            }
+
+            return new Vector2((float)sumX, (float)sumY);
         }
 
         public static Vector2 Min<TEnumerator>(this ValueEnumerable<TEnumerator, Vector2> source)
@@ -84,7 +91,24 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Average((v1, v2) => v1 + v2, (v, i) => v / i);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                throw new InvalidOperationException(MessageExceptionSourceSequenceEmpty);
+            }
+
+            long sumX = e.Current.x;
+            long sumY = e.Current.y;
+            long count = 1;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX = checked(sumX + current.x);
+                sumY = checked(sumY + current.y);
+                count++;
+            }
+
+            return new Vector2Int((int)(sumX / count), (int)(sumY / count));
         }
 
         public static Vector2Int Sum<TEnumerator>(this ValueEnumerable<TEnumerator, Vector2Int> source)
@@ -93,7 +117,22 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Aggregate((v1, v2) => v1 + v2);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return Vector2Int.zero;
+            }
+
+            long sumX = e.Current.x;
+            long sumY = e.Current.y;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX = checked(sumX + current.x);
+                sumY = checked(sumY + current.y);
+            }
+
+            return new Vector2Int((int)sumX, (int)sumY);
         }
 
         public static Vector2Int Min<TEnumerator>(this ValueEnumerable<TEnumerator, Vector2Int> source)
@@ -124,7 +163,26 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Average((v1, v2) => v1 + v2, (v, i) => v / i);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                throw new InvalidOperationException(MessageExceptionSourceSequenceEmpty);
+            }
+
+            double sumX = e.Current.x;
+            double sumY = e.Current.y;
+            double sumZ = e.Current.z;
+            long count = 1;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX += current.x;
+                sumY += current.y;
+                sumZ += current.z;
+                count++;
+            }
+
+            return new Vector3((float)(sumX / count), (float)(sumY / count), (float)(sumZ / count));
         }
 
         public static Vector3 Sum<TEnumerator>(this ValueEnumerable<TEnumerator, Vector3> source)
@@ -133,7 +191,24 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Aggregate((v1, v2) => v1 + v2);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return Vector3.zero;
+            }
+
+            double sumX = e.Current.x;
+            double sumY = e.Current.y;
+            double sumZ = e.Current.z;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX += current.x;
+                sumY += current.y;
+                sumZ += current.z;
+            }
+
+            return new Vector3((float)sumX, (float)sumY, (float)sumZ);
         }
 
         public static Vector3 Min<TEnumerator>(this ValueEnumerable<TEnumerator, Vector3> source)
@@ -164,7 +239,26 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Average((v1, v2) => v1 + v2, (v, i) => v / i);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                throw new InvalidOperationException(MessageExceptionSourceSequenceEmpty);
+            }
+
+            long sumX = e.Current.x;
+            long sumY = e.Current.y;
+            long sumZ = e.Current.z;
+            long count = 1;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX = checked(sumX + current.x);
+                sumY = checked(sumY + current.y);
+                sumZ = checked(sumZ + current.z);
+                count++;
+            }
+
+            return new Vector3Int((int)(sumX / count), (int)(sumY / count), (int)(sumZ / count));
         }
 
         public static Vector3Int Sum<TEnumerator>(this ValueEnumerable<TEnumerator, Vector3Int> source)
@@ -173,7 +267,24 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Aggregate((v1, v2) => v1 + v2);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return Vector3Int.zero;
+            }
+
+            long sumX = e.Current.x;
+            long sumY = e.Current.y;
+            long sumZ = e.Current.z;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX = checked(sumX + current.x);
+                sumY = checked(sumY + current.y);
+                sumZ = checked(sumZ + current.z);
+            }
+
+            return new Vector3Int((int)sumX, (int)sumY, (int)sumZ);
         }
 
         public static Vector3Int Min<TEnumerator>(this ValueEnumerable<TEnumerator, Vector3Int> source)
@@ -204,7 +315,28 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Average((v1, v2) => v1 + v2, (v, i) => v / i);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                throw new InvalidOperationException(MessageExceptionSourceSequenceEmpty);
+            }
+
+            double sumX = e.Current.x;
+            double sumY = e.Current.y;
+            double sumZ = e.Current.z;
+            double sumW = e.Current.w;
+            long count = 1;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX += current.x;
+                sumY += current.y;
+                sumZ += current.z;
+                sumW += current.w;
+                count++;
+            }
+
+            return new Vector4((float)(sumX / count), (float)(sumY / count), (float)(sumZ / count), (float)(sumW / count));
         }
 
         public static Vector4 Sum<TEnumerator>(this ValueEnumerable<TEnumerator, Vector4> source)
@@ -213,7 +345,26 @@ namespace Presentation.Utilities
         , allows ref struct
 #endif
         {
-            return source.Aggregate((v1, v2) => v1 + v2);
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+            {
+                return Vector4.zero;
+            }
+
+            double sumX = e.Current.x;
+            double sumY = e.Current.y;
+            double sumZ = e.Current.z;
+            double sumW = e.Current.w;
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                sumX += current.x;
+                sumY += current.y;
+                sumZ += current.z;
+                sumW += current.w;
+            }
+
+            return new Vector4((float)sumX, (float)sumY, (float)sumZ, (float)sumW);
         }
 
         public static Vector4 Min<TEnumerator>(this ValueEnumerable<TEnumerator, Vector4> source)
