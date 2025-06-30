@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using Presentation.Views.Extensions;
@@ -8,6 +7,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
+using ZLinq;
 using Object = UnityEngine.Object;
 
 namespace com.llamagod.Editor
@@ -46,7 +46,7 @@ namespace com.llamagod.Editor
                 new object[] { "Invoke", evt.GetType(), PersistentListenerMode.EventDefined, null });
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(" (");
-            var array = method.GetParameters().Select(x => x.ParameterType).ToArray();
+            var array = method.GetParameters().AsValueEnumerable().Select(x => x.ParameterType).ToArray();
             for (var index = 0; index < array.Length; ++index)
             {
                 stringBuilder.Append(array[index].Name);
@@ -322,14 +322,14 @@ namespace com.llamagod.Editor
             if (target == null || t == null)
                 return validMethodMapList;
             var type = target.GetType();
-            var list = type.GetMethods().Where(x => !x.IsSpecialName).ToList();
-            var source = type.GetProperties().AsEnumerable().Where(x =>
+            var list = type.GetMethods().AsValueEnumerable().Where(x => !x.IsSpecialName).ToList();
+            var source = type.GetProperties().AsValueEnumerable().Where(x =>
             {
                 if (x.GetCustomAttributes(typeof(ObsoleteAttribute), true).Length == 0)
                     return x.GetSetMethod() != null;
                 return false;
             });
-            list.AddRange(source.Select(x => x.GetSetMethod()));
+            list.AddRange(source.Select(x => x.GetSetMethod()).ToList());
             using var enumerator = list.GetEnumerator();
             while (enumerator.MoveNext())
             {
@@ -382,13 +382,13 @@ namespace com.llamagod.Editor
             if (target1 == null)
                 return menu;
             menu.AddSeparator(string.Empty);
-            var array = dummyEvent.GetType().GetMethod("Invoke")!.GetParameters().Select(x => x.ParameterType).ToArray();
+            var array = dummyEvent.GetType().GetMethod("Invoke")!.GetParameters().AsValueEnumerable().Select(x => x.ParameterType).ToArray();
             GeneratePopUpForType(menu, target1, false, listener, array);
             if (target1 is GameObject gameObject)
             {
                 var components = gameObject.GetComponents<Component>();
-                var list = components.Where(c => c != null).Select(c => c.GetType().Name).GroupBy(x => x)
-                    .Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+                var list = components.AsValueEnumerable().Where(c => c != null).Select(c => c.GetType().Name).GroupBy(x => x)
+                    .Where(g => g.AsValueEnumerable().Count() > 1).Select(g => g.Key).ToList();
                 foreach (var component in components)
                 {
                     if (!(component == null))
@@ -413,7 +413,7 @@ namespace com.llamagod.Editor
                 {
                     menu.AddDisabledItem(new GUIContent(targetName + "/Dynamic " +
                                                         string.Join(", ",
-                                                            delegateArgumentsTypes.Select(GetTypeName).ToArray())));
+                                                            delegateArgumentsTypes.AsValueEnumerable().Select(GetTypeName).ToArray())));
                     AddMethodsToMenu(menu, listener, methods, targetName);
                     flag = true;
                 }
@@ -439,7 +439,7 @@ namespace com.llamagod.Editor
             List<ValidMethodMap> methods,
             string targetName)
         {
-            foreach (var method in methods.OrderBy(e => e.MethodInfo.Name.StartsWith("set_") ? 0 : 1)
+            foreach (var method in methods.AsValueEnumerable().OrderBy(e => e.MethodInfo.Name.StartsWith("set_") ? 0 : 1)
                          .ThenBy(e => e.MethodInfo.Name))
                 AddFunctionsForScript(menu, listener, method, targetName);
         }
@@ -447,7 +447,7 @@ namespace com.llamagod.Editor
         private static void GetMethodsForTargetAndMode(Object target, Type[] delegateArgumentsTypes,
             List<ValidMethodMap> methods, PersistentListenerMode mode, bool allowSubclasses = false)
         {
-            var methodMaps = CalculateMethodMap(target, delegateArgumentsTypes, allowSubclasses).ToArray();
+            var methodMaps = CalculateMethodMap(target, delegateArgumentsTypes, allowSubclasses).AsValueEnumerable().ToArray();
             for (var i = 0; i < methodMaps.Length; i++)
             {
                 methodMaps[i].Mode = mode;

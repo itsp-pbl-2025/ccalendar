@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domain.Entity;
 using Domain.Enum;
 using Infrastructure.Data.DAO;
 using Infrastructure.Data.Schema;
+using ZLinq;
 
 namespace Test.MockData
 {
@@ -31,7 +31,7 @@ namespace Test.MockData
                 new(0, "", "", new ScheduleDuration()),
             };
 
-            return schedules.Select(e => e.FromDomain()).ToList();
+            return schedules.AsValueEnumerable().Select(e => e.FromDomain()).ToList();
         }
 
         public static List<DSchedule> GetMockSchedules()
@@ -55,7 +55,7 @@ namespace Test.MockData
                 new(4, "", "", new ScheduleDuration()),
             };
 
-            return schedules.Select(e => e.FromDomain()).ToList();
+            return schedules.AsValueEnumerable().Select(e => e.FromDomain()).ToList();
         }
     }
 }
