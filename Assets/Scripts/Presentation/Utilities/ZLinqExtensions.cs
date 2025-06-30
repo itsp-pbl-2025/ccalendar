@@ -46,13 +46,9 @@ namespace Presentation.Utilities
 #endif
         {
             using var e = source.GetEnumerator();
-            if (!e.MoveNext())
-            {
-                return Vector2.zero;
-            }
 
-            double sumX = e.Current.x;
-            double sumY = e.Current.y;
+            double sumX = 0;
+            double sumY = 0;
             while (e.MoveNext())
             {
                 var current = e.Current;
@@ -118,13 +114,9 @@ namespace Presentation.Utilities
 #endif
         {
             using var e = source.GetEnumerator();
-            if (!e.MoveNext())
-            {
-                return Vector2Int.zero;
-            }
 
-            long sumX = e.Current.x;
-            long sumY = e.Current.y;
+            long sumX = 0;
+            long sumY = 0;
             while (e.MoveNext())
             {
                 var current = e.Current;
@@ -192,14 +184,10 @@ namespace Presentation.Utilities
 #endif
         {
             using var e = source.GetEnumerator();
-            if (!e.MoveNext())
-            {
-                return Vector3.zero;
-            }
 
-            double sumX = e.Current.x;
-            double sumY = e.Current.y;
-            double sumZ = e.Current.z;
+            double sumX = 0;
+            double sumY = 0;
+            double sumZ = 0;
             while (e.MoveNext())
             {
                 var current = e.Current;
@@ -268,14 +256,10 @@ namespace Presentation.Utilities
 #endif
         {
             using var e = source.GetEnumerator();
-            if (!e.MoveNext())
-            {
-                return Vector3Int.zero;
-            }
 
-            long sumX = e.Current.x;
-            long sumY = e.Current.y;
-            long sumZ = e.Current.z;
+            long sumX = 0;
+            long sumY = 0;
+            long sumZ = 0;
             while (e.MoveNext())
             {
                 var current = e.Current;
@@ -346,15 +330,11 @@ namespace Presentation.Utilities
 #endif
         {
             using var e = source.GetEnumerator();
-            if (!e.MoveNext())
-            {
-                return Vector4.zero;
-            }
 
-            double sumX = e.Current.x;
-            double sumY = e.Current.y;
-            double sumZ = e.Current.z;
-            double sumW = e.Current.w;
+            double sumX = 0;
+            double sumY = 0;
+            double sumZ = 0;
+            double sumW = 0;
             while (e.MoveNext())
             {
                 var current = e.Current;
