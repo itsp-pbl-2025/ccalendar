@@ -3,7 +3,6 @@ using AppCore.Interfaces;
 using Domain.Entity;
 using System;
 using System.Linq;
-using ZLinq;
 
 namespace AppCore.UseCases
 {
