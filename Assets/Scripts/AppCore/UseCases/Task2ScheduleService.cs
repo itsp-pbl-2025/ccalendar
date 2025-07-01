@@ -12,11 +12,13 @@ namespace AppCore.UseCases
         
         public string Name { get; }
         private readonly IContext _context;
+        private readonly ScheduleService _scheduleService;
         
-        public Task2ScheduleService(IContext context,string name = "")
+        public Task2ScheduleService(IContext context, string name = "")
         {
-            Name = name != "" ? name : GetType().Name;
+            Name = !string.IsNullOrEmpty(name) ? name : GetType().Name;
             _context = context;
+            _scheduleService = context.GetService<ScheduleService>();
         }
         /// <summary>
         /// スケジュールを自動生成するためのメソッド。
@@ -30,8 +32,6 @@ namespace AppCore.UseCases
         {
             List<CCTask> sortedTasks = SortCCTasksByDeadline(tasks);
 
-            ScheduleService scheduleService = _context.GetService<ScheduleService>();
-
             DateTime currentDate = startDate;
             foreach (var task in sortedTasks)
             {
@@ -44,7 +44,7 @@ namespace AppCore.UseCases
                     task.Description,
                     duration
                 );
-                scheduleService.CreateSchedule(schedule);
+                _scheduleService.CreateSchedule(schedule);
                 
                 currentDate = currentDate.Add(task.Duration);
             }
