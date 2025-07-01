@@ -1,5 +1,6 @@
 ﻿using System;
 using AppCore.UseCases;
+using AppCore.Utilities;
 using Domain.Entity;
 using Domain.Enum;
 using NUnit.Framework;
@@ -176,10 +177,10 @@ namespace Test.Integration
             Assert.IsNotNull(raw1);
             Assert.AreEqual(raw1.Data, "Zub2Qg==");
             
-            service.UpdateHistory((HistoryType)2, new DateTime(2024, 10, 1).ToLocalTime());
+            service.UpdateHistory((HistoryType)2, new DateTime(2024, 10, 1).ToTimeZoneTokyo());
             var raw2 =  service.GetRawHistory((HistoryType)2);
             Assert.IsNotNull(raw2);
-            Assert.AreEqual(raw2.Data, "\"\\/Date(1727740800000+0900)\\/\"");
+            Assert.AreEqual(raw2.Data, "\"2024-10-01T09:00:00\"");
             
             ctx.Dispose();
         }

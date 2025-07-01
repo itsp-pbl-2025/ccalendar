@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using R3;
 using UnityEngine;
+using ZLinq;
 
 namespace Presentation.Utilities
 {
@@ -120,7 +120,7 @@ namespace Presentation.Utilities
         {
             if (!_globalEventListeners.TryGetValue(ev, out var entry)) return;
 
-            foreach (var listener in entry.GetListeners().ToList())
+            foreach (var listener in entry.GetListeners().AsValueEnumerable().ToList())
             {
                 listener.ReceiveEvent(str);
             }

@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Infrastructure.Data.DAO;
+﻿using Infrastructure.Data.DAO;
 using LiteDB;
 using NUnit.Framework;
 using Test.MockData;
+using ZLinq;
 
 namespace Test.Unit
 {
@@ -97,7 +97,7 @@ namespace Test.Unit
                 repo.InsertUpdate(ds.ToDomain());
             }
             
-            var schedules = repo.GetAll().ToDictionary(x => x.Id);
+            var schedules = repo.GetAll().AsValueEnumerable().ToDictionary(x => x.Id);
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 Assert.IsTrue(schedules.TryGetValue(ds.Id, out var s));

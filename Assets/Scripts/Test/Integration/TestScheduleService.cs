@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using AppCore.UseCases;
+﻿using AppCore.UseCases;
 using Infrastructure.Data.DAO;
 using LiteDB;
 using NUnit.Framework;
 using Test.MockData;
+using ZLinq;
 
 namespace Test.Integration
 {
@@ -36,7 +36,7 @@ namespace Test.Integration
             var ctx = InTestContext.Context;
             var service = ctx.GetService<ScheduleService>();
             
-            Assert.IsFalse(service.UpdateSchedule(MockSchedule.GetMockSchedules().First().ToDomain()));
+            Assert.IsFalse(service.UpdateSchedule(MockSchedule.GetMockSchedules().AsValueEnumerable().First().ToDomain()));
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 service.CreateSchedule(ds.ToDomain());
@@ -56,7 +56,7 @@ namespace Test.Integration
             var ctx = InTestContext.Context;
             var service = ctx.GetService<ScheduleService>();
             
-            Assert.IsFalse(service.DeleteSchedule(MockSchedule.GetMockSchedules().First().ToDomain()));
+            Assert.IsFalse(service.DeleteSchedule(MockSchedule.GetMockSchedules().AsValueEnumerable().First().ToDomain()));
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 service.CreateSchedule(ds.ToDomain());
@@ -81,7 +81,7 @@ namespace Test.Integration
             }
             
             var service = ctx.GetService<ScheduleService>();
-            var schedules = service.GetSchedules().ToDictionary(x => x.Id);
+            var schedules = service.GetSchedules().AsValueEnumerable().ToDictionary(x => x.Id);
             foreach (var ds in MockSchedule.GetMockSchedules())
             {
                 Assert.IsTrue(schedules.TryGetValue(ds.Id, out var s));

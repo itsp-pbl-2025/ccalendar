@@ -29,6 +29,8 @@ namespace Presentation.Views.Sample
                 // GameObject自身を破壊！
                 Destroy(obj);
             }
+            
+            // ここ以外では、DebugSelfDestructorという各GameObjectがつけられる開始時自滅用のScriptがあるので、そちらを利用する
         }
     }
 }
