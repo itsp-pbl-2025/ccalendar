@@ -10,8 +10,8 @@ namespace NativeBridge
         /// <param name="title">通知のタイトルを指定する。</param>
         /// <param name="message">通知のメッセージを指定する。</param>
         /// <param name="datetime">通知を表示する時間を指定する。</param>
-        /// <returns>登録された通知の固有ID(string)。</returns>
-        public string ScheduleNotification(string title, string message, DateTime datetime);
+        /// <returns>登録された通知の固有ID(int)。</returns>
+        public int ScheduleNotification(string title, string message, DateTime datetime);
         
         /// <summary>
         /// 指定した通知IDの通知をキャンセルする。

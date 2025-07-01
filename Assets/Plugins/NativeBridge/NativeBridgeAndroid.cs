@@ -68,7 +68,7 @@ namespace NativeBridge
         /// <summary>
         /// Android端末で通知をスケジュールするための実装。
         /// </summary>
-        public string ScheduleNotification(string title, string message, DateTime datetime)
+        public int ScheduleNotification(string title, string message, DateTime datetime)
         {
             var notification = new AndroidNotification
             {
@@ -78,7 +78,7 @@ namespace NativeBridge
                 FireTime = datetime
             };
 
-            return AndroidNotificationCenter.SendNotification(notification, _channelId).ToString();
+            return AndroidNotificationCenter.SendNotification(notification, _channelId);
         }
 
         public void RemoveNotification(string notificationID)

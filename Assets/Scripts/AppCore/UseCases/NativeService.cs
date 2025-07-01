@@ -10,10 +10,12 @@ namespace AppCore.Native
     /// 
     /// </summary>
     public class NativeService : IService {
-        public string Name => "";
+        public string Name { get; }
         private INative _native;
-        public NativeService()
+        public NativeService(string name = "")
         {
+            Name = name != "" ? name : GetType().Name;
+            Console.WriteLine("NativeService is constructed with:" + Name);
              _native = 
         #if __ANDROID__
              new NativeBridgeAndroid();
@@ -31,7 +33,7 @@ namespace AppCore.Native
 
         public void ScheduleNotificationWithSchedule(Schedule schedule)
         {
-            
+             // TODO: Implementation
         } 
     }
 }
