@@ -46,6 +46,7 @@ namespace AppCore.UseCases
         public ReactiveProperty<bool> HolidayLoaded { get; } = new(false);
         public string Name { get; }
 
+
         public void Dispose()
         {
             HolidayLoaded?.Dispose();
@@ -74,7 +75,7 @@ namespace AppCore.UseCases
                 if (i >= maxRetries - 1) break;
 
                 // 待機時間をリトライごとに長くする
-                var delay = initialDelayMilliseconds * (i + 1);
+                var delay = initialDelayMilliseconds * (1 << i);
 
                 // UniTask.Delayを使用して、メインスレッドをブロックせずに待機する
                 await UniTask.Delay(delay);
@@ -86,6 +87,7 @@ namespace AppCore.UseCases
                 holidays = new List<HolidayRaw>()
             };
             CacheHolidayData(emptyData, startDate, endDate);
+            HolidayLoaded.Value = true;
         }
 
         private async UniTask<RequestHandler.Result<HolidayList>> LoadHolidays(CCDateOnly startDate, CCDateOnly endDate)
