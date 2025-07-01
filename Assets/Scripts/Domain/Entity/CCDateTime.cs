@@ -44,7 +44,7 @@ namespace Domain.Entity
 
         public DateTime ToDateTime()
         {
-            return new DateTime(this.Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value).ToLocalTime();
+            return new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value).ToLocalTime();
         }
 
         public string ToString(string format)
@@ -52,9 +52,19 @@ namespace Domain.Entity
             return ToDateTime().ToString(format);
         }
 
+        public CCDateTime SetDate(CCDateOnly date)
+        {
+            return new CCDateTime(date.Year.Value, date.Month.Value, date.Day.Value, Hour.Value, Minute.Value, Second.Value);
+        }
+
         public CCDateOnly ToDateOnly()
         {
             return new CCDateOnly(Year.Value, Month.Value, Day.Value);
+        }
+
+        public CCDateTime SetTime(CCTimeOnly time)
+        {
+            return new CCDateTime(Year.Value, Month.Value, Day.Value, time.Hour.Value, time.Minute.Value, time.Second.Value);
         }
 
         public CCTimeOnly ToTimeOnly()
@@ -347,6 +357,11 @@ namespace Domain.Entity
             new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
                 .AddYears(years)
                 .ToDateOnly();
+        
+        public DateTime ToDateTime()
+        {
+            return new DateTime(Year.Value, Month.Value, Day.Value).ToLocalTime().Date;
+        }
     }
 
     public readonly struct CCTimeOnly : IComparable<CCTimeOnly>
