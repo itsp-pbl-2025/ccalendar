@@ -2,7 +2,7 @@ using System;
 
 namespace Domain.Entity
 {
-    public record ScheduleTask(int Id, string Title, string Description, int Priority, DateTime Deadline)
+    public record CCTask(int Id, string Title, string Description, int Priority, DateTime Deadline)
     {
         public int Id { get; } = Id;
         public string Title { get; } = Title;

@@ -9,37 +9,37 @@ namespace Infrastructure.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        private readonly ILiteCollection<DScheduleTask> _col;
+        private readonly ILiteCollection<DCCTask> _col;
         
-        public TaskRepository(LiteDatabase db) => _col = db.GetCollection<DScheduleTask>("task");
+        public TaskRepository(LiteDatabase db) => _col = db.GetCollection<DCCTask>("task");
         
-        public ScheduleTask Insert(ScheduleTask scheduleTask)
+        public CCTask Insert(CCTask ccTask)
         {
-            var dtask = scheduleTask.FromDomain();
+            var dtask = ccTask.FromDomain();
             dtask.Id = _col.Insert(dtask).AsInt32;
             return dtask.ToDomain();
         }
 
-        public bool Update(ScheduleTask scheduleTask)
+        public bool Update(CCTask ccTask)
         {
-            var dtask = scheduleTask.FromDomain();
+            var dtask = ccTask.FromDomain();
             return _col.Update(dtask);
         }
         
-        public bool InsertUpdate(ScheduleTask scheduleTask)
+        public bool InsertUpdate(CCTask ccTask)
         {
-            var dtask = scheduleTask.FromDomain();
+            var dtask = ccTask.FromDomain();
             return _col.Upsert(dtask);
         }
         
-        public bool Remove(ScheduleTask scheduleTask)
+        public bool Remove(CCTask ccTask)
         {
-            return _col.Delete(scheduleTask.Id);
+            return _col.Delete(ccTask.Id);
         }
         
-        public ICollection<ScheduleTask> GetAll()
+        public ICollection<CCTask> GetAll()
         {
-            var result = new List<ScheduleTask>();
+            var result = new List<CCTask>();
             foreach (var task in _col.FindAll())
             {
                 result.Add(task.ToDomain());

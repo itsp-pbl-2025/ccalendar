@@ -3,7 +3,7 @@ using LiteDB;
 
 namespace Infrastructure.Data.Schema
 {
-    public class DScheduleTask
+    public class DCCTask
     {
         [BsonId]
         public int Id { get; set; }
