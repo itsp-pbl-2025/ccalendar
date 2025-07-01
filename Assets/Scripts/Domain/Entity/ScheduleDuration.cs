@@ -34,5 +34,10 @@ namespace Domain.Entity
         public DateTime StartTime { get; }
         public DateTime EndTime { get; }
         public bool IsAllDay { get; }
+
+        public bool IsCollided(ScheduleDuration other)
+        {
+            return EndTime >= other.StartTime && StartTime <= other.EndTime;
+        }
     }
 }
