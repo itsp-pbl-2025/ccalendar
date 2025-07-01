@@ -97,6 +97,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6962785947907442342, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
+      propertyPath: fullRectTransforms.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6962785947907442342, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: safeRectTransforms.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -107,6 +111,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2294279645504612950, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
+    - {fileID: 4779572401118883720, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1258536764991956194, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
@@ -148,5 +153,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupParent: {fileID: 237784611337213257}
   autoAspectCanvas: {fileID: 2602351118460446210}
-  prefabSingleButtonPopup: {fileID: -5078908753310567957, guid: 3644ff80a1c0b254181798ff770ac5b2, type: 3}
-  prefabDoubleButtonPopup: {fileID: 2035306078279604114, guid: f8fdd9e55a56b944c8e0b7a1270bb84b, type: 3}

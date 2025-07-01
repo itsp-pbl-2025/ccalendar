@@ -1,8 +1,8 @@
 ﻿using System;
 using DG.Tweening;
+using Presentation.Utilities;
 using Presentation.Views.Extensions;
 using R3;
-using TMPro;
 using UnityEngine;
 
 namespace Presentation.Views.Popup
@@ -69,8 +69,8 @@ namespace Presentation.Views.Popup
         [SerializeField] private CanvasGroup hourGroup, minuteGroup;
         [SerializeField] private RectInputHandler rectInputHandler;
         [SerializeField] private RectTransform pointerLine, pointerPoint;
-        [SerializeField, Tooltip("x24")] private TextMeshProUGUI[] hourSelectors;
-        [SerializeField, Tooltip("x12")] private TextMeshProUGUI[] minuteSelectors;
+        [SerializeField, Tooltip("x24")] private LabelRx[] hourSelectors;
+        [SerializeField, Tooltip("x12")] private LabelRx[] minuteSelectors;
 
         private Action<CCTimeOnly> _onTimeDefined;
         private Sequence _seq;
@@ -120,8 +120,8 @@ namespace Presentation.Views.Popup
         {
             hourGroup.alpha = _state == SelectState.Hour ? 1 : 0;
             minuteGroup.alpha = _state == SelectState.Minute ? 1 : 0;
-            hourButton.Button.image.color = _state is SelectState.Hour ? Color.cyan : Color.white;
-            minuteButton.Button.image.color = _state is SelectState.Minute ? Color.cyan : Color.white;
+            hourButton.Button.imageRx.colorType = _state is SelectState.Hour ? ColorOf.Secondary : ColorOf.Surface;
+            minuteButton.Button.imageRx.colorType = _state is SelectState.Minute ? ColorOf.Secondary : ColorOf.Surface;
             hourButton.Label.text = _targetHour.ToString("D2");
             minuteButton.Label.text = _targetMinute.ToString("D2");
 

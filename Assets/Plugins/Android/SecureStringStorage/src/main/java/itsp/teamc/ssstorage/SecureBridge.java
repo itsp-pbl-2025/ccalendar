@@ -1,4 +1,4 @@
-package istp.teamc.ssstorage;
+package itsp.teamc.ssstorage;
 
 import android.content.Context;
 import android.content.SharedPreferences;

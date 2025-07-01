@@ -142,6 +142,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4721541533035767365, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_text
+      value: Single
+      objectReference: {fileID: 0}
     - target: {fileID: 6283245918815161373, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_text
       value: Single
@@ -308,6 +312,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Double
       objectReference: {fileID: 0}
+    - target: {fileID: 8640427053035475940, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_text
+      value: Double
+      objectReference: {fileID: 0}
+    - target: {fileID: 8640427053035475940, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+      propertyPath: m_fontSize
+      value: 54
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -326,6 +338,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 773552864403601603, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: "SamplePageManager\u306B\u66F8\u3044\u3066\u3042\u308B\u30B3\u30E1\u30F3\u30C8\u306F\u8AAD\u307F\u307E\u3057\u305F\u304B\uFF1F\r\n\u521D\u5FC3\u8005\u304C\u307E\u305A\u4E00\u756A\u5927\u4E8B\u306A\u306E\u306F\u3001
+        SerializeField, Event Function\u3068\u4EF2\u826F\u304F\u306A\u308B\u3053\u3068\u3067\u3059\u3002\r\n\u305D\u308C\u3068C#\u3055\u3048\u5206\u304B\u308B\u306E\u306A\u3089\u3001\u5C11\u3057\u3065\u3064\u96E3\u3057\u3044\u30B3\u30FC\u30C9\u3092\u8AAD\u3093\u3067\u7406\u89E3\u3092\u6DF1\u3081\u3066\u884C\u3051\u3070\u66F8\u3051\u307E\u3059\u3002\r\n\u4F8B\u3048\u3070\u3001PopupManager\u5468\u308A\u306F\u3061\u3087\u3063\u3068\u51E6\u7406\u304C\u8907\u96D1\u304B\u3082\u3002\r\n\u30DD\u30C3\u30D7\u30A2\u30C3\u30D7\u3092\u8A66\u305B\u308B\u30DC\u30BF\u30F3\u3092\u7F6E\u3044\u3066\u307F\u307E\u3057\u305F\u3002\u30DD\u30C3\u30D7\u30A2\u30C3\u30D7\u3092\u51FA\u3057\u3066\u904A\u3093\u3067\u307F\u3066\u304F\u3060\u3055\u3044\u3002"
+      objectReference: {fileID: 0}
     - target: {fileID: 973624898193158229, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -406,6 +423,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2003634879153994454, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
+      propertyPath: m_text
+      value: UI Script
+      objectReference: {fileID: 0}
     - target: {fileID: 3967636716707773433, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_text
       value: "SamplePageManager\u306B\u66F8\u3044\u3066\u3042\u308B\u30B3\u30E1\u30F3\u30C8\u306F\u8AAD\u307F\u307E\u3057\u305F\u304B\uFF1F\n\u521D\u5FC3\u8005\u304C\u307E\u305A\u4E00\u756A\u5927\u4E8B\u306A\u306E\u306F\u3001
@@ -417,7 +438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9094055900606478230, guid: 3a8129c747a00ce47a02a3c3abf76471, type: 3}
       propertyPath: m_Name
-      value: Page-5 Variant
+      value: Page-5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

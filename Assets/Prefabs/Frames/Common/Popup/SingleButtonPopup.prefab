@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3458593914389946925}
   - component: {fileID: 5166485583959447850}
-  - component: {fileID: 2709269234972149655}
+  - component: {fileID: 3437796770224281607}
   m_Layer: 5
   m_Name: Text-Description
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4469851176284453700}
   m_CullTransparentMesh: 1
---- !u!114 &2709269234972149655
+--- !u!114 &3437796770224281607
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4469851176284453700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -74,8 +74,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279900698
-  m_fontColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+    rgba: 4280295456
+  m_fontColor: {r: 0.125, g: 0.125, b: 0.125, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  mColorType: 10
 --- !u!1 &8229427750903578957
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,15 +328,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
---- !u!114 &4489050676722463380 stripped
+--- !u!114 &2952272368748976332 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7015532337054480828, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8640427053035475940, guid: 04a415c8ad48f9a42a94279eb0ebf038, type: 3}
   m_PrefabInstance: {fileID: 6850083558072060712}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9c782fef4c41828cb7717d165368b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &5743028098797366481 stripped
@@ -510,8 +511,8 @@ MonoBehaviour:
   fixedRect: {fileID: 1447523228318326474}
   outOfWindowRect: {fileID: 5227475060453603725}
   windowRect: {fileID: 9200222674309351056}
-  descriptionText: {fileID: 2709269234972149655}
-  okText: {fileID: 4489050676722463380}
+  descriptionText: {fileID: 3437796770224281607}
+  okText: {fileID: 2952272368748976332}
 --- !u!1001 &8513189955568081521
 PrefabInstance:
   m_ObjectHideFlags: 0

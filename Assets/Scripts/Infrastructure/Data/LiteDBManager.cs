@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using LiteDB;
 
 namespace Infrastructure.Data
@@ -35,11 +36,20 @@ namespace Infrastructure.Data
                 key = SecureStringStorage.PasswordGenerator.Generate();
                 SecureStringStorage.KeyStorage.Save(key);
             }
-            
-            DB = new LiteDatabase(new ConnectionString {
-                Filename = path,
-                Password = key,
-            });
+
+            var conn = new ConnectionString { Filename = path, Password = key };
+            try
+            {
+                DB = new LiteDatabase(conn);
+            }
+            catch (LiteException e)
+            {
+                File.Delete(path);
+                File.Delete(Regex.Replace(path, @"(?=\.[^\\/]+$)", "-log"));
+
+                DB = new LiteDatabase(conn);
+                Console.Error.WriteLine($"initialization failed, DB recreated. Error: {e.Message}");
+            }
             BsonMapper.Global.EmptyStringToNull = false;
         }
 
