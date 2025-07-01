@@ -17,22 +17,22 @@ namespace AppCore.UseCases
             _taskRepo = repo;
         }
 
-        public void CreateSchedule(CCTask task)
+        public void CreateTask(CCTask task)
         {
             _taskRepo.Insert(task);
         }
         
-        public bool UpdateSchedule(CCTask task)
+        public bool UpdateTask(CCTask task)
         {
             return _taskRepo.Update(task);
         }
         
-        public bool DeleteSchedule(CCTask task)
+        public bool DeleteTask(CCTask task)
         {
             return _taskRepo.Remove(task);
         }
         
-        public List<CCTask> GetSchedules()
+        public List<CCTask> GetTask()
         {
             return _taskRepo.GetAll().AsValueEnumerable().ToList();
         }
