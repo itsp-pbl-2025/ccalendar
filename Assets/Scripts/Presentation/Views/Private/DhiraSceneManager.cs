@@ -1,4 +1,5 @@
 ﻿using System;
+using Domain.Entity;
 using Presentation.Presenter;
 using Presentation.Views.Popup;
 using TMPro;
@@ -31,14 +32,14 @@ namespace Presentation.Views.Private
             window.Init(OnTimeSelected);
         }
 
-        private void OnDateSelected(DateTime dt)
+        private void OnDateSelected(CCDateTime dt)
         {
             dateText.text = dt == default ? "" : dt.ToString("yyyy年MM月dd日");
         }
 
-        private void OnTimeSelected(TimeOnlyPopup.CCTimeOnly to)
+        private void OnTimeSelected(CCTimeOnly to)
         {
-            timeText.text = $"{to.Hour:D2}:{to.Minute:D2}:{to.Second:D2}";
+            timeText.text = $"{to.Hour.Value:D2}:{to.Minute.Value:D2}:{to.Second.Value:D2}";
         }
     }
 }

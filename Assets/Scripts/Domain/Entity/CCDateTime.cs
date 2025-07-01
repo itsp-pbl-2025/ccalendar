@@ -1,9 +1,8 @@
 using System;
-using System.Diagnostics;
 
 namespace Domain.Entity
 {
-    public readonly struct CCDateTime : IComparable<CCDateTime>
+    public readonly struct CCDateTime : IComparable<CCDateTime>, IEquatable<CCDateTime>
     {
         public Year Year { get; }
         public Month Month { get; }
@@ -21,9 +20,15 @@ namespace Domain.Entity
             Minute = new Minute(minute);
             Second = new Second(second);
         }
+        
+        public CCDateTime(int year, int month, int day) : this(year, month, day, 0, 0, 0)
+        {
+        }
+
 
         public CCDateTime(DateTime datetime)
         {
+            datetime = datetime.ToLocalTime();
             Year = new Year(datetime.Year);
             Month = new Month(datetime.Month);
             Day = new Day(datetime.Day);
@@ -40,12 +45,27 @@ namespace Domain.Entity
 
         public DateTime ToDateTime()
         {
-            return new DateTime(this.Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value).ToLocalTime();
+            return new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value, DateTimeKind.Local);
+        }
+
+        public string ToString(string format)
+        {
+            return ToDateTime().ToString(format);
+        }
+
+        public CCDateTime SetDate(CCDateOnly date)
+        {
+            return new CCDateTime(date.Year.Value, date.Month.Value, date.Day.Value, Hour.Value, Minute.Value, Second.Value);
         }
 
         public CCDateOnly ToDateOnly()
         {
             return new CCDateOnly(Year.Value, Month.Value, Day.Value);
+        }
+
+        public CCDateTime SetTime(CCTimeOnly time)
+        {
+            return new CCDateTime(Year.Value, Month.Value, Day.Value, time.Hour.Value, time.Minute.Value, time.Second.Value);
         }
 
         public CCTimeOnly ToTimeOnly()
@@ -75,12 +95,24 @@ namespace Domain.Entity
         
         public CCDateTime Add(CCTimeSpan timeSpan) => new(ToDateTime().AddSeconds(timeSpan.TotalSeconds));
         
-        public CCDateTime AddSeconds(double seconds) => Add(CCTimeSpan.FromSeconds(seconds));
-        public CCDateTime AddMinutes(double minutes) => Add(CCTimeSpan.FromMinutes(minutes));
-        public CCDateTime AddHours(double hours) => Add(CCTimeSpan.FromHours(hours));
-        public CCDateTime AddDays(double days) => Add(CCTimeSpan.FromDays(days));
-        public CCDateTime AddYears(double years) => Add(CCTimeSpan.FromYears(years));
-        
+        public CCDateTime AddSeconds(double seconds) => new(ToDateTime().AddSeconds(seconds));
+        public CCDateTime AddMinutes(double minutes) => new(ToDateTime().AddMinutes(minutes));
+        public CCDateTime AddHours(double hours) => new(ToDateTime().AddHours(hours));
+        public CCDateTime AddDays(int days) => new(ToDateTime().AddDays(days));
+        public CCDateTime AddMonths(int months) => new(ToDateTime().AddMonths(months));
+
+        public CCDateTime AddYears(int years)
+        {
+            try
+            {
+                return new CCDateTime(Year.Value + years, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value);
+            }
+            catch (ArgumentOutOfRangeException) // 「うるう年の2/29」.AddYear(1)が落ちるのを回避
+            {
+                return new CCDateTime(ToDateTime().AddYears(years));
+            }
+        }
+
         public static CCTimeSpan operator -(CCDateTime left, CCDateTime right) =>
             CCTimeSpan.FromSeconds((left.ToDateTime() - right.ToDateTime()).TotalSeconds);
         public static CCDateTime operator +(CCDateTime dateTime, CCTimeSpan timeSpan) =>
@@ -98,10 +130,18 @@ namespace Domain.Entity
             return this >= start && this <= end;
         }
         
+        public static bool operator ==(CCDateTime left, CCDateTime right) => left.CompareTo(right) == 0;
+        public static bool operator !=(CCDateTime left, CCDateTime right) => left.CompareTo(right) != 0;
         public static bool operator <(CCDateTime left, CCDateTime right) => left.CompareTo(right) < 0;
         public static bool operator >(CCDateTime left, CCDateTime right) => left.CompareTo(right) > 0;
         public static bool operator <=(CCDateTime left, CCDateTime right) => left.CompareTo(right) <= 0;
         public static bool operator >=(CCDateTime left, CCDateTime right) => left.CompareTo(right) >= 0;
+        
+        public static CCDateTime Today => new(DateTime.Today);
+        public static CCDateTime Now => new(DateTime.Now);
+        public static CCDateTime MinValue => new(DateTime.MinValue);
+        public static CCDateTime MaxValue => new(DateTime.MaxValue);
+        public DayOfWeek DayOfWeek => ToDateTime().DayOfWeek;
 
         public int YearValue => Year.Value;
         public int MonthValue => Month.Value;
@@ -109,9 +149,25 @@ namespace Domain.Entity
         public int HourValue => Hour.Value;
         public int MinuteValue => Minute.Value;
         public int SecondValue => Second.Value;
+
+        public bool Equals(CCDateTime other)
+        {
+            return Year.Equals(other.Year) && Month.Equals(other.Month) && Day.Equals(other.Day) &&
+                   Hour.Equals(other.Hour) && Minute.Equals(other.Minute) && Second.Equals(other.Second);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is CCDateTime other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Year, Month, Day, Hour, Minute, Second);
+        }
     }
 
-    public readonly struct Year : IComparable<Year>
+    public readonly struct Year : IComparable<Year>, IEquatable<Year>
     {
         public int Value { get; }
 
@@ -122,10 +178,25 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Year other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Year other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Year other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
 
-    public readonly struct Month : IComparable<Month>
+    public readonly struct Month : IComparable<Month>, IEquatable<Month>
     {
         public int Value { get; }
 
@@ -136,9 +207,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Month other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Month other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Month other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Day : IComparable<Day>
+    public readonly struct Day : IComparable<Day>, IEquatable<Day>
     {
         public int Value { get; }
 
@@ -149,9 +235,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Day other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Day other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Day other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Hour : IComparable<Hour>
+    public readonly struct Hour : IComparable<Hour>, IEquatable<Hour>
     {
         public int Value { get; }
 
@@ -162,9 +263,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Hour other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Hour other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Hour other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Minute : IComparable<Minute>
+    public readonly struct Minute : IComparable<Minute>, IEquatable<Minute>
     {
         public int Value { get; }
 
@@ -175,9 +291,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Minute other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Minute other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Minute other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Second : IComparable<Second>
+    public readonly struct Second : IComparable<Second>, IEquatable<Second>
     {
         public int Value { get; }
 
@@ -188,6 +319,21 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Second other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Second other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Second other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
     
     public readonly struct CCDateOnly : IComparable<CCDateOnly>
@@ -214,15 +360,20 @@ namespace Domain.Entity
             return Day.CompareTo(other.Day);
         }
         
-        public CCDateOnly AddDays(double days) => 
+        public CCDateOnly AddDays(int days) => 
             new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
                 .AddDays(days)
                 .ToDateOnly();
 
-        public CCDateOnly AddYears(double years) =>
+        public CCDateOnly AddYears(int years) =>
             new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
                 .AddYears(years)
                 .ToDateOnly();
+        
+        public DateTime ToDateTime()
+        {
+            return new DateTime(Year.Value, Month.Value, Day.Value).ToLocalTime().Date;
+        }
     }
 
     public readonly struct CCTimeOnly : IComparable<CCTimeOnly>

@@ -46,8 +46,10 @@ namespace Infrastructure
         }
         
         private ScheduleRepository? _scheduleRepo;
+        private TaskRepository? _taskRepo;
         public IScheduleRepository ScheduleRepo => _scheduleRepo ??= new ScheduleRepository(_liteDb.DB);
-        
+        public ITaskRepository TaskRepo => _taskRepo ??= new TaskRepository(_liteDb.DB);
+
         private HistoryRepository? _historyRepo;
         public IHistoryRepository HistoryRepo => _historyRepo ??= new HistoryRepository(_liteDb.DB);
         

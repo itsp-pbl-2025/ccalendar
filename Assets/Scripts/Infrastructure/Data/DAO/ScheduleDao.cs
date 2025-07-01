@@ -14,8 +14,8 @@ namespace Infrastructure.Data.DAO
                 Description = sc.Description,
                 Duration = new DScheduleDuration()
                 {
-                    StartTime = sc.Duration.StartTime,
-                    EndTime = sc.Duration.EndTime,
+                    StartTime = sc.Duration.StartTime.ToDateTime(),
+                    EndTime = sc.Duration.EndTime.ToDateTime(),
                     IsAllDay = sc.Duration.IsAllDay,
                 },
                 Periodic = sc.Periodic is null
@@ -31,7 +31,7 @@ namespace Infrastructure.Data.DAO
         public static Schedule ToDomain(this DSchedule sc)
         {
             ScheduleDuration duration =
-                new ScheduleDuration(sc.Duration.StartTime, sc.Duration.EndTime, sc.Duration.IsAllDay);
+                new ScheduleDuration(new CCDateTime(sc.Duration.StartTime), new CCDateTime(sc.Duration.EndTime), sc.Duration.IsAllDay);
             SchedulePeriodic periodic = sc.Periodic is null
                 ? null
                 : new SchedulePeriodic(sc.Periodic.PeriodicType, sc.Periodic.Span);
