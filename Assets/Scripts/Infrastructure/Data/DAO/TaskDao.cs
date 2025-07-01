@@ -5,9 +5,9 @@ namespace Infrastructure.Data.DAO
 {
     public static class TaskDao
     {
-        public static DTask FromDomain(this Task ts)
+        public static DScheduleTask FromDomain(this ScheduleTask ts)
         {
-            return new DTask()
+            return new DScheduleTask()
             {
                 Id = ts.Id,
                 Title = ts.Title,
@@ -17,9 +17,9 @@ namespace Infrastructure.Data.DAO
             };
         }
 
-        public static Task ToDomain(this DTask ts)
+        public static ScheduleTask ToDomain(this DScheduleTask ts)
         {
-            return new Task(ts.Id, ts.Title, ts.Description, ts.Priority, ts.Deadline);
+            return new ScheduleTask(ts.Id, ts.Title, ts.Description, ts.Priority, ts.Deadline);
         }
     }
 }

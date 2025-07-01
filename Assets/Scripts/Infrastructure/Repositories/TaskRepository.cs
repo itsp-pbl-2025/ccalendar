@@ -9,37 +9,37 @@ namespace Infrastructure.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        private readonly ILiteCollection<DTask> _col;
+        private readonly ILiteCollection<DScheduleTask> _col;
         
-        public TaskRepository(LiteDatabase db) => _col = db.GetCollection<DTask>("task");
+        public TaskRepository(LiteDatabase db) => _col = db.GetCollection<DScheduleTask>("task");
         
-        public Task Insert(Task task)
+        public ScheduleTask Insert(ScheduleTask scheduleTask)
         {
-            var dtask = task.FromDomain();
+            var dtask = scheduleTask.FromDomain();
             dtask.Id = _col.Insert(dtask).AsInt32;
             return dtask.ToDomain();
         }
 
-        public bool Update(Task task)
+        public bool Update(ScheduleTask scheduleTask)
         {
-            var dtask = task.FromDomain();
+            var dtask = scheduleTask.FromDomain();
             return _col.Update(dtask);
         }
         
-        public bool InsertUpdate(Task task)
+        public bool InsertUpdate(ScheduleTask scheduleTask)
         {
-            var dtask = task.FromDomain();
+            var dtask = scheduleTask.FromDomain();
             return _col.Upsert(dtask);
         }
         
-        public bool Remove(Task task)
+        public bool Remove(ScheduleTask scheduleTask)
         {
-            return _col.Delete(task.Id);
+            return _col.Delete(scheduleTask.Id);
         }
         
-        public ICollection<Task> GetAll()
+        public ICollection<ScheduleTask> GetAll()
         {
-            var result = new List<Task>();
+            var result = new List<ScheduleTask>();
             foreach (var task in _col.FindAll())
             {
                 result.Add(task.ToDomain());

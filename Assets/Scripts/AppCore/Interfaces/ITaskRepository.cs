@@ -5,10 +5,10 @@ namespace AppCore.Interfaces
 {
     public interface ITaskRepository
     {
-        public Task Insert(Task task);
-        public bool Update(Task task);
-        public bool InsertUpdate(Task task);
-        public bool Remove(Task task);
-        public ICollection<Task> GetAll();
+        public ScheduleTask Insert(ScheduleTask scheduleTask);
+        public bool Update(ScheduleTask scheduleTask);
+        public bool InsertUpdate(ScheduleTask scheduleTask);
+        public bool Remove(ScheduleTask scheduleTask);
+        public ICollection<ScheduleTask> GetAll();
     }
 }

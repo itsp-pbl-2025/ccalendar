@@ -9,9 +9,9 @@ namespace Test.MockData
 {
     public static class MockTask
     {
-        public static List<DTask> GetMockTasksWithoutId()
+        public static List<DScheduleTask> GetMockTasksWithoutId()
         {
-            List<Task> tasks = new List<Task>
+            List<ScheduleTask> tasks = new List<ScheduleTask>
             {
                 new(0,
                     "High Priority Task",
@@ -34,9 +34,9 @@ namespace Test.MockData
             return tasks.Select(e => e.FromDomain()).ToList();
         }
 
-        public static List<DTask> GetMockTasks()
+        public static List<DScheduleTask> GetMockTasks()
         {
-            List<Task> tasks = new List<Task>
+            List<ScheduleTask> tasks = new List<ScheduleTask>
             {
                 new(1,
                     "High Priority Task",
