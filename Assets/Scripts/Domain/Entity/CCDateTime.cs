@@ -11,8 +11,6 @@ namespace Domain.Entity
         public Minute Minute { get; }
         public Second Second { get; }
 
-        private readonly bool _localized;
-
         public CCDateTime(int year, int month, int day, int hour, int minute, int second)
         {
             Year = new Year(year);
@@ -21,7 +19,6 @@ namespace Domain.Entity
             Hour = new Hour(hour);
             Minute = new Minute(minute);
             Second = new Second(second);
-            _localized = true;
         }
         
         public CCDateTime(int year, int month, int day) : this(year, month, day, 0, 0, 0)
@@ -38,7 +35,6 @@ namespace Domain.Entity
             Hour = new Hour(datetime.Hour);
             Minute = new Minute(datetime.Minute);
             Second = new Second(datetime.Second);
-            _localized = true;
         }
         
         public CCDateTime(CCDateOnly date, CCTimeOnly time)
@@ -49,9 +45,7 @@ namespace Domain.Entity
 
         public DateTime ToDateTime()
         {
-            var dateTime = new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value, 
-                _localized ? DateTimeKind.Local : DateTimeKind.Utc);
-            return _localized ? dateTime : dateTime.ToLocalTime();
+            return new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value, DateTimeKind.Local);
         }
 
         public string ToString(string format)
@@ -105,16 +99,18 @@ namespace Domain.Entity
         public CCDateTime AddMinutes(double minutes) => new(ToDateTime().AddMinutes(minutes));
         public CCDateTime AddHours(double hours) => new(ToDateTime().AddHours(hours));
         public CCDateTime AddDays(int days) => new(ToDateTime().AddDays(days));
-        
-        public CCDateTime AddMonths(int months)
-        {
-            months += Month.Value - 1;
-            return new CCDateTime(Year.Value + months / 12, months % 12 + 1, Day.Value, Hour.Value, Minute.Value, Second.Value);
-        }
+        public CCDateTime AddMonths(int months) => new(ToDateTime().AddMonths(months));
 
         public CCDateTime AddYears(int years)
         {
-            return new CCDateTime(Year.Value + years, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value);
+            try
+            {
+                return new CCDateTime(Year.Value + years, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value);
+            }
+            catch (ArgumentOutOfRangeException) // 「うるう年の2/29」.AddYear(1)が落ちるのを回避
+            {
+                return new CCDateTime(ToDateTime().AddYears(years));
+            }
         }
 
         public static CCTimeSpan operator -(CCDateTime left, CCDateTime right) =>
