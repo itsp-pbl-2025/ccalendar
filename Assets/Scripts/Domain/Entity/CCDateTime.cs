@@ -2,7 +2,7 @@ using System;
 
 namespace Domain.Entity
 {
-    public readonly struct CCDateTime : IComparable<CCDateTime>
+    public readonly struct CCDateTime : IComparable<CCDateTime>, IEquatable<CCDateTime>
     {
         public Year Year { get; }
         public Month Month { get; }
@@ -119,7 +119,7 @@ namespace Domain.Entity
         public static CCDateTime Now => new(DateTime.Now);
         public static CCDateTime MinValue => new(DateTime.MinValue);
         public static CCDateTime MaxValue => new(DateTime.MaxValue);
-        public System.DayOfWeek DayOfWeek => ToDateTime().DayOfWeek;
+        public DayOfWeek DayOfWeek => ToDateTime().DayOfWeek;
 
         public int YearValue => Year.Value;
         public int MonthValue => Month.Value;
@@ -127,9 +127,25 @@ namespace Domain.Entity
         public int HourValue => Hour.Value;
         public int MinuteValue => Minute.Value;
         public int SecondValue => Second.Value;
+
+        public bool Equals(CCDateTime other)
+        {
+            return Year.Equals(other.Year) && Month.Equals(other.Month) && Day.Equals(other.Day) &&
+                   Hour.Equals(other.Hour) && Minute.Equals(other.Minute) && Second.Equals(other.Second);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is CCDateTime other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Year, Month, Day, Hour, Minute, Second);
+        }
     }
 
-    public readonly struct Year : IComparable<Year>
+    public readonly struct Year : IComparable<Year>, IEquatable<Year>
     {
         public int Value { get; }
 
@@ -140,10 +156,25 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Year other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Year other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Year other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
 
-    public readonly struct Month : IComparable<Month>
+    public readonly struct Month : IComparable<Month>, IEquatable<Month>
     {
         public int Value { get; }
 
@@ -154,9 +185,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Month other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Month other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Month other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Day : IComparable<Day>
+    public readonly struct Day : IComparable<Day>, IEquatable<Day>
     {
         public int Value { get; }
 
@@ -167,9 +213,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Day other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Day other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Day other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Hour : IComparable<Hour>
+    public readonly struct Hour : IComparable<Hour>, IEquatable<Hour>
     {
         public int Value { get; }
 
@@ -180,9 +241,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Hour other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Hour other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Hour other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Minute : IComparable<Minute>
+    public readonly struct Minute : IComparable<Minute>, IEquatable<Minute>
     {
         public int Value { get; }
 
@@ -193,9 +269,24 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Minute other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Minute other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Minute other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
 
-    public readonly struct Second : IComparable<Second>
+    public readonly struct Second : IComparable<Second>, IEquatable<Second>
     {
         public int Value { get; }
 
@@ -206,6 +297,21 @@ namespace Domain.Entity
             Value = value;
         }
         public int CompareTo(Second other) => Value.CompareTo(other.Value);
+
+        public bool Equals(Second other)
+        {
+            return Value == other.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Second other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
     }
     
     public readonly struct CCDateOnly : IComparable<CCDateOnly>
