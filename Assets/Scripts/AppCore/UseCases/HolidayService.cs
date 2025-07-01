@@ -22,21 +22,18 @@ namespace AppCore.UseCases
 
 
         public HolidayService(
-            IScheduleRepository repo,
             CCDateOnly startDate,
             CCDateOnly endDate,
             string name = "")
         {
             Name = name != "" ? name : GetType().Name;
-            _scheduleRepo = repo;
 
             _api = new RequestHandler("https://holidays-jp.shogo82148.com/");
             GetHolidays(startDate, endDate).Forget();
         }
 
-        public HolidayService(IScheduleRepository repo, string name = "")
+        public HolidayService(string name = "")
             : this(
-                repo,
                 new CCDateOnly(DateTime.Today.Year - DefaultYearSpan, 1, 1), // 5 年前 1/1
                 new CCDateOnly(DateTime.Today.Year + DefaultYearSpan, 12, 31), // 5 年後 12/31
                 name)

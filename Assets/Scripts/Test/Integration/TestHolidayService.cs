@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppCore.UseCases;
-using AppCore.Interfaces;
 using Domain.Entity;
 using NUnit.Framework;
 using R3;
@@ -19,8 +18,7 @@ namespace Test.Integration
             var startDate = new CCDateOnly(2022, 1, 1);
             var endDate = new CCDateOnly(2022, 12, 31);
             
-            var repo = new FakeScheduleRepository();
-            var service = new HolidayService(repo, startDate, endDate);
+            var service = new HolidayService(startDate, endDate);
 
             if (!service.HolidayLoaded.Value)
                 await service.HolidayLoaded.Where(x => x).FirstAsync();
@@ -39,35 +37,7 @@ namespace Test.Integration
             Assert.IsFalse(service.IsHoliday(notd));
             Assert.IsFalse(service.TryGetHolidayName(notd, out var n));
             Assert.AreEqual(n, "");
-            //ctx.Dispose();
         }
     }
-    public class FakeScheduleRepository : IScheduleRepository
-    {
-        // 空実装
-        public Schedule Insert(Schedule schedule)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(Schedule schedule)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool InsertUpdate(Schedule schedule)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(Schedule schedule)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICollection<Schedule> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-    }
+    
 }
