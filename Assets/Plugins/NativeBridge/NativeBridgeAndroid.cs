@@ -1,6 +1,5 @@
 using Unity.Notifications.Android;
 using UnityEngine;
-
 using System;
 
 namespace NativeBridge
@@ -12,18 +11,18 @@ namespace NativeBridge
          public static AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
          public static AndroidJavaObject vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
      # else
-     		public static AndroidJavaClass unityPlayer;
-     		public static AndroidJavaObject currentActivity;
-     		public static AndroidJavaObject vibrator;
+     		public static AndroidJavaClass UnityPlayer;
+     		public static AndroidJavaObject CurrentActivity;
+     		public static AndroidJavaObject Vibrator;
      # endif
         private static AudioSource _audioSource;
-        readonly string channelID = "default_channel";
+        readonly string _channelId = "default_channel";
         public NativeBridgeAndroid()
         {  
             // Androidの通知チャネルを登録
             var channel = new AndroidNotificationChannel
             {
-                Id = channelID,
+                Id = _channelId,
                 Name = "Default Channel",
                 Importance = Importance.Default,
                 Description = "Default channel for notifications"
@@ -43,7 +42,7 @@ namespace NativeBridge
                 FireTime = datetime
             };
 
-            return AndroidNotificationCenter.SendNotification(notification, channelID).ToString();
+            return AndroidNotificationCenter.SendNotification(notification, _channelId).ToString();
         }
 
         public void RemoveNotification(string notificationID)
@@ -53,7 +52,7 @@ namespace NativeBridge
 
         public void Vibrate(long duration)
         {
-            vibrator.Call("vibrate", duration);
+            Vibrator.Call("vibrate", duration);
         }
 
         public void PlaySound(string soundName)

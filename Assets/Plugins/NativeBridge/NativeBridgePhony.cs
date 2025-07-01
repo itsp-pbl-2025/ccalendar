@@ -14,9 +14,9 @@ namespace NativeBridge
             return "phony_id";
         }
 
-        public void RemoveNotification(string notificationID)
+        public void RemoveNotification(string notificationId)
         {
-            Console.WriteLine($"[Phony] RemoveNotification: {notificationID}");
+            Console.WriteLine($"[Phony] RemoveNotification: {notificationId}");
         }
 
         public void Vibrate(long duration)
