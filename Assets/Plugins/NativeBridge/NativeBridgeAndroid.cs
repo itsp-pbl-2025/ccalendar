@@ -96,7 +96,7 @@ namespace NativeBridge
             if (_audioSource == null)
             {
                 GameObject audioObject = new GameObject("NativeAudioSource");
-                UnityEngine.Object.DontDestroyOnLoad(audioObject); // シーン跨いでも残すなら
+                UnityEngine.Object.DontDestroyOnLoad(audioObject);
                 _audioSource = audioObject.AddComponent<AudioSource>();
             }
 
