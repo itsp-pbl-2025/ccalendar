@@ -28,7 +28,7 @@ namespace AppCore.UseCases
         /// </summary>
         /// <param name="tasks">スケジュールを設定するタスクのリスト</param>
         /// <param name="startDate">スケジュールの自動設定を開始する開始時刻</param>
-        public void GenerateSchedule(List<CCTask> tasks, DateTime startDate)
+        public void GenerateSchedule(IEnumerable<CCTask> tasks, DateTime startDate)
         {
             List<CCTask> sortedTasks = SortCCTasksByDeadline(tasks);
 
@@ -56,7 +56,7 @@ namespace AppCore.UseCases
         /// </summary>
         /// <param name="tasks"></param>
         /// <returns></returns>
-        private List<CCTask> SortCCTasksByDeadline(List<CCTask> tasks)
+        private List<CCTask> SortCCTasksByDeadline(IEnumerable<CCTask> tasks)
         {
             return tasks.OrderBy(task => task.Deadline).ToList();
         }
