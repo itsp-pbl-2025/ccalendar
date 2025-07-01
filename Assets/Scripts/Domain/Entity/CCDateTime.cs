@@ -11,14 +11,17 @@ namespace Domain.Entity
         public Minute Minute { get; }
         public Second Second { get; }
 
+        private readonly bool _localized;
+
         public CCDateTime(int year, int month, int day, int hour, int minute, int second)
         {
-            Year = new Year(year + (month - 1) / 12);
-            Month = new Month((month - 1) % 12 + 1);
+            Year = new Year(year);
+            Month = new Month(month);
             Day = new Day(day);
             Hour = new Hour(hour);
             Minute = new Minute(minute);
             Second = new Second(second);
+            _localized = true;
         }
         
         public CCDateTime(int year, int month, int day) : this(year, month, day, 0, 0, 0)
@@ -28,12 +31,14 @@ namespace Domain.Entity
 
         public CCDateTime(DateTime datetime)
         {
+            datetime = datetime.ToLocalTime();
             Year = new Year(datetime.Year);
             Month = new Month(datetime.Month);
             Day = new Day(datetime.Day);
             Hour = new Hour(datetime.Hour);
             Minute = new Minute(datetime.Minute);
             Second = new Second(datetime.Second);
+            _localized = true;
         }
         
         public CCDateTime(CCDateOnly date, CCTimeOnly time)
@@ -44,7 +49,9 @@ namespace Domain.Entity
 
         public DateTime ToDateTime()
         {
-            return new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value).ToLocalTime();
+            var dateTime = new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value, 
+                _localized ? DateTimeKind.Local : DateTimeKind.Utc);
+            return _localized ? dateTime : dateTime.ToLocalTime();
         }
 
         public string ToString(string format)
@@ -97,10 +104,19 @@ namespace Domain.Entity
         public CCDateTime AddSeconds(double seconds) => new(ToDateTime().AddSeconds(seconds));
         public CCDateTime AddMinutes(double minutes) => new(ToDateTime().AddMinutes(minutes));
         public CCDateTime AddHours(double hours) => new(ToDateTime().AddHours(hours));
-        public CCDateTime AddDays(double days) => new(ToDateTime().AddDays(days));
-        public CCDateTime AddMonths(double months) => new(ToDateTime().AddMonths((int)months));
-        public CCDateTime AddYears(double years) => new(ToDateTime().AddYears((int)years));
+        public CCDateTime AddDays(int days) => new(ToDateTime().AddDays(days));
         
+        public CCDateTime AddMonths(int months)
+        {
+            months += Month.Value - 1;
+            return new CCDateTime(Year.Value + months / 12, months % 12 + 1, Day.Value, Hour.Value, Minute.Value, Second.Value);
+        }
+
+        public CCDateTime AddYears(int years)
+        {
+            return new CCDateTime(Year.Value + years, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value);
+        }
+
         public static CCTimeSpan operator -(CCDateTime left, CCDateTime right) =>
             CCTimeSpan.FromSeconds((left.ToDateTime() - right.ToDateTime()).TotalSeconds);
         public static CCDateTime operator +(CCDateTime dateTime, CCTimeSpan timeSpan) =>
@@ -348,12 +364,12 @@ namespace Domain.Entity
             return Day.CompareTo(other.Day);
         }
         
-        public CCDateOnly AddDays(double days) => 
+        public CCDateOnly AddDays(int days) => 
             new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
                 .AddDays(days)
                 .ToDateOnly();
 
-        public CCDateOnly AddYears(double years) =>
+        public CCDateOnly AddYears(int years) =>
             new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
                 .AddYears(years)
                 .ToDateOnly();
