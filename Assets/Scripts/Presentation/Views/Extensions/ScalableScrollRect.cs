@@ -58,6 +58,7 @@ namespace Presentation.Views.Extensions
         private readonly ReactiveProperty<int> _pointersCount = new(0);
 
         private float _currentScale, _standardHeight;
+        private int _scrollingPointerId = -1;
         
         public override void OnInitializePotentialDrag(PointerEventData eventData)
         {
@@ -89,7 +90,16 @@ namespace Presentation.Views.Extensions
                 _pointersCount.Value = _pointerToTouch.Count;
             }
 
-            base.OnBeginDrag(eventData);
+            if (_pointersCount.Value == 1)
+            {
+                _scrollingPointerId = eventData.pointerId;
+                base.OnBeginDrag(eventData);
+            }
+        }
+
+        public override void OnDrag(PointerEventData eventData)
+        {
+            if (_scrollingPointerId == eventData.pointerId) base.OnDrag(eventData);
         }
 
         public override void OnEndDrag(PointerEventData eventData)
@@ -98,7 +108,11 @@ namespace Presentation.Views.Extensions
             _touchToPointer.Remove(_pointerToTouch[eventData.pointerId]);
             _pointerToTouch.Remove(eventData.pointerId);
             _pointersCount.Value = _pointerToTouch.Count;
-            base.OnEndDrag(eventData);
+            if (_scrollingPointerId == eventData.pointerId)
+            {
+                _scrollingPointerId = -1;
+                base.OnEndDrag(eventData);
+            }
         }
 
         protected override void Awake()
