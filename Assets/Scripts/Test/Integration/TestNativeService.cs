@@ -9,8 +9,8 @@ namespace Test.Integration
         public void TestConstruct()
         {
             var service = new NativeService();
-            NUnit.Framework.Assert.IsNotNull(service);
-            NUnit.Framework.Assert.IsNotEmpty(service.Name);
+            Assert.IsNotNull(service);
+            Assert.IsNotEmpty(service.Name);
         
         }
     }

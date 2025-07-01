@@ -81,9 +81,9 @@ namespace NativeBridge
             return AndroidNotificationCenter.SendNotification(notification, _channelId);
         }
 
-        public void RemoveNotification(string notificationID)
+        public void RemoveNotification(int notificationId)
         {
-            AndroidNotificationCenter.CancelNotification(int.Parse(notificationID));
+            AndroidNotificationCenter.CancelNotification(notificationId);
         }
 
         public void Vibrate(long duration)

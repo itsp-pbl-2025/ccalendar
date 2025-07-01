@@ -18,7 +18,7 @@ namespace NativeBridge
         /// </summary>
         /// <param name="notificationId">キャンセルする通知のIDを指定する。
         /// </param>
-        public void RemoveNotification(string notificationId);
+        public void RemoveNotification(int notificationId);
         
         /// <summary>
         /// バイブレーションを指定した時間だけ行う。
