@@ -1,0 +1,6 @@
+{
+	"name": "NativeBridge",
+	"references": [
+		"Unity.Notifications.Android"
+	]
+}
