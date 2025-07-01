@@ -6,10 +6,46 @@ namespace NativeBridge
 {
     public class NativeBridgeAndroid: INative
     {
-# if UNITY_ANDROID && !UNITY_EDITOR
-         public static AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-         public static AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-         public static AndroidJavaObject vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+     # if UNITY_ANDROID && !UNITY_EDITOR
+        private static AndroidJavaClass _unityPlayer;
+        private static AndroidJavaObject _currentActivity;
+        private static AndroidJavaObject _vibrator;
+
+        public static AndroidJavaClass UnityPlayer
+        {
+            get
+            {
+                if (_unityPlayer == null)
+                {
+                    _unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                }
+                return _unityPlayer;
+            }
+        }
+
+        public static AndroidJavaObject CurrentActivity
+        {
+            get
+            {
+                if (_currentActivity == null)
+                {
+                    _currentActivity = UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+                }
+                return _currentActivity;
+            }
+        }
+
+        public static AndroidJavaObject Vibrator
+        {
+            get
+            {
+                if (_vibrator == null)
+                {
+                    _vibrator = CurrentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+                }
+                return _vibrator;
+            }
+        }
      # else
      		public static AndroidJavaClass UnityPlayer;
      		public static AndroidJavaObject CurrentActivity;
