@@ -10,11 +10,13 @@ namespace Presentation.Views.Scene.Calendar
     public class CalendarManager : MonoBehaviour
     {
         private const float TimeSwitchMode = 0.333f;
-        
+
+        [SerializeField] private PartsScheduleInDay schedulePrefab;
         [SerializeField] private CanvasGroup dayCanvas, weekCanvas;
         [SerializeField] private RectTransform calendar;
         
         private HistoryService _historyService;
+        
         
         private CalendarType _calendarType = CalendarType.Invalid;
 
@@ -39,16 +41,18 @@ namespace Presentation.Views.Scene.Calendar
                 _modeSeq = DOTween.Sequence();
                 if (modeWeek)
                 {
+                    dayCanvas.alpha = 0f;
                     dayCanvas.interactable = false;
-                    _modeSeq.Append(DOVirtual.Float(1f, 0f, TimeSwitchMode, a => dayCanvas.alpha = a))
-                        .Join(DOVirtual.Float(0f, 1f, TimeSwitchMode, a => weekCanvas.alpha = a))
+                    weekCanvas.interactable = false;
+                    _modeSeq.Append(DOVirtual.Float(0f, 1f, TimeSwitchMode, a => weekCanvas.alpha = a))
                         .OnComplete(() => weekCanvas.interactable = true);
                 }
                 else
                 {
+                    weekCanvas.alpha = 0f;
                     weekCanvas.interactable = false;
-                    _modeSeq.Append(DOVirtual.Float(1f, 0f, TimeSwitchMode, a => weekCanvas.alpha = a))
-                        .Join(DOVirtual.Float(0f, 1f, TimeSwitchMode, a => dayCanvas.alpha = a))
+                    dayCanvas.interactable = false;
+                    _modeSeq.Append(DOVirtual.Float(0f, 1f, TimeSwitchMode, a => dayCanvas.alpha = a))
                         .OnComplete(() => dayCanvas.interactable = true);
                 }
             }
@@ -74,11 +78,18 @@ namespace Presentation.Views.Scene.Calendar
                     }
                 }
             }
+
+            _calendarType = type;
         }
 
         private static bool IsCalendarModeWeek(CalendarType type)
         {
             return type is CalendarType.ThreeWeeks or CalendarType.OneMonth;
+        }
+
+        private void OnDisable()
+        {
+            _historyService.UpdateHistory(HistoryType.PreviousCalendarType, _calendarType);
         }
     }
 }
