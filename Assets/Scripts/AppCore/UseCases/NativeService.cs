@@ -34,6 +34,7 @@ namespace AppCore.Native
         public void ScheduleNotificationWithSchedule(Schedule schedule)
         {
              // TODO: Implementation
+             throw new NotImplementedException();
         } 
     }
 }
