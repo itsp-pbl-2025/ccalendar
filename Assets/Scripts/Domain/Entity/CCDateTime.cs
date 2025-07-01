@@ -13,7 +13,7 @@ namespace Domain.Entity
 
         public CCDateTime(int year, int month, int day, int hour, int minute, int second)
         {
-            Year = new Year(year + month / 12);
+            Year = new Year(year + (month - 1) / 12);
             Month = new Month((month - 1) % 12 + 1);
             Day = new Day(day);
             Hour = new Hour(hour);
@@ -21,15 +21,10 @@ namespace Domain.Entity
             Second = new Second(second);
         }
         
-        public CCDateTime(int year, int month, int day)
+        public CCDateTime(int year, int month, int day) : this(year, month, day, 0, 0, 0)
         {
-            Year = new Year(year + month / 12);
-            Month = new Month((month - 1) % 12 + 1);
-            Day = new Day(day);
-            Hour = new Hour(0);
-            Minute = new Minute(0);
-            Second = new Second(0);
         }
+
 
         public CCDateTime(DateTime datetime)
         {
@@ -89,10 +84,10 @@ namespace Domain.Entity
         
         public CCDateTime Add(CCTimeSpan timeSpan) => new(ToDateTime().AddSeconds(timeSpan.TotalSeconds));
         
-        public CCDateTime AddSeconds(double seconds) => new(ToDateTime().AddSeconds((int)seconds));
-        public CCDateTime AddMinutes(double minutes) => new(ToDateTime().AddMinutes((int)minutes));
-        public CCDateTime AddHours(double hours) => new(ToDateTime().AddHours((int)hours));
-        public CCDateTime AddDays(double days) => new(ToDateTime().AddDays((int)days));
+        public CCDateTime AddSeconds(double seconds) => new(ToDateTime().AddSeconds(seconds));
+        public CCDateTime AddMinutes(double minutes) => new(ToDateTime().AddMinutes(minutes));
+        public CCDateTime AddHours(double hours) => new(ToDateTime().AddHours(hours));
+        public CCDateTime AddDays(double days) => new(ToDateTime().AddDays(days));
         public CCDateTime AddMonths(double months) => new(ToDateTime().AddMonths((int)months));
         public CCDateTime AddYears(double years) => new(ToDateTime().AddYears((int)years));
         
