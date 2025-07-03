@@ -13,6 +13,8 @@ namespace AppCore.UseCases
         
         public string Name { get; }
         
+        public void Setup() {}
+        
         public HolidayService(IScheduleRepository repo, string name = "")
         {
             Name = name != "" ? name : GetType().Name;

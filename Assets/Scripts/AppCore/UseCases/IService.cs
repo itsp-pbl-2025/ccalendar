@@ -5,5 +5,7 @@ namespace AppCore.UseCases
     public interface IService : IDisposable
     {
         public string Name { get; }
+
+        public void Setup();
     }
 }
