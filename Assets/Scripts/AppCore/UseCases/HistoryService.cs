@@ -228,6 +228,8 @@ namespace AppCore.UseCases
                     return $"{doValue.Year.Value}-{doValue.Month.Value:d2}-{doValue.Day.Value:d2}";
                 case CCTimeOnly toValue:
                     return $"{toValue.Hour.Value:d2}:{toValue.Minute.Value:d2}:{toValue.Second.Value:d2}";
+                case CCTimeSpan tsValue:
+                    return Convert.ToBase64String(BitConverter.GetBytes(tsValue.TotalSeconds));
             }
             
             return EncodeDefault(value);
@@ -296,6 +298,8 @@ namespace AppCore.UseCases
                 var match = regex.Match(str).Groups;
                 return (T)(object)new CCTimeOnly(int.Parse(match[1].Value), int.Parse(match[2].Value), int.Parse(match[3].Value));
             }
+            if (type == typeof(CCTimeSpan))
+                return (T)(object)CCTimeSpan.FromSeconds(BitConverter.ToDouble(Convert.FromBase64String(str), 0));
             
             return DecodeDefault<T>(str);
         }
