@@ -336,7 +336,7 @@ namespace Domain.Entity
         }
     }
     
-    public readonly struct CCDateOnly : IComparable<CCDateOnly>
+    public readonly struct CCDateOnly : IComparable<CCDateOnly>, IEquatable<CCDateOnly>
     {
         public Year Year { get; }
         public Month Month { get; }
@@ -348,6 +348,8 @@ namespace Domain.Entity
             Month = new Month(month);
             Day = new Day(day);
         }
+        
+        public static CCDateOnly Today => CCDateTime.Today.ToDateOnly();
 
         public int CompareTo(CCDateOnly other)
         {
@@ -374,9 +376,24 @@ namespace Domain.Entity
         {
             return new DateTime(Year.Value, Month.Value, Day.Value).ToLocalTime().Date;
         }
+
+        public bool Equals(CCDateOnly other)
+        {
+            return Year.Equals(other.Year) && Month.Equals(other.Month) && Day.Equals(other.Day);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is CCDateOnly other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Year, Month, Day);
+        }
     }
 
-    public readonly struct CCTimeOnly : IComparable<CCTimeOnly>
+    public readonly struct CCTimeOnly : IComparable<CCTimeOnly>, IEquatable<CCTimeOnly>
     {
         public Hour Hour { get; }
         public Minute Minute { get; }
@@ -388,6 +405,8 @@ namespace Domain.Entity
             Minute = new Minute(minute);
             Second = new Second(second);
         }
+        
+        public static CCTimeOnly Now => CCDateTime.Today.ToTimeOnly();
 
         public int CompareTo(CCTimeOnly other)
         {
@@ -419,6 +438,21 @@ namespace Domain.Entity
             var dateTime = new CCDateTime(1, 1, 1, Hour.Value, Minute.Value, Second.Value)
                 .AddSeconds(seconds);
             return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
+        }
+
+        public bool Equals(CCTimeOnly other)
+        {
+            return Hour.Equals(other.Hour) && Minute.Equals(other.Minute) && Second.Equals(other.Second);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is CCTimeOnly other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Hour, Minute, Second);
         }
     }
 }
