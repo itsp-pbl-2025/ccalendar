@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using AppCore.Interfaces;
 using Domain.Entity;
 using Domain.Enum;
@@ -218,6 +219,12 @@ namespace AppCore.UseCases
                     return boolValue ? "t" : "f";
                 case string stringValue:
                     return stringValue;
+                case CCDateTime dtValue:
+                    return $"{dtValue.Year.Value}-{dtValue.Month.Value:d2}-{dtValue.Day.Value:d2}T{dtValue.Hour.Value:d2}:{dtValue.Minute.Value:d2}:{dtValue.Second.Value:d2}";
+                case CCDateOnly doValue:
+                    return $"{doValue.Year.Value}-{doValue.Month.Value:d2}-{doValue.Day.Value:d2}";
+                case CCTimeOnly toValue:
+                    return $"{toValue.Hour.Value:d2}:{toValue.Minute.Value:d2}:{toValue.Second.Value:d2}";
             }
             
             return EncodeDefault(value);
@@ -266,6 +273,26 @@ namespace AppCore.UseCases
                 return (T)(object)(str == "t");
             if (type == typeof(string))
                 return (T)(object)str;
+            if (type == typeof(CCDateTime))
+            {
+                var regex = new Regex(@"^(\d+)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$");
+                var match = regex.Match(str).Groups;
+                return (T)(object)new CCDateTime(
+                    int.Parse(match[1].Value), int.Parse(match[2].Value), int.Parse(match[3].Value),
+                    int.Parse(match[4].Value), int.Parse(match[5].Value),  int.Parse(match[6].Value));
+            }
+            if (type == typeof(CCDateOnly))
+            {
+                var regex = new Regex(@"^(\d+)-(\d\d)-(\d\d)$");
+                var match = regex.Match(str).Groups;
+                return (T)(object)new CCDateOnly(int.Parse(match[1].Value), int.Parse(match[2].Value), int.Parse(match[3].Value));
+            }
+            if (type == typeof(CCTimeOnly))
+            {
+                var regex = new Regex(@"^(\d\d):(\d\d):(\d\d)$");
+                var match = regex.Match(str).Groups;
+                return (T)(object)new CCTimeOnly(int.Parse(match[1].Value), int.Parse(match[2].Value), int.Parse(match[3].Value));
+            }
             
             return DecodeDefault<T>(str);
         }
