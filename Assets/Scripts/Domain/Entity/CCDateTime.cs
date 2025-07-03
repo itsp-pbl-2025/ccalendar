@@ -406,7 +406,7 @@ namespace Domain.Entity
             Second = new Second(second);
         }
         
-        public static CCTimeOnly Now => CCDateTime.Today.ToTimeOnly();
+        public static CCTimeOnly Now => CCDateTime.Now.ToTimeOnly();
 
         public int CompareTo(CCTimeOnly other)
         {

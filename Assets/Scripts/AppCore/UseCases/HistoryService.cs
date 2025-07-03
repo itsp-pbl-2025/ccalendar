@@ -247,6 +247,10 @@ namespace AppCore.UseCases
             return JsonConvert.SerializeObject(value);
         }
         
+        private static readonly Regex CCDateTimeRegex = new(@"^(\d+)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$");
+        private static readonly Regex CCDateOnlyRegex = new(@"^(\d+)-(\d\d)-(\d\d)$");
+        private static readonly Regex CCTimeOnlyRegex = new(@"^(\d\d):(\d\d):(\d\d)$");
+        
         /// <summary>
         /// 文字列を指定の形式で特定の型へ変換する場合は記述。EncodeSpecifiedに逆関数を定義しなければならない。
         /// 指定がない場合はJsonHelperでシリアライズされる。
@@ -280,23 +284,26 @@ namespace AppCore.UseCases
                 return (T)(object)str;
             if (type == typeof(CCDateTime))
             {
-                var regex = new Regex(@"^(\d+)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$");
-                var match = regex.Match(str).Groups;
+                var match = CCDateTimeRegex.Match(str);
+                if (!match.Success) throw new FormatException($"Invalid CCDateTime format: {str}");
+                var mg = match.Groups;
                 return (T)(object)new CCDateTime(
-                    int.Parse(match[1].Value), int.Parse(match[2].Value), int.Parse(match[3].Value),
-                    int.Parse(match[4].Value), int.Parse(match[5].Value),  int.Parse(match[6].Value));
+                    int.Parse(mg[1].Value), int.Parse(mg[2].Value), int.Parse(mg[3].Value),
+                    int.Parse(mg[4].Value), int.Parse(mg[5].Value),  int.Parse(mg[6].Value));
             }
             if (type == typeof(CCDateOnly))
             {
-                var regex = new Regex(@"^(\d+)-(\d\d)-(\d\d)$");
-                var match = regex.Match(str).Groups;
-                return (T)(object)new CCDateOnly(int.Parse(match[1].Value), int.Parse(match[2].Value), int.Parse(match[3].Value));
+                var match = CCDateOnlyRegex.Match(str);
+                if (!match.Success) throw new FormatException($"Invalid CCDateOnly format: {str}");
+                var mg = match.Groups;
+                return (T)(object)new CCDateOnly(int.Parse(mg[1].Value), int.Parse(mg[2].Value), int.Parse(mg[3].Value));
             }
             if (type == typeof(CCTimeOnly))
             {
-                var regex = new Regex(@"^(\d\d):(\d\d):(\d\d)$");
-                var match = regex.Match(str).Groups;
-                return (T)(object)new CCTimeOnly(int.Parse(match[1].Value), int.Parse(match[2].Value), int.Parse(match[3].Value));
+                var match = CCTimeOnlyRegex.Match(str);
+                if (!match.Success) throw new FormatException($"Invalid CCTimeOnly format: {str}");
+                var mg = match.Groups;
+                return (T)(object)new CCTimeOnly(int.Parse(mg[1].Value), int.Parse(mg[2].Value), int.Parse(mg[3].Value));
             }
             if (type == typeof(CCTimeSpan))
                 return (T)(object)CCTimeSpan.FromSeconds(BitConverter.ToDouble(Convert.FromBase64String(str), 0));
