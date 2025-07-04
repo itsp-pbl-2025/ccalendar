@@ -33,6 +33,18 @@ namespace Test.Integration
             
             Assert.IsTrue(service.UpdateHistory((HistoryType)4, "institute of science tokyo"));
             Assert.AreEqual(service.GetHistoryOrDefault<string>((HistoryType)4), "institute of science tokyo");
+
+            var ccDt = new CCDateTime(2024, 10, 1, 12, 0, 0);
+            Assert.IsTrue(service.UpdateHistory((HistoryType)5, ccDt));
+            Assert.AreEqual(service.GetHistoryOrDefault<CCDateTime>((HistoryType)5), ccDt);
+            
+            var ccDo = new CCDateOnly(2024, 10, 1);
+            Assert.IsTrue(service.UpdateHistory((HistoryType)6, ccDo));
+            Assert.AreEqual(service.GetHistoryOrDefault<CCDateOnly>((HistoryType)6), ccDo);
+            
+            var ccTo = new CCTimeOnly(12, 34, 56);
+            Assert.IsTrue(service.UpdateHistory((HistoryType)7, ccTo));
+            Assert.AreEqual(service.GetHistoryOrDefault<CCTimeOnly>((HistoryType)7), ccTo);
             
             ctx.Dispose();
         }
