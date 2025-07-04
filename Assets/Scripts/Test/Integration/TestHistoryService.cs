@@ -46,6 +46,10 @@ namespace Test.Integration
             Assert.IsTrue(service.UpdateHistory((HistoryType)7, ccTo));
             Assert.AreEqual(service.GetHistoryOrDefault<CCTimeOnly>((HistoryType)7), ccTo);
             
+            var dt = new DateTime(2024, 10, 1, 12, 0, 0);
+            Assert.IsTrue(service.UpdateHistory((HistoryType)8, dt));
+            Assert.AreEqual(service.GetHistoryOrDefault<DateTime>((HistoryType)8), dt);
+            
             ctx.Dispose();
         }
         
@@ -187,12 +191,22 @@ namespace Test.Integration
             service.UpdateHistory((HistoryType)1, 123.45f);
             var raw1 =  service.GetRawHistory((HistoryType)1);
             Assert.IsNotNull(raw1);
-            Assert.AreEqual(raw1.Data, "Zub2Qg==");
+            Assert.AreEqual("Zub2Qg==", raw1.Data);
             
             service.UpdateHistory((HistoryType)2, new DateTime(2024, 10, 1).ToTimeZoneTokyo());
             var raw2 =  service.GetRawHistory((HistoryType)2);
             Assert.IsNotNull(raw2);
             Assert.AreEqual(raw2.Data, "\"2024-10-01T09:00:00\"");
+            
+            service.UpdateHistory((HistoryType)3, new CCDateTime(2024, 10, 1));
+            var raw3 =  service.GetRawHistory((HistoryType)3);
+            Assert.IsNotNull(raw3);
+            Assert.AreEqual(raw3.Data, "\"2024-10-01T00:00:00\"");
+            
+            service.UpdateHistory((HistoryType)4, CCTimeSpan.FromTimeSpan(new TimeSpan(123, 45, 6)));
+            var raw4 =  service.GetRawHistory((HistoryType)4);
+            Assert.IsNotNull(raw4);
+            _ = Convert.FromBase64String(raw4.Data.Trim('\"')); // Base64エンコードされていることを確かめる
             
             ctx.Dispose();
         }

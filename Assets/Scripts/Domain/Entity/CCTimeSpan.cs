@@ -1,8 +1,9 @@
 using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Domain.Entity
 {
+    [JsonConverter(typeof(CCTimeSpanConverter))]
     public readonly struct CCTimeSpan : IComparable<CCTimeSpan>
     {
         private const int SecondsPerMinute = 60;
@@ -110,5 +111,22 @@ namespace Domain.Entity
         public static CCTimeSpan Minute => FromMinutes(1);
         public static CCTimeSpan Hour => FromHours(1);
         public static CCTimeSpan Day => FromDays(1);
+    }
+    
+    internal class CCTimeSpanConverter : JsonConverter<CCTimeSpan>
+    {
+        public override void WriteJson(JsonWriter writer, CCTimeSpan value, JsonSerializer serializer)
+        {
+            writer.WriteValue(Convert.ToBase64String(BitConverter.GetBytes(value.TotalSeconds)));
+        }
+
+        public override CCTimeSpan ReadJson(JsonReader reader, Type objectType, CCTimeSpan existingValue, bool hasExistingValue,
+            JsonSerializer serializer)
+        {
+            if (reader.Value is null) throw new JsonSerializationException("Cannot convert null value to a non-nullable type CCTimeSpan.");
+            
+            var str = Convert.ToString(reader.Value);
+            return CCTimeSpan.FromSeconds(BitConverter.ToDouble(Convert.FromBase64String(str), 0));
+        }
     }
 }
