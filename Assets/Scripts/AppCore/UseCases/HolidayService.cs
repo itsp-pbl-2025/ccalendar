@@ -15,20 +15,24 @@ namespace AppCore.UseCases
         public const string HolidayNameFromApi = "休日";
         public const string SubstituteHolidayName = "振替休日";
 
+        private readonly IContext _context;
         private readonly RequestHandler _api;
 
         private readonly Dictionary<CCDateOnly, string> _holidayMap = new();
         private readonly IScheduleRepository _scheduleRepo;
 
-        public HolidayService(string name = "")
+        public HolidayService(IContext context, string name = "")
         {
             Name = name != "" ? name : GetType().Name;
             _loadedSinceInclusive = _loadedUntilExclusive = CCDateOnly.Today;
+            
+            _context = context;
             _api = new RequestHandler("https://holidays-jp.shogo82148.com/");
         }
         
         public void Setup()
         {
+            LoadFromHistory();
             LoadHolidays(_loadedSinceInclusive.AddYears(-DefaultYearSpan), _loadedUntilExclusive.AddYears(DefaultYearSpan));
         }
 
@@ -118,6 +122,8 @@ namespace AppCore.UseCases
                     _holidayMap[dateOnly] = h.name;
                 }
             }
+            
+            SaveToHistory();
         }
 
         public bool IsHoliday(CCDateOnly date)
@@ -135,6 +141,24 @@ namespace AppCore.UseCases
 
             name = "";
             return false;
+        }
+
+        private void LoadFromHistory()
+        {
+            var historyService = _context.GetService<HistoryService>();
+
+            if (!historyService.TryGetHistory(HistoryType.CachedHolidays,
+                    out Dictionary<CCDateOnly, string> cachedHolidays)) return;
+            
+            foreach (var (date, holidayName) in cachedHolidays)
+            {
+                _holidayMap.Add(date, holidayName);
+            }
+        }
+        
+        private void SaveToHistory()
+        {
+            _context.GetService<HistoryService>().UpdateHistory(HistoryType.CachedHolidays, _holidayMap);
         }
     }
 }
