@@ -5,7 +5,7 @@ using AppCore.Utilities;
 using Cysharp.Threading.Tasks;
 using Domain.Api;
 using Domain.Entity;
-using R3;
+using Domain.Enum;
 
 namespace AppCore.UseCases
 {
@@ -19,53 +19,56 @@ namespace AppCore.UseCases
 
         private readonly Dictionary<CCDateOnly, string> _holidayMap = new();
         private readonly IScheduleRepository _scheduleRepo;
-        
-        public ReactiveProperty<bool> HolidayLoaded { get; } = new(false);
-        
-        public string Name { get; }
-        
-        public void Setup() {}
-        
-        public HolidayService(
-            CCDateOnly startDate,
-            CCDateOnly endDate,
-            string name = "")
-        {
-            Name = name != "" ? name : GetType().Name;
-
-            _api = new RequestHandler("https://holidays-jp.shogo82148.com/");
-            GetHolidays(startDate, endDate).Forget();
-        }
 
         public HolidayService(string name = "")
-            : this(
-                new CCDateOnly(DateTime.Today.Year - DefaultYearSpan, 1, 1), // 5 年前 1/1
-                new CCDateOnly(DateTime.Today.Year + DefaultYearSpan, 12, 31), // 5 年後 12/31
-                name)
         {
+            Name = name != "" ? name : GetType().Name;
+            _loadedSinceInclusive = _loadedUntilExclusive = CCDateOnly.Today;
+            _api = new RequestHandler("https://holidays-jp.shogo82148.com/");
         }
+        
+        public void Setup()
+        {
+            LoadHolidays(_loadedSinceInclusive.AddYears(-DefaultYearSpan), _loadedUntilExclusive.AddYears(DefaultYearSpan));
+        }
+
+        public string Name { get; }
+
+        // 読み込み戦略: この範囲内
+        private CCDateOnly _loadedSinceInclusive, _loadedUntilExclusive;
 
         public void Dispose()
         {
-            HolidayLoaded?.Dispose();
         }
 
+        public void LoadHolidays(CCDateOnly startDate, CCDateOnly endDate, Action<bool> loadingCallback = null)
+        {
+            // すでに読み込み範囲内だったら即返す
+            if (_loadedSinceInclusive.CompareTo(startDate) <= 0 &&
+                _loadedUntilExclusive.CompareTo(endDate) > 0)
+            {
+                loadingCallback?.Invoke(true);
+                return;
+            }
+            
+            LoadHolidaysAsync(startDate, endDate, loadingCallback).Forget();
+        }
 
-        private async UniTask GetHolidays(CCDateOnly startDate, CCDateOnly endDate)
+        public async UniTask<bool> LoadHolidaysAsync(CCDateOnly startDate, CCDateOnly endDate, Action<bool> loadingCallback = null)
         {
             const int maxRetries = 3; // 最大試行回数 (初回の1回 + リトライ2回)
             const int initialDelayMilliseconds = 1000; // 最初の待機時間 (1秒)
-
+            
             for (var i = 0; i < maxRetries; i++)
             {
-                var response = await LoadHolidays(startDate, endDate);
+                var response = await ApiGetHolidays(startDate, endDate);
 
                 // --- 成功した場合 ---
                 if (response.IsSuccess)
                 {
                     CacheHolidayData(response.Data, startDate, endDate);
-                    HolidayLoaded.Value = true;
-                    return; // 成功したら終了
+                    loadingCallback?.Invoke(true);
+                    return true; // 成功したら終了
                 }
 
                 // --- 失敗した場合 ---
@@ -80,15 +83,11 @@ namespace AppCore.UseCases
             }
 
             // --- 全てのリトライが失敗した場合
-            var emptyData = new HolidayList
-            {
-                holidays = new List<HolidayRaw>()
-            };
-            CacheHolidayData(emptyData, startDate, endDate);
-            HolidayLoaded.Value = true;
+            loadingCallback?.Invoke(false);
+            return false;
         }
 
-        private async UniTask<RequestHandler.Result<HolidayList>> LoadHolidays(CCDateOnly startDate, CCDateOnly endDate)
+        private async UniTask<RequestHandler.Result<HolidayList>> ApiGetHolidays(CCDateOnly startDate, CCDateOnly endDate)
         {
             var start = $"{startDate.Year.Value:D4}-{startDate.Month.Value:D2}-{startDate.Day.Value:D2}";
             var end = $"{endDate.Year.Value:D4}-{endDate.Month.Value:D2}-{endDate.Day.Value:D2}";
@@ -98,10 +97,17 @@ namespace AppCore.UseCases
 
         private void CacheHolidayData(HolidayList list, CCDateOnly startDate, CCDateOnly endDate)
         {
+            if (_loadedSinceInclusive.CompareTo(startDate) < 0 &&
+                _loadedSinceInclusive.CompareTo(endDate.AddDays(1)) <= 0) _loadedSinceInclusive = startDate;
+            if (_loadedUntilExclusive.CompareTo(endDate) <= 0 &&
+                _loadedUntilExclusive.AddDays(1).CompareTo(startDate) <= 0) _loadedUntilExclusive = endDate;
+            
             var datesToRemove = new List<CCDateOnly>();
             foreach (var date in _holidayMap.Keys)
+            {
                 if (startDate.CompareTo(date) <= 0 && date.CompareTo(endDate) <= 0)
                     datesToRemove.Add(date);
+            }
 
             foreach (var date in datesToRemove) _holidayMap.Remove(date);
 
@@ -111,6 +117,7 @@ namespace AppCore.UseCases
                 {
                     _holidayMap[dateOnly] = h.name;
                 }
+            }
         }
 
         public bool IsHoliday(CCDateOnly date)

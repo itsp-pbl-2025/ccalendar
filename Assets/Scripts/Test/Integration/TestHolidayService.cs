@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppCore.UseCases;
 using Domain.Entity;
 using NUnit.Framework;
-using R3;
 using Test.MockData;
 
 namespace Test.Integration
@@ -14,14 +12,12 @@ namespace Test.Integration
         [Test]
         public async Task GetHolidays()
         {
-            //var ctx = InTestContext.Context;
-            var startDate = new CCDateOnly(2022, 1, 1);
-            var endDate = new CCDateOnly(2022, 12, 31);
+            var ctx = InTestContext.Context;
             
-            var service = new HolidayService(startDate, endDate);
-
-            if (!service.HolidayLoaded.Value)
-                await service.HolidayLoaded.Where(x => x).FirstAsync();
+            var service = ctx.GetService<HolidayService>();
+            var (startDate, endDate) = MockHoliday.GetMockHolidayDuration();
+            var success = await service.LoadHolidaysAsync(startDate, endDate);
+            Assert.IsTrue(success);
 
             foreach (var raw in MockHoliday.GetMockHolidayRaws())
             {
@@ -33,11 +29,12 @@ namespace Test.Integration
                     name);
             }
 
-            var notd = new CCDateOnly(2022, 2, 1);
-            Assert.IsFalse(service.IsHoliday(notd));
-            Assert.IsFalse(service.TryGetHolidayName(notd, out var n));
+            var normalDay = MockHoliday.GetRandomNormalDay();
+            Assert.IsFalse(service.IsHoliday(normalDay));
+            Assert.IsFalse(service.TryGetHolidayName(normalDay, out var n));
             Assert.AreEqual(n, "");
+            
+            ctx.Dispose();
         }
     }
-    
 }
