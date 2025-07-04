@@ -1,7 +1,10 @@
 using System;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Domain.Entity
 {
+    [JsonConverter(typeof(CCDateTimeConverter))]
     public readonly struct CCDateTime : IComparable<CCDateTime>, IEquatable<CCDateTime>
     {
         public Year Year { get; }
@@ -46,6 +49,11 @@ namespace Domain.Entity
         public DateTime ToDateTime()
         {
             return new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value, DateTimeKind.Local);
+        }
+
+        public override string ToString()
+        {
+            return $"{Year.Value}-{Month.Value:d2}-{Day.Value:d2}T{Hour.Value:d2}:{Minute.Value:d2}:{Second.Value:d2}";
         }
 
         public string ToString(string format)
@@ -167,292 +175,28 @@ namespace Domain.Entity
         }
     }
 
-    public readonly struct Year : IComparable<Year>, IEquatable<Year>
+    internal class CCDateTimeConverter : JsonConverter<CCDateTime>
     {
-        public int Value { get; }
-
-        public Year(int value)
-        {
-            if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(value), "Year cannot be negative.");
-            Value = value;
-        }
-        public int CompareTo(Year other) => Value.CompareTo(other.Value);
-
-        public bool Equals(Year other)
-        {
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Year other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value;
-        }
-    }
-
-
-    public readonly struct Month : IComparable<Month>, IEquatable<Month>
-    {
-        public int Value { get; }
-
-        public Month(int value)
-        {
-            if (value < 1 || value > 12)
-                throw new ArgumentOutOfRangeException(nameof(value), "Month must be between 1 and 12.");
-            Value = value;
-        }
-        public int CompareTo(Month other) => Value.CompareTo(other.Value);
-
-        public bool Equals(Month other)
-        {
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Month other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value;
-        }
-    }
-
-    public readonly struct Day : IComparable<Day>, IEquatable<Day>
-    {
-        public int Value { get; }
-
-        public Day(int value)
-        {
-            if (value < 1 || value > 31)
-                throw new ArgumentOutOfRangeException(nameof(value), "Day must be between 1 and 31.");
-            Value = value;
-        }
-        public int CompareTo(Day other) => Value.CompareTo(other.Value);
-
-        public bool Equals(Day other)
-        {
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Day other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value;
-        }
-    }
-
-    public readonly struct Hour : IComparable<Hour>, IEquatable<Hour>
-    {
-        public int Value { get; }
-
-        public Hour(int value)
-        {
-            if (value < 0 || value > 23)
-                throw new ArgumentOutOfRangeException(nameof(value), "Hour must be between 0 and 23.");
-            Value = value;
-        }
-        public int CompareTo(Hour other) => Value.CompareTo(other.Value);
-
-        public bool Equals(Hour other)
-        {
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Hour other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value;
-        }
-    }
-
-    public readonly struct Minute : IComparable<Minute>, IEquatable<Minute>
-    {
-        public int Value { get; }
-
-        public Minute(int value)
-        {
-            if (value < 0 || value > 59)
-                throw new ArgumentOutOfRangeException(nameof(value), "Minute must be between 0 and 59.");
-            Value = value;
-        }
-        public int CompareTo(Minute other) => Value.CompareTo(other.Value);
-
-        public bool Equals(Minute other)
-        {
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Minute other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value;
-        }
-    }
-
-    public readonly struct Second : IComparable<Second>, IEquatable<Second>
-    {
-        public int Value { get; }
-
-        public Second(int value)
-        {
-            if (value < 0 || value > 59)
-                throw new ArgumentOutOfRangeException(nameof(value), "Second must be between 0 and 59.");
-            Value = value;
-        }
-        public int CompareTo(Second other) => Value.CompareTo(other.Value);
-
-        public bool Equals(Second other)
-        {
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Second other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value;
-        }
-    }
-    
-    public readonly struct CCDateOnly : IComparable<CCDateOnly>, IEquatable<CCDateOnly>
-    {
-        public Year Year { get; }
-        public Month Month { get; }
-        public Day Day { get; }
-
-        public CCDateOnly(int year, int month, int day)
-        {
-            Year = new Year(year);
-            Month = new Month(month);
-            Day = new Day(day);
-        }
+        private static readonly Regex CCDateTimeRegex = new(@"^(\d+)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$");
         
-        public static CCDateOnly Today => CCDateTime.Today.ToDateOnly();
-
-        public int CompareTo(CCDateOnly other)
+        public override void WriteJson(JsonWriter writer, CCDateTime value, JsonSerializer serializer)
         {
-            int yearComparison = Year.CompareTo(other.Year);
-            if (yearComparison != 0) return yearComparison;
-
-            int monthComparison = Month.CompareTo(other.Month);
-            if (monthComparison != 0) return monthComparison;
-
-            return Day.CompareTo(other.Day);
-        }
-        
-        public CCDateOnly AddDays(int days) => 
-            new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
-                .AddDays(days)
-                .ToDateOnly();
-
-        public CCDateOnly AddYears(int years) =>
-            new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
-                .AddYears(years)
-                .ToDateOnly();
-        
-        public DateTime ToDateTime()
-        {
-            return new DateTime(Year.Value, Month.Value, Day.Value).ToLocalTime().Date;
+            writer.WriteValue($"{value.Year.Value}-{value.Month.Value:d2}-{value.Day.Value:d2}T{value.Hour.Value:d2}:{value.Minute.Value:d2}:{value.Second.Value:d2}");
         }
 
-        public bool Equals(CCDateOnly other)
+        public override CCDateTime ReadJson(JsonReader reader, Type objectType, CCDateTime existingValue, bool hasExistingValue,
+            JsonSerializer serializer)
         {
-            return Year.Equals(other.Year) && Month.Equals(other.Month) && Day.Equals(other.Day);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is CCDateOnly other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Year, Month, Day);
-        }
-    }
-
-    public readonly struct CCTimeOnly : IComparable<CCTimeOnly>, IEquatable<CCTimeOnly>
-    {
-        public Hour Hour { get; }
-        public Minute Minute { get; }
-        public Second Second { get; }
-
-        public CCTimeOnly(int hour, int minute, int second)
-        {
-            Hour = new Hour(hour);
-            Minute = new Minute(minute);
-            Second = new Second(second);
-        }
-        
-        public static CCTimeOnly Now => CCDateTime.Now.ToTimeOnly();
-
-        public int CompareTo(CCTimeOnly other)
-        {
-            int hourComparison = Hour.CompareTo(other.Hour);
-            if (hourComparison != 0) return hourComparison;
-
-            int minuteComparison = Minute.CompareTo(other.Minute);
-            if (minuteComparison != 0) return minuteComparison;
-
-            return Second.CompareTo(other.Second);
-        }
-        
-        public CCTimeOnly AddHours(double hours)
-        {
-            var dateTime = new CCDateTime(1, 1, 1, Hour.Value, Minute.Value, Second.Value)
-                .AddHours(hours);
-            return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
-        }
-
-        public CCTimeOnly AddMinutes(double minutes)
-        {
-            var dateTime = new CCDateTime(1, 1, 1, Hour.Value, Minute.Value, Second.Value)
-                .AddMinutes(minutes);
-            return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
-        }
-
-        public CCTimeOnly AddSeconds(double seconds)
-        {
-            var dateTime = new CCDateTime(1, 1, 1, Hour.Value, Minute.Value, Second.Value)
-                .AddSeconds(seconds);
-            return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
-        }
-
-        public bool Equals(CCTimeOnly other)
-        {
-            return Hour.Equals(other.Hour) && Minute.Equals(other.Minute) && Second.Equals(other.Second);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is CCTimeOnly other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Hour, Minute, Second);
+            if (reader.Value is null) throw new JsonSerializationException("Cannot convert null value to a non-nullable type CCDateTime.");
+            
+            var str = Convert.ToString(reader.Value);
+            var match = CCDateTimeRegex.Match(str);
+            if (!match.Success) throw new FormatException($"Invalid CCDateTime format: {str}");
+            
+            var mg = match.Groups;
+            return new CCDateTime(
+                int.Parse(mg[1].Value), int.Parse(mg[2].Value), int.Parse(mg[3].Value),
+                int.Parse(mg[4].Value), int.Parse(mg[5].Value),  int.Parse(mg[6].Value));
         }
     }
 }
