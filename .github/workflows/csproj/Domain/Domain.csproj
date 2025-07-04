@@ -5,6 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="../../../Assets/Scripts/Domain/**/*.cs" />
+        <Compile Include="../../../../Assets/Scripts/Domain/**/*.cs" />
     </ItemGroup>
 </Project>
