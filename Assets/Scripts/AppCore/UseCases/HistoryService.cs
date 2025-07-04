@@ -1,6 +1,8 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using AppCore.Interfaces;
 using Domain.Entity;
 using Domain.Enum;
@@ -19,6 +21,8 @@ namespace AppCore.UseCases
             Name = name != "" ? name : GetType().Name;
             _historyRepo = historyRepo;
         }
+
+        public void Setup() {}
         
         /// <summary>
         /// 文字列変換に対応した任意の値を保存、または上書きする。
@@ -288,8 +292,15 @@ namespace AppCore.UseCases
                 var val = Convert.ChangeType(str, t, CultureInfo.InvariantCulture)!;
                 return (T)val;
             }
-
-            return JsonConvert.DeserializeObject<T>(str) ?? throw new JsonSerializationException($"object {nameof(T)} could not be deserialized.");
+            
+            var settings = new JsonSerializerSettings
+            {
+                // CCDateTimeを勝手にDateTimeに変換されるのを防ぐ
+                DateParseHandling = DateParseHandling.None
+            };
+            
+            return JsonConvert.DeserializeObject<T>(str, settings)
+                   ?? throw new JsonSerializationException($"object {nameof(T)} could not be deserialized.");
         }
         
         public void Dispose()

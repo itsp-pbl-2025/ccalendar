@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domain.Entity;
 using Domain.Enum;
 using Infrastructure.Data.DAO;
 using Infrastructure.Data.Schema;
+using ZLinq;
 
 namespace Test.MockData
 {
@@ -18,7 +18,7 @@ namespace Test.MockData
                 new(0,
                     "Duration Schedule",
                     "Hello! Here's description. OwO",
-                    new ScheduleDuration(DateTime.Today.AddHours(13), DateTime.Today.AddHours(16))),
+                    new ScheduleDuration(CCDateTime.Today.AddHours(13), CCDateTime.Today.AddHours(16))),
                 new(0,
                     "All Day Schedule",
                     "This is an all-day schedule. UwU",
@@ -26,12 +26,12 @@ namespace Test.MockData
                 new(0,
                     "Every Week Schedule",
                     "Repeat it every week! UwU",
-                    new ScheduleDuration(DateTime.Today.AddHours(17), DateTime.Today.AddHours(18)),
+                    new ScheduleDuration(CCDateTime.Today.AddHours(17), CCDateTime.Today.AddHours(18)),
                     new SchedulePeriodic(SchedulePeriodicType.EveryWeek, 1)),
                 new(0, "", "", new ScheduleDuration()),
             };
 
-            return schedules.Select(e => e.FromDomain()).ToList();
+            return schedules.AsValueEnumerable().Select(e => e.FromDomain()).ToList();
         }
 
         public static List<DSchedule> GetMockSchedules()
@@ -42,7 +42,7 @@ namespace Test.MockData
                 new(1,
                     "Duration Schedule",
                     "Hello! Here's description. OwO",
-                    new ScheduleDuration(DateTime.Today.AddHours(13), DateTime.Today.AddHours(16))),
+                    new ScheduleDuration(CCDateTime.Today.AddHours(13), CCDateTime.Today.AddHours(16))),
                 new(2,
                     "All Day Schedule",
                     "This is an all-day schedule. UwU",
@@ -50,12 +50,12 @@ namespace Test.MockData
                 new(3,
                     "Every Week Schedule",
                     "Repeat it every week! UwU",
-                    new ScheduleDuration(DateTime.Today.AddHours(17), DateTime.Today.AddHours(18)),
+                    new ScheduleDuration(CCDateTime.Today.AddHours(17), CCDateTime.Today.AddHours(18)),
                     new SchedulePeriodic(SchedulePeriodicType.EveryWeek, 1)),
                 new(4, "", "", new ScheduleDuration()),
             };
 
-            return schedules.Select(e => e.FromDomain()).ToList();
+            return schedules.AsValueEnumerable().Select(e => e.FromDomain()).ToList();
         }
     }
 }
