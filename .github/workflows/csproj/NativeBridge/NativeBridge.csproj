@@ -2,15 +2,11 @@
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="../../../../Assets/Scripts/AppCore/**/*.cs" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <ProjectReference Include="../Domain/Domain.csproj" />
-        <ProjectReference Include="../NativeBridge/NativeBridge.csproj" />
+        <Compile Include="../../../../Assets/Plugins/NativeBridge/**/*.cs" />
     </ItemGroup>
 
     <ItemGroup>

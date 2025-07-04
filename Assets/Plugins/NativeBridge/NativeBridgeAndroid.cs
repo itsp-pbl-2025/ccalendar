@@ -1,12 +1,12 @@
+# if UNITY_ANDROID && !UNITY_EDITOR
+using System;
 using Unity.Notifications.Android;
 using UnityEngine;
-using System;
 
 namespace NativeBridge
 {
     public class NativeBridgeAndroid: INative
     {
-     # if UNITY_ANDROID && !UNITY_EDITOR
         private static AndroidJavaClass _unityPlayer;
         private static AndroidJavaObject _currentActivity;
         private static AndroidJavaObject _vibrator;
@@ -46,11 +46,6 @@ namespace NativeBridge
                 return _vibrator;
             }
         }
-     # else
-     		public static AndroidJavaClass UnityPlayer;
-     		public static AndroidJavaObject CurrentActivity;
-     		public static AndroidJavaObject Vibrator;
-     # endif
         private static AudioSource _audioSource;
         readonly string _channelId = "default_channel";
         public NativeBridgeAndroid()
@@ -122,3 +117,4 @@ namespace NativeBridge
         }
     }
 }
+# endif

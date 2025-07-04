@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{75567B5C-2BF0-4601-83FE-B4B5FA469785}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBridge", "NativeBridge\NativeBridge.csproj", "{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{75567B5C-2BF0-4601-83FE-B4B5FA469785}.Release|x64.Build.0 = Release|Any CPU
 		{75567B5C-2BF0-4601-83FE-B4B5FA469785}.Release|x86.ActiveCfg = Release|Any CPU
 		{75567B5C-2BF0-4601-83FE-B4B5FA469785}.Release|x86.Build.0 = Release|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Debug|x64.Build.0 = Debug|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Debug|x86.Build.0 = Debug|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Release|x64.ActiveCfg = Release|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Release|x64.Build.0 = Release|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Release|x86.ActiveCfg = Release|Any CPU
+		{E46B23A4-2F2C-4A36-BB08-2ED7CF358EFB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
