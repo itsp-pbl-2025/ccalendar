@@ -45,5 +45,13 @@
         /// type: float
         /// </summary>
         BGMVolume = 104,
+        
+        // 2XX~: Services
+        
+        /// <summary>
+        /// HistoryServiceが過去に取得した休日一覧
+        /// <para>type: Dictionary&lt;CCDateOnly, string&gt;</para>
+        /// </summary>
+        CachedHolidays = 201,
     }
 }

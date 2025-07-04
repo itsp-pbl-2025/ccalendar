@@ -29,7 +29,7 @@ namespace Test
             {
                 _serviceFactories.Add(typeof(SampleService), name => new SampleService(ScheduleRepo, name));
                 _serviceFactories.Add(typeof(ScheduleService), name => new ScheduleService(ScheduleRepo, name));
-                _serviceFactories.Add(typeof(HolidayService), name => new HolidayService(ScheduleRepo, name));
+                _serviceFactories.Add(typeof(HolidayService), name => new HolidayService(this, name));
                 _serviceFactories.Add(typeof(HistoryService), name => new HistoryService(HistoryRepo, name));
             }
             
