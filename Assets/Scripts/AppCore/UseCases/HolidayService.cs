@@ -20,6 +20,8 @@ namespace AppCore.UseCases
 
         private readonly Dictionary<CCDateOnly, string> _holidayMap = new();
         private readonly IScheduleRepository _scheduleRepo;
+        
+        private CCDateOnly _loadedSinceInclusive, _loadedUntilExclusive;
 
         public HolidayService(IContext context, string name = "")
         {
@@ -29,17 +31,14 @@ namespace AppCore.UseCases
             _context = context;
             _api = new RequestHandler("https://holidays-jp.shogo82148.com/");
         }
+
+        public string Name { get; }
         
         public void Setup()
         {
             LoadFromHistory();
             LoadHolidays(_loadedSinceInclusive.AddYears(-DefaultYearSpan), _loadedUntilExclusive.AddYears(DefaultYearSpan));
         }
-
-        public string Name { get; }
-
-        // 読み込み戦略: この範囲内
-        private CCDateOnly _loadedSinceInclusive, _loadedUntilExclusive;
 
         public void Dispose()
         {
@@ -62,7 +61,27 @@ namespace AppCore.UseCases
         {
             const int maxRetries = 3; // 最大試行回数 (初回の1回 + リトライ2回)
             const int initialDelayMilliseconds = 1000; // 最初の待機時間 (1秒)
-            
+
+            // 順序が誤っていた場合、入れ替える
+            if (startDate.CompareTo(endDate) > 0)
+            {
+                (startDate, endDate) = (endDate, startDate);
+            }
+
+            // 初期状態でない場合にキャッシュから離れた場所を読み込もうとしていたら、キャッシュと隣接するように範囲を書き換える
+            if (_loadedSinceInclusive.CompareTo(_loadedUntilExclusive) != 0)
+            {
+                if (_loadedSinceInclusive.CompareTo(endDate) > 0)
+                {
+                    endDate = _loadedSinceInclusive.AddDays(-1);
+                }
+
+                if (_loadedUntilExclusive.CompareTo(startDate) <= 0)
+                {
+                    startDate = _loadedUntilExclusive;
+                }
+            }
+
             for (var i = 0; i < maxRetries; i++)
             {
                 var response = await ApiGetHolidays(startDate, endDate);
@@ -104,7 +123,7 @@ namespace AppCore.UseCases
             if (_loadedSinceInclusive.CompareTo(startDate) < 0 &&
                 _loadedSinceInclusive.CompareTo(endDate.AddDays(1)) <= 0) _loadedSinceInclusive = startDate;
             if (_loadedUntilExclusive.CompareTo(endDate) <= 0 &&
-                _loadedUntilExclusive.AddDays(1).CompareTo(startDate) <= 0) _loadedUntilExclusive = endDate;
+                _loadedUntilExclusive.AddDays(1).CompareTo(startDate) <= 0) _loadedUntilExclusive = endDate.AddDays(1);
             
             var datesToRemove = new List<CCDateOnly>();
             foreach (var date in _holidayMap.Keys)
