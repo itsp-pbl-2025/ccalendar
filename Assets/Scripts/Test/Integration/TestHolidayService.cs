@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AppCore.UseCases;
 using Domain.Entity;
 using NUnit.Framework;
+using R3;
 using Test.MockData;
 
 namespace Test.Integration
@@ -34,6 +35,7 @@ namespace Test.Integration
             Assert.IsFalse(service.TryGetHolidayName(normalDay, out var n));
             Assert.AreEqual(n, "");
             
+            if (!service.InitialLoaded.Value) await service.InitialLoaded.Where(x => x).FirstAsync();
             ctx.Dispose();
         }
     }

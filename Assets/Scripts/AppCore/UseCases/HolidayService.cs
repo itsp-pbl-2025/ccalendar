@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Domain.Api;
 using Domain.Entity;
 using Domain.Enum;
+using R3;
 
 namespace AppCore.UseCases
 {
@@ -22,6 +23,8 @@ namespace AppCore.UseCases
         private readonly IScheduleRepository _scheduleRepo;
         
         private CCDateOnly _loadedSinceInclusive, _loadedUntilExclusive;
+        
+        public ReactiveProperty<bool> InitialLoaded { get; } = new(false); 
 
         public HolidayService(IContext context, string name = "")
         {
@@ -37,7 +40,8 @@ namespace AppCore.UseCases
         public void Setup()
         {
             LoadFromHistory();
-            LoadHolidays(_loadedSinceInclusive.AddYears(-DefaultYearSpan), _loadedUntilExclusive.AddYears(DefaultYearSpan));
+            LoadHolidays(_loadedSinceInclusive.AddYears(-DefaultYearSpan), _loadedUntilExclusive.AddYears(DefaultYearSpan),
+                _ => { InitialLoaded.Value = true;});
         }
 
         public void Dispose()
