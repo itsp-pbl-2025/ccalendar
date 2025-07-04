@@ -48,6 +48,7 @@ namespace Test
                 {
                     var service = factory(name);
                     _services.Add(service);
+                    service.Setup();
                     if (service is T typedService) return typedService;
                     throw new InvalidOperationException($"ServiceFactory of type {typeof(T).Name} creates wrong service type.");
                 }

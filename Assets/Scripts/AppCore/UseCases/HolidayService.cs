@@ -19,8 +19,13 @@ namespace AppCore.UseCases
 
         private readonly Dictionary<CCDateOnly, string> _holidayMap = new();
         private readonly IScheduleRepository _scheduleRepo;
-
-
+        
+        public ReactiveProperty<bool> HolidayLoaded { get; } = new(false);
+        
+        public string Name { get; }
+        
+        public void Setup() {}
+        
         public HolidayService(
             CCDateOnly startDate,
             CCDateOnly endDate,
@@ -39,10 +44,6 @@ namespace AppCore.UseCases
                 name)
         {
         }
-
-        public ReactiveProperty<bool> HolidayLoaded { get; } = new(false);
-        public string Name { get; }
-
 
         public void Dispose()
         {
