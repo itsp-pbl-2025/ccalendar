@@ -1,7 +1,10 @@
 using System;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Domain.Entity
 {
+    [JsonConverter(typeof(CCDateTimeConverter))]
     public readonly struct CCDateTime : IComparable<CCDateTime>, IEquatable<CCDateTime>
     {
         public Year Year { get; }
@@ -46,6 +49,11 @@ namespace Domain.Entity
         public DateTime ToDateTime()
         {
             return new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value, DateTimeKind.Local);
+        }
+
+        public override string ToString()
+        {
+            return $"{Year.Value}-{Month.Value:d2}-{Day.Value:d2}T{Hour.Value:d2}:{Minute.Value:d2}:{Second.Value:d2}";
         }
 
         public string ToString(string format)
@@ -164,6 +172,31 @@ namespace Domain.Entity
         public override int GetHashCode()
         {
             return HashCode.Combine(Year, Month, Day, Hour, Minute, Second);
+        }
+    }
+
+    internal class CCDateTimeConverter : JsonConverter<CCDateTime>
+    {
+        private static readonly Regex CCDateTimeRegex = new(@"^(\d+)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$");
+        
+        public override void WriteJson(JsonWriter writer, CCDateTime value, JsonSerializer serializer)
+        {
+            writer.WriteValue($"{value.Year.Value}-{value.Month.Value:d2}-{value.Day.Value:d2}T{value.Hour.Value:d2}:{value.Minute.Value:d2}:{value.Second.Value:d2}");
+        }
+
+        public override CCDateTime ReadJson(JsonReader reader, Type objectType, CCDateTime existingValue, bool hasExistingValue,
+            JsonSerializer serializer)
+        {
+            if (reader.Value is null) return new CCDateTime();
+            
+            var str = Convert.ToString(reader.Value);
+            var match = CCDateTimeRegex.Match(str);
+            if (!match.Success) throw new FormatException($"Invalid CCDateTime format: {str}");
+            
+            var mg = match.Groups;
+            return new CCDateTime(
+                int.Parse(mg[1].Value), int.Parse(mg[2].Value), int.Parse(mg[3].Value),
+                int.Parse(mg[4].Value), int.Parse(mg[5].Value),  int.Parse(mg[6].Value));
         }
     }
 }
