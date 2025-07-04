@@ -106,10 +106,10 @@ namespace AppCore.UseCases
             foreach (var date in datesToRemove) _holidayMap.Remove(date);
 
             foreach (var h in list.holidays)
-                if (DateTime.TryParse(h.date, out var parsedDate))
+            {
+                if (h.TryParseDate(out var dateOnly))
                 {
-                    var key = new CCDateOnly(parsedDate.Year, parsedDate.Month, parsedDate.Day);
-                    _holidayMap[key] = h.name;
+                    _holidayMap[dateOnly] = h.name;
                 }
         }
 
