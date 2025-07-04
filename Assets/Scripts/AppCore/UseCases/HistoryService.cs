@@ -284,8 +284,15 @@ namespace AppCore.UseCases
                 var val = Convert.ChangeType(str, t, CultureInfo.InvariantCulture)!;
                 return (T)val;
             }
-
-            return JsonConvert.DeserializeObject<T>(str) ?? throw new JsonSerializationException($"object {nameof(T)} could not be deserialized.");
+            
+            var settings = new JsonSerializerSettings
+            {
+                // CCDateTimeを勝手にDateTimeに変換されるのを防ぐ
+                DateParseHandling = DateParseHandling.None
+            };
+            
+            return JsonConvert.DeserializeObject<T>(str, settings)
+                   ?? throw new JsonSerializationException($"object {nameof(T)} could not be deserialized.");
         }
         
         public void Dispose()
