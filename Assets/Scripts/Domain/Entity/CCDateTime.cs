@@ -187,7 +187,7 @@ namespace Domain.Entity
         public override CCDateTime ReadJson(JsonReader reader, Type objectType, CCDateTime existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            if (reader.Value is null) return new CCDateTime();
+            if (reader.Value is null) throw new JsonSerializationException("Cannot convert null value to a non-nullable type CCDateTime.");
             
             var str = Convert.ToString(reader.Value);
             var match = CCDateTimeRegex.Match(str);

@@ -123,7 +123,7 @@ namespace Domain.Entity
         public override CCTimeSpan ReadJson(JsonReader reader, Type objectType, CCTimeSpan existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            if (reader.Value is null) return new CCTimeSpan();
+            if (reader.Value is null) throw new JsonSerializationException("Cannot convert null value to a non-nullable type CCTimeSpan.");
             
             var str = Convert.ToString(reader.Value);
             return CCTimeSpan.FromSeconds(BitConverter.ToDouble(Convert.FromBase64String(str), 0));

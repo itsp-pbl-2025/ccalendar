@@ -191,7 +191,7 @@ namespace Test.Integration
             service.UpdateHistory((HistoryType)1, 123.45f);
             var raw1 =  service.GetRawHistory((HistoryType)1);
             Assert.IsNotNull(raw1);
-            _ = Convert.FromBase64String(raw1.Data); // Base64エンコードされていることを確かめる
+            Assert.AreEqual("Zub2Qg==", raw1.Data);
             
             service.UpdateHistory((HistoryType)2, new DateTime(2024, 10, 1).ToTimeZoneTokyo());
             var raw2 =  service.GetRawHistory((HistoryType)2);

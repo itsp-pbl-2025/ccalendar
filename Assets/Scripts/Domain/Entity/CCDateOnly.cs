@@ -74,7 +74,7 @@ namespace Domain.Entity
         public override CCDateOnly ReadJson(JsonReader reader, Type objectType, CCDateOnly existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
-            if (reader.Value is null) return new CCDateOnly();
+            if (reader.Value is null) throw new JsonSerializationException("Cannot convert null value to a non-nullable type CCDateOnly.");
             
             var str = Convert.ToString(reader.Value);
             var match = CCDateOnlyRegex.Match(str);
