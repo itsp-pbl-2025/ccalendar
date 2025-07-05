@@ -214,10 +214,14 @@ namespace AppCore.UseCases
                     return Convert.ToBase64String(BitConverter.GetBytes(floatValue));
                 case double doubleValue:
                     return Convert.ToBase64String(BitConverter.GetBytes(doubleValue));
+                case short shortValue:
+                    return Convert.ToBase64String(BitConverter.GetBytes(shortValue));
+                case ushort ushortValue:
+                    return Convert.ToBase64String(BitConverter.GetBytes(ushortValue));
                 case byte byteValue:
-                    return Convert.ToBase64String(BitConverter.GetBytes(byteValue));
+                    return Convert.ToBase64String(new[] { byteValue });
                 case sbyte sbyteValue:
-                    return Convert.ToBase64String(BitConverter.GetBytes(sbyteValue));
+                    return Convert.ToBase64String(new[] { (byte)sbyteValue });
                 case bool boolValue:
                     return boolValue ? "t" : "f";
                 case string stringValue:
@@ -262,6 +266,10 @@ namespace AppCore.UseCases
                 return (T)(object)BitConverter.ToSingle(Convert.FromBase64String(str), 0);
             if (type == typeof(double))
                 return (T)(object)BitConverter.ToDouble(Convert.FromBase64String(str), 0);
+            if (type == typeof(short))
+                return (T)(object)BitConverter.ToInt16(Convert.FromBase64String(str), 0);
+            if (type == typeof(ushort))
+                return (T)(object)BitConverter.ToUInt16(Convert.FromBase64String(str), 0);
             if (type == typeof(byte))
                 return (T)(object)Convert.FromBase64String(str)[0];
             if (type == typeof(sbyte))

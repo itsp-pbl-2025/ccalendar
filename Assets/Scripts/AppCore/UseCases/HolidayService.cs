@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AppCore.Interfaces;
 using AppCore.Utilities;
-using Cysharp.Threading.Tasks;
 using Domain.Api;
 using Domain.Entity;
 using Domain.Enum;
@@ -20,7 +20,6 @@ namespace AppCore.UseCases
         private readonly RequestHandler _api;
 
         private readonly Dictionary<CCDateOnly, string> _holidayMap = new();
-        private readonly IScheduleRepository _scheduleRepo;
         
         private CCDateOnly _loadedSinceInclusive, _loadedUntilExclusive;
         
@@ -61,7 +60,7 @@ namespace AppCore.UseCases
             LoadHolidaysAsync(startDate, endDate, loadingCallback).Forget();
         }
 
-        public async UniTask<bool> LoadHolidaysAsync(CCDateOnly startDate, CCDateOnly endDate, Action<bool> loadingCallback = null)
+        public async Task<bool> LoadHolidaysAsync(CCDateOnly startDate, CCDateOnly endDate, Action<bool> loadingCallback = null)
         {
             const int maxRetries = 3; // 最大試行回数 (初回の1回 + リトライ2回)
             const int initialDelayMilliseconds = 1000; // 最初の待機時間 (1秒)
@@ -105,8 +104,9 @@ namespace AppCore.UseCases
                 // 待機時間をリトライごとに長くする
                 var delay = initialDelayMilliseconds * (1 << i);
 
-                // UniTask.Delayを使用して、メインスレッドをブロックせずに待機する
-                await UniTask.Delay(delay);
+                // Task.Delayを使用して、メインスレッドをブロックせずに待機する
+                // NOTE: UniTask.DelayはUnityEngine上では使えるけどworkflowテストでは落ちるので使わないようにする
+                await Task.Delay(TimeSpan.FromMilliseconds(delay));
             }
 
             // --- 全てのリトライが失敗した場合
@@ -114,7 +114,7 @@ namespace AppCore.UseCases
             return false;
         }
 
-        private async UniTask<RequestHandler.Result<HolidayList>> ApiGetHolidays(CCDateOnly startDate, CCDateOnly endDate)
+        private async Task<RequestHandler.Result<HolidayList>> ApiGetHolidays(CCDateOnly startDate, CCDateOnly endDate)
         {
             var start = $"{startDate.Year.Value:D4}-{startDate.Month.Value:D2}-{startDate.Day.Value:D2}";
             var end = $"{endDate.Year.Value:D4}-{endDate.Month.Value:D2}-{endDate.Day.Value:D2}";
