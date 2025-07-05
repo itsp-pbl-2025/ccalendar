@@ -138,7 +138,7 @@ namespace AppCore.UseCases
                     datesToRemove.Add(date);
             }
 
-            foreach (var date in datesToRemove) _holidayMap.Remove(date);
+            foreach (var date in datesToRemove) _holidayMap.TryRemove(date, out _);
 
             foreach (var h in list.holidays)
             {
