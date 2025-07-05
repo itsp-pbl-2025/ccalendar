@@ -37,7 +37,7 @@ namespace Domain.Entity
 
         public Month(int value)
         {
-            if (value < 1 || value > 12)
+            if (value is < 1 or > 12)
                 throw new ArgumentOutOfRangeException(nameof(value), "Month must be between 1 and 12.");
             Value = value;
         }
@@ -65,7 +65,7 @@ namespace Domain.Entity
 
         public Day(int value)
         {
-            if (value < 1 || value > 31)
+            if (value is < 1 or > 31)
                 throw new ArgumentOutOfRangeException(nameof(value), "Day must be between 1 and 31.");
             Value = value;
         }
@@ -93,7 +93,7 @@ namespace Domain.Entity
 
         public Hour(int value)
         {
-            if (value < 0 || value > 23)
+            if (value is < 0 or > 23)
                 throw new ArgumentOutOfRangeException(nameof(value), "Hour must be between 0 and 23.");
             Value = value;
         }
@@ -121,7 +121,7 @@ namespace Domain.Entity
 
         public Minute(int value)
         {
-            if (value < 0 || value > 59)
+            if (value is < 0 or > 59)
                 throw new ArgumentOutOfRangeException(nameof(value), "Minute must be between 0 and 59.");
             Value = value;
         }
@@ -149,7 +149,7 @@ namespace Domain.Entity
 
         public Second(int value)
         {
-            if (value < 0 || value > 59)
+            if (value is < 0 or > 59)
                 throw new ArgumentOutOfRangeException(nameof(value), "Second must be between 0 and 59.");
             Value = value;
         }
