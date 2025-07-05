@@ -4,10 +4,7 @@
     "references": [
         "AppCore",
         "Domain",
-        "Infrastructure",
-        "UnityEditor.TestRunner",
-        "UniTask",
-        "WebRequest"
+        "Infrastructure"
     ],
     "includePlatforms": [
         "Editor"

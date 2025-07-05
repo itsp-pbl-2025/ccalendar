@@ -13,9 +13,9 @@ namespace Infrastructure
         private readonly LiteDBManager _liteDb;
         private readonly List<IService> _services = new();
 
-        public Context(string dbPath)
+        public Context(string dbPath, string dbKey)
         {
-            _liteDb = new LiteDBManager(dbPath);
+            _liteDb = new LiteDBManager(dbPath, dbKey);
             
             SetupServices();
             Ready = true;
@@ -27,8 +27,13 @@ namespace Infrastructure
         {
             _services.Add(new SampleService(ScheduleRepo));
             _services.Add(new ScheduleService(ScheduleRepo));
-            _services.Add(new HolidayService(ScheduleRepo));
+            _services.Add(new HolidayService(this));
             _services.Add(new HistoryService(HistoryRepo));
+
+            foreach (var service in _services)
+            {
+                service.Setup();
+            }
         }
 
         public T GetService<T>(string name = "") where T : IService
@@ -46,8 +51,10 @@ namespace Infrastructure
         }
         
         private ScheduleRepository? _scheduleRepo;
+        private TaskRepository? _taskRepo;
         public IScheduleRepository ScheduleRepo => _scheduleRepo ??= new ScheduleRepository(_liteDb.DB);
-        
+        public ITaskRepository TaskRepo => _taskRepo ??= new TaskRepository(_liteDb.DB);
+
         private HistoryRepository? _historyRepo;
         public IHistoryRepository HistoryRepo => _historyRepo ??= new HistoryRepository(_liteDb.DB);
         

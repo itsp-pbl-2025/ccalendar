@@ -8,7 +8,7 @@ namespace Domain.Entity
          * デフォルトコンストラクタ.
          * DAO経由でDScheduleから変換する場合以外は使わないこと.
          */
-        public ScheduleDuration(DateTime StartTime, DateTime EndTime, bool IsAllDay)
+        public ScheduleDuration(CCDateTime StartTime, CCDateTime EndTime, bool IsAllDay)
         {
             this.StartTime = StartTime;
             this.EndTime = EndTime;
@@ -18,7 +18,7 @@ namespace Domain.Entity
         /**
          * 期間を指定する(終日でない)場合のコンストラクタ.
          */
-        public ScheduleDuration(DateTime StartTime, DateTime EndTime)
+        public ScheduleDuration(CCDateTime StartTime, CCDateTime EndTime)
             : this(StartTime, EndTime, false)
         {
         }
@@ -27,12 +27,12 @@ namespace Domain.Entity
          * 終日の場合のコンストラクタ.
          */
         public ScheduleDuration()
-            : this(DateTime.Today, DateTime.Today.AddDays(1).AddMinutes(-1), true)
+            : this(new CCDateTime(DateTime.Today), new CCDateTime(DateTime.Today.AddDays(1).AddMinutes(-1)), true)
         {
         }
         
-        public DateTime StartTime { get; }
-        public DateTime EndTime { get; }
+        public CCDateTime StartTime { get; }
+        public CCDateTime EndTime { get; }
         public bool IsAllDay { get; }
 
         public bool IsCollided(ScheduleDuration other)
