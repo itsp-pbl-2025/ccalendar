@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppCore.Interfaces;
@@ -7,6 +8,7 @@ using Domain.Api;
 using Domain.Entity;
 using Domain.Enum;
 using R3;
+using ZLinq;
 
 namespace AppCore.UseCases
 {
@@ -19,7 +21,7 @@ namespace AppCore.UseCases
         private readonly IContext _context;
         private readonly RequestHandler _api;
 
-        private readonly Dictionary<CCDateOnly, string> _holidayMap = new();
+        private readonly ConcurrentDictionary<CCDateOnly, string> _holidayMap = new();
         
         private CCDateOnly _loadedSinceInclusive, _loadedUntilExclusive;
         
@@ -142,7 +144,7 @@ namespace AppCore.UseCases
             {
                 if (h.TryParseDate(out var dateOnly))
                 {
-                    _holidayMap[dateOnly] = h.name;
+                    _holidayMap.TryAdd(dateOnly, h.name);
                 }
             }
             
@@ -175,13 +177,14 @@ namespace AppCore.UseCases
             
             foreach (var (date, holidayName) in cachedHolidays)
             {
-                _holidayMap.Add(date, holidayName);
+                _holidayMap.TryAdd(date, holidayName);
             }
         }
         
         private void SaveToHistory()
         {
-            _context.GetService<HistoryService>().UpdateHistory(HistoryType.CachedHolidays, _holidayMap);
+            _context.GetService<HistoryService>().UpdateHistory(HistoryType.CachedHolidays,
+                _holidayMap.AsValueEnumerable().ToDictionary(h => h.Key, h => h.Value));
         }
     }
 }
