@@ -26,8 +26,8 @@ namespace Domain.Entity
         /**
          * 終日の場合のコンストラクタ.
          */
-        public ScheduleDuration()
-            : this(new CCDateTime(DateTime.Today), new CCDateTime(DateTime.Today.AddDays(1).AddMinutes(-1)), true)
+        public ScheduleDuration(CCDateOnly day)
+            : this(new CCDateTime(day, new CCTimeOnly()), new CCDateTime(day, new CCTimeOnly(23, 59, 59)), true)
         {
         }
         
