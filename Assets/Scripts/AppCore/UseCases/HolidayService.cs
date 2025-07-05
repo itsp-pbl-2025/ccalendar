@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AppCore.Interfaces;
 using AppCore.Utilities;
-using Cysharp.Threading.Tasks;
 using Domain.Api;
 using Domain.Entity;
 using Domain.Enum;
@@ -61,7 +60,7 @@ namespace AppCore.UseCases
             LoadHolidaysAsync(startDate, endDate, loadingCallback).Forget();
         }
 
-        public async UniTask<bool> LoadHolidaysAsync(CCDateOnly startDate, CCDateOnly endDate, Action<bool> loadingCallback = null)
+        public async Task<bool> LoadHolidaysAsync(CCDateOnly startDate, CCDateOnly endDate, Action<bool> loadingCallback = null)
         {
             const int maxRetries = 3; // 最大試行回数 (初回の1回 + リトライ2回)
             const int initialDelayMilliseconds = 1000; // 最初の待機時間 (1秒)
@@ -115,7 +114,7 @@ namespace AppCore.UseCases
             return false;
         }
 
-        private async UniTask<RequestHandler.Result<HolidayList>> ApiGetHolidays(CCDateOnly startDate, CCDateOnly endDate)
+        private async Task<RequestHandler.Result<HolidayList>> ApiGetHolidays(CCDateOnly startDate, CCDateOnly endDate)
         {
             var start = $"{startDate.Year.Value:D4}-{startDate.Month.Value:D2}-{startDate.Day.Value:D2}";
             var end = $"{endDate.Year.Value:D4}-{endDate.Month.Value:D2}-{endDate.Day.Value:D2}";

@@ -4,8 +4,7 @@
     "references": [
         "AppCore",
         "Domain",
-        "Infrastructure",
-        "UniTask"
+        "Infrastructure"
     ],
     "includePlatforms": [
         "Editor"

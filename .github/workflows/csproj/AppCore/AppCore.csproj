@@ -16,7 +16,6 @@
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="R3" Version="1.3.0" />
-        <PackageReference Include="UniTask" Version="2.5.0" />
         <PackageReference Include="ZLinq" Version="1.4.12" />
     </ItemGroup>
 </Project>
