@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AppCore.Interfaces;
 using AppCore.Utilities;
 using Cysharp.Threading.Tasks;
@@ -20,7 +21,6 @@ namespace AppCore.UseCases
         private readonly RequestHandler _api;
 
         private readonly Dictionary<CCDateOnly, string> _holidayMap = new();
-        private readonly IScheduleRepository _scheduleRepo;
         
         private CCDateOnly _loadedSinceInclusive, _loadedUntilExclusive;
         
@@ -105,8 +105,9 @@ namespace AppCore.UseCases
                 // 待機時間をリトライごとに長くする
                 var delay = initialDelayMilliseconds * (1 << i);
 
-                // UniTask.Delayを使用して、メインスレッドをブロックせずに待機する
-                await UniTask.Delay(delay);
+                // Task.Delayを使用して、メインスレッドをブロックせずに待機する
+                // NOTE: UniTask.DelayはUnityEngine上では使えるけどworkflowテストでは落ちるので使わないようにする
+                await Task.Delay(TimeSpan.FromMilliseconds(delay));
             }
 
             // --- 全てのリトライが失敗した場合
