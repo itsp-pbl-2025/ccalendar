@@ -26,9 +26,15 @@ namespace Domain.Entity
         /**
          * 終日の場合のコンストラクタ.
          */
-        public ScheduleDuration(CCDateOnly day)
+        public ScheduleDuration(CCDateOnly day = default)
             : this(new CCDateTime(day, new CCTimeOnly()), new CCDateTime(day, new CCTimeOnly(23, 59, 59)), true)
         {
+            if (day.Year.Value != 0 && day.Month.Value != 0 && day.Day.Value != 0) return;
+            
+            // CCDateOnlyがデフォルトコンストラクタで宣言された場合、今日に変換する
+            var today = CCDateOnly.Today;
+            StartTime = new CCDateTime(today, new CCTimeOnly(0, 0, 0));
+            EndTime = new CCDateTime(today, new CCTimeOnly(23, 59, 59));
         }
         
         public CCDateTime StartTime { get; }
