@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Presentation.Presenter;
 using Presentation.Utilities;
 using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
 using ZLinq;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -21,6 +18,7 @@ namespace Presentation.Views.Extensions
     public class ScalableScrollRect : ScrollRect
     {
         [SerializeField, Range(1f, 10f)] protected float scaleMax = 4f;
+        [SerializeField] private RectTransform sideContent;
         
         #if UNITY_EDITOR
         [CustomEditor(typeof(ScalableScrollRect))]
@@ -28,9 +26,11 @@ namespace Presentation.Views.Extensions
         public class ScalableScrollRectEditor : ScrollRectEditor
         {
             private SerializedProperty _scaleMaxProp;
+            private SerializedProperty _sideContentProp;
             protected override void OnEnable()
             {
                 _scaleMaxProp = serializedObject.FindProperty("scaleMax");
+                _sideContentProp = serializedObject.FindProperty("sideContent");
                 base.OnEnable();
             }
 
@@ -41,11 +41,12 @@ namespace Presentation.Views.Extensions
                 EditorGUILayout.LabelField("カーソルの中心を指すオブジェクト。", EditorStyles.label);
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(_scaleMaxProp);
+                EditorGUILayout.PropertyField(_sideContentProp);
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
 
-                    // todo any reloading
+                    // any reloading
                 }
                 EditorGUILayout.Separator();
                 
@@ -161,8 +162,17 @@ namespace Presentation.Views.Extensions
 
         private void AdjustContent()
         {
-            content.sizeDelta = new Vector2(content.sizeDelta.x, 
-                Mathf.Clamp(content.sizeDelta.y, viewport.rect.size.y, viewport.rect.size.y * scaleMax));
+            var suitableHeight =
+                Mathf.Clamp(content.sizeDelta.y, viewport.rect.size.y, viewport.rect.size.y * scaleMax);
+            content.sizeDelta = new Vector2(content.sizeDelta.x, suitableHeight);
+            
+            sideContent.sizeDelta = new Vector2(sideContent.sizeDelta.x, suitableHeight);
+        }
+
+        protected override void LateUpdate()
+        {
+            base.LateUpdate();
+            sideContent.anchoredPosition = new Vector2(sideContent.anchoredPosition.x, content.anchoredPosition.y);
         }
     }
 }
