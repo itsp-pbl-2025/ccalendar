@@ -8,19 +8,23 @@ namespace Domain.Entity
          * デフォルトコンストラクタ.
          * DAO経由でDScheduleから変換する場合以外は使わないこと.
          */
-        public ScheduleDuration(CCDateTime StartTime, CCDateTime EndTime, bool IsAllDay)
+        public ScheduleDuration(CCDateTime startTime, CCDateTime endTime, bool isAllDay)
         {
-            this.StartTime = StartTime;
-            this.EndTime = EndTime;
-            this.IsAllDay = IsAllDay;
+            StartTime = startTime;
+            EndTime = endTime;
+            IsAllDay = isAllDay;
         }
         
         /**
          * 期間を指定する(終日でない)場合のコンストラクタ.
          */
-        public ScheduleDuration(CCDateTime StartTime, CCDateTime EndTime)
-            : this(StartTime, EndTime, false)
+        public ScheduleDuration(CCDateTime startTime, CCDateTime endTime)
+            : this(startTime, endTime, false)
         {
+            if (startTime.CompareTo(endTime) > 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(endTime), "The end time must be later than the start time.");
+            }
         }
         
         /**
@@ -40,7 +44,7 @@ namespace Domain.Entity
         {
             if (day.CompareTo(endDay) > 0)
             {
-                (day, endDay) = (endDay, day);
+                throw new ArgumentOutOfRangeException(nameof(endDay), "The end day must be later than the start day.");
             }
             StartTime = new CCDateTime(day, new CCTimeOnly(0, 0, 0));
             EndTime = new CCDateTime(endDay, new CCTimeOnly(23, 59, 59));
