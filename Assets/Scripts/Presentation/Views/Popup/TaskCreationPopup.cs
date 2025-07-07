@@ -37,7 +37,7 @@ namespace Presentation.Views.Popup
                     0,
                     _title,
                     _description,
-                    new ScheduleDuration(),
+                    new ScheduleDuration(CCDateOnly.Today),
                     new SchedulePeriodic(SchedulePeriodicType.EveryWeek, 1));
                 InAppContext.Context.GetService<ScheduleService>().CreateSchedule(schedule);
                 
