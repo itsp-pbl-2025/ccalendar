@@ -21,8 +21,7 @@ namespace Presentation.Views.Scene.Calendar
         
         public bool Init(Schedule schedule, CCDateOnly date)
         {
-            // TODO: date to datetime
-            if (!schedule.Duration.IsCollided(new ScheduleDuration())) return false;
+            if (!schedule.Duration.IsCollided(new ScheduleDuration(date))) return false;
             
             _schedule = schedule;
             _inDate = date;

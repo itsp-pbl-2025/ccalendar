@@ -11,14 +11,19 @@ namespace Presentation.Views.Scene.Calendar
 {
     public class CalendarManager : MonoBehaviour
     {
-        private const float TimeSwitchMode = 0.333f;
+        private const float TimeSwitchMode = 1/3f;
         private const float TimeSwitchType = 0.25f;
+
+        private const float WidthDayContainer = 980f;
+        private const float ThresholdPageSwitch = 1/3f;
 
         [SerializeField] private PartsScheduleInDay schedulePrefab;
         [SerializeField] private CanvasGroup dayCanvas, weekCanvas;
-        [SerializeField] private RectTransform dateIconContainer, dayContainer, weekContainer;
-        [SerializeField] private RectTransform dateIconPageContent, dayPageContent, weekPageContent;
+        [SerializeField] private ScalableScrollRect dayScrollRect;
+        [SerializeField] private RectTransform dayContainer, weekContainer;
+        [SerializeField] private RectTransform dayPageContent, weekPageContent;
         [SerializeField] private PartsDayIconLabel dayFullIconPrefab, dayMiniIconPrefab;
+        [SerializeField] private RectTransform dateIconContent;
         [SerializeField] private ImageRx daySeparatorPrefab;
         [SerializeField] private PartsWeekDaysLabel weekSeparatorPrefab;
         
@@ -27,9 +32,10 @@ namespace Presentation.Views.Scene.Calendar
         private CalendarType _calendarType = CalendarType.Invalid;
         private CCDateOnly _targetDate;
         
-        private List<PartsDayIconLabel> _dayIcons;
-        private List<RectTransform> _daySeparators;
+        private readonly Dictionary<int, PartsDayIconLabel> _dayIcons = new();
         private List<PartsWeekDaysLabel> _weekSeparators;
+        
+        private readonly Dictionary<int, RectTransform> _dayPageContents = new();
         
         private RectTransform _currentDateIconPage, _currentDayPage, _currentWeekPage;
 
@@ -100,16 +106,20 @@ namespace Presentation.Views.Scene.Calendar
                     
                     // TODO: dayCanvasの準備をする
                     {
+                        InitPageAll(type);
                     }
                 }
 
                 switch (type)
                 {
                     case CalendarType.OneDay:
+                        dayScrollRect.SetStepPageSettings(WidthDayContainer, ThresholdPageSwitch, StepDateIcon);
                         break;
                     case CalendarType.ThreeDays:
+                        dayScrollRect.SetStepPageSettings(WidthDayContainer/3, ThresholdPageSwitch, StepDateIcon);
                         break;
                     case CalendarType.OneWeek:
+                        dayScrollRect.SetStepPageSettings(WidthDayContainer, ThresholdPageSwitch, StepDateIcon);
                         break;
                     case CalendarType.ThreeWeeks:
                         break;
@@ -129,6 +139,89 @@ namespace Presentation.Views.Scene.Calendar
             }
 
             _calendarType = type;
+        }
+
+        private void InitPageAll(CalendarType type)
+        {
+            switch (type)
+            {
+                case CalendarType.OneDay:
+                    for (var offset = -1; offset <= 1; offset++)
+                    {
+                        var dayIcon = Instantiate(dayFullIconPrefab, dateIconContent);
+                        dayIcon.Init(_targetDate.AddDays(offset));
+                        dayIcon.SetAnchorX(1/3f * offset + 1/2f);
+                        _dayIcons.Add(offset, dayIcon);
+
+                        var dayPage = Instantiate(dayPageContent, dayContainer);
+                        dayPage.gameObject.SetActive(true);
+                        dayPage.anchorMin = new Vector2(1 / 3f * (offset + 1), 0f);
+                        dayPage.anchorMax = new Vector2(1 / 3f * (offset + 2), 1f);
+                        _dayPageContents.Add(offset, dayPage);
+                    }
+                    break;
+                case CalendarType.ThreeDays:
+                    for (var offset = -3; offset <= 6; offset++)
+                    {
+                        var dayIcon = Instantiate(dayMiniIconPrefab, dateIconContent);
+                        dayIcon.Init(_targetDate.AddDays(offset));
+                        dayIcon.SetAnchorX(1/9f * offset + 1/2f);
+                        _dayIcons.Add(offset, dayIcon);
+
+                        var dayPage = Instantiate(dayPageContent, dayContainer);
+                        dayPage.gameObject.SetActive(true);
+                        dayPage.anchorMin = new Vector2(1 / 9f * (offset + 3), 0f);
+                        dayPage.anchorMax = new Vector2(1 / 9f * (offset + 4), 1f);
+                        _dayPageContents.Add(offset, dayPage);
+                    }
+                    break;
+                case CalendarType.OneWeek:
+                    for (var offset = -7; offset <= 14; offset++)
+                    {
+                        var dayIcon = Instantiate(dayMiniIconPrefab, dateIconContent);
+                        dayIcon.Init(_targetDate.AddDays(offset));
+                        dayIcon.SetAnchorX(1/21f * offset + 1/2f);
+                        _dayIcons.Add(offset, dayIcon);
+
+                        var dayPage = Instantiate(dayPageContent, dayContainer);
+                        dayPage.gameObject.SetActive(true);
+                        dayPage.anchorMin = new Vector2(1 / 21f * (offset + 7), 0f);
+                        dayPage.anchorMax = new Vector2(1 / 21f * (offset + 8), 1f);
+                        _dayPageContents.Add(offset, dayPage);
+                    }
+                    break;
+                case CalendarType.ThreeWeeks:
+                    break;
+                case CalendarType.OneMonth:
+                    break;
+            }
+        }
+
+        private void StepDateIcon(int stepPages)
+        {
+            if (stepPages is 0) return;
+            
+            // 日付アイコンを移動させる
+            switch (_calendarType)
+            {
+                case CalendarType.OneDay:
+                case CalendarType.ThreeDays:
+                case CalendarType.OneWeek:
+                {
+                    // TODO: _dayPageContentsの中身をちゃんと移動させるから、OneDay+ThreeDaysとOneWeekを別で処理
+                    _targetDate = _targetDate.AddDays(stepPages);
+                    foreach (var (offset, icon) in _dayIcons)
+                    {
+                        icon.Init(_targetDate.AddDays(offset));
+                    }
+
+                    break;
+                }
+                case CalendarType.ThreeWeeks:
+                    break;
+                case CalendarType.OneMonth:
+                    break;
+            }
         }
 
         private static bool IsCalendarModeWeek(CalendarType type)

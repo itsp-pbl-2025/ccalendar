@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Presentation.Presenter;
 using Presentation.Utilities;
 using R3;
@@ -17,8 +18,8 @@ namespace Presentation.Views.Extensions
 {
     public class ScalableScrollRect : ScrollRect
     {
-        [SerializeField, Range(1f, 10f)] protected float scaleMax = 4f;
-        [SerializeField] private RectTransform sideContent;
+        [SerializeField, Range(1f, 10f)] protected float verticalScaleMax = 4f;
+        [SerializeField] private RectTransform verticalFollowContent, horizontalFollowContent;
         
 #if UNITY_EDITOR
         [CustomEditor(typeof(ScalableScrollRect))]
@@ -26,11 +27,12 @@ namespace Presentation.Views.Extensions
         public class ScalableScrollRectEditor : ScrollRectEditor
         {
             private SerializedProperty _scaleMaxProp;
-            private SerializedProperty _sideContentProp;
+            private SerializedProperty _vFollowContentProp, _hFollowContentProp;
             protected override void OnEnable()
             {
-                _scaleMaxProp = serializedObject.FindProperty("scaleMax");
-                _sideContentProp = serializedObject.FindProperty("sideContent");
+                _scaleMaxProp = serializedObject.FindProperty("verticalScaleMax");
+                _vFollowContentProp = serializedObject.FindProperty("verticalFollowContent");
+                _hFollowContentProp = serializedObject.FindProperty("horizontalFollowContent");
                 base.OnEnable();
             }
 
@@ -41,7 +43,8 @@ namespace Presentation.Views.Extensions
                 EditorGUILayout.LabelField("カーソルの中心を指すオブジェクト。", EditorStyles.label);
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(_scaleMaxProp);
-                EditorGUILayout.PropertyField(_sideContentProp);
+                EditorGUILayout.PropertyField(_vFollowContentProp);
+                EditorGUILayout.PropertyField(_hFollowContentProp);
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
@@ -61,7 +64,8 @@ namespace Presentation.Views.Extensions
         // vertical settings
         private float _currentScale, _standardHeight;
         // horizontal settings
-        private float _prevOffsetX;
+        private Action<int> _onPageSteppedCallback;
+        private float _prevOffsetX, _thresholdRatio = 1.0f, _unitPageWidth = float.MaxValue;
         private bool _horizontalMoved;
         
         private int _scrollingPointerId = -1;
@@ -132,6 +136,20 @@ namespace Presentation.Views.Extensions
             // ポインターが全部離れたら、移動方向制限を解除する
             if (_pointersCount.Value is 0)
             {
+                // 横方向に移動していた時、thresholdを超えてたらページをめくる
+                if (horizontal)
+                {
+                    var pageStepped = 0;
+                    while (Mathf.Abs(content.anchoredPosition.x) > _thresholdRatio * _unitPageWidth)
+                    {
+                        var stepDirection = -Mathf.Sign(content.anchoredPosition.x);
+                        if (pageStepped is not 0 && (int)Mathf.Sign(pageStepped) != (int)stepDirection) break;
+                        pageStepped += (int)stepDirection;
+                        content.anchoredPosition += _unitPageWidth * stepDirection * Vector2.right;
+                    }
+                    _prevOffsetX = content.anchoredPosition.x;
+                    _onPageSteppedCallback?.Invoke(pageStepped);
+                }
                 horizontal = true;
                 vertical = true;
             }
@@ -225,19 +243,27 @@ namespace Presentation.Views.Extensions
             }
         }
 
+        public void SetStepPageSettings(float unitPageWidth, float thresholdPageStep, Action<int> onPageStepped)
+        {
+            _unitPageWidth = unitPageWidth;
+            _thresholdRatio = thresholdPageStep;
+            _onPageSteppedCallback = onPageStepped;
+        }
+
         private void AdjustContent()
         {
             var suitableHeight =
-                Mathf.Clamp(content.sizeDelta.y, viewport.rect.size.y, viewport.rect.size.y * scaleMax);
+                Mathf.Clamp(content.sizeDelta.y, viewport.rect.size.y, viewport.rect.size.y * verticalScaleMax);
             content.sizeDelta = new Vector2(content.sizeDelta.x, suitableHeight);
             
-            sideContent.sizeDelta = new Vector2(sideContent.sizeDelta.x, suitableHeight);
+            verticalFollowContent.sizeDelta = new Vector2(verticalFollowContent.sizeDelta.x, suitableHeight);
         }
 
         protected override void LateUpdate()
         {
             base.LateUpdate();
-            sideContent.anchoredPosition = new Vector2(sideContent.anchoredPosition.x, content.anchoredPosition.y);
+            verticalFollowContent.anchoredPosition = new Vector2(verticalFollowContent.anchoredPosition.x, content.anchoredPosition.y);
+            horizontalFollowContent.anchoredPosition = new Vector2(content.anchoredPosition.x, horizontalFollowContent.anchoredPosition.y);
         }
     }
 }

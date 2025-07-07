@@ -16,15 +16,18 @@ namespace Presentation.Views.Scene.Calendar
             Mini
         }
         
+        [SerializeField] private RectTransform rectTransform;
         [SerializeField] private LabelRx dateLabel;
         [SerializeField] private ImageRx bgImage;
         [SerializeField] private ShowMode mode;
 
         private HolidayService _holidayService;
+        private CCDateOnly _date;
 
         public void Init(CCDateOnly date)
         {
             _holidayService ??= InAppContext.Context.GetService<HolidayService>();
+            _date = date;
 
             dateLabel.colorType = date.ToDateTime().DayOfWeek.GetDayOfWeekColor();
             if (mode == ShowMode.Mini)
@@ -48,6 +51,22 @@ namespace Presentation.Views.Scene.Calendar
                     dateLabel.text = date.ToDateTime().ToString("yyyy年 M月 d日 dddd", new CultureInfo("ja-JP"));
                 }
             }
+        }
+
+        public CCDateOnly GetDate()
+        {
+            return _date;
+        }
+
+        public void SetAnchorX(float x)
+        {
+            rectTransform.anchorMin = new Vector2(x, rectTransform.anchorMin.y);
+            rectTransform.anchorMax = new Vector2(x, rectTransform.anchorMax.y);
+        }
+
+        public float GetAnchorX()
+        {
+            return rectTransform.anchorMin.x;
         }
     }
 }
