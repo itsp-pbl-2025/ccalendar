@@ -61,7 +61,7 @@ namespace Presentation.Views.Extensions
         // vertical settings
         private float _currentScale, _standardHeight;
         // horizontal settings
-        private float _backVelocity;
+        private float _prevOffsetX;
         private bool _horizontalMoved;
         
         private int _scrollingPointerId = -1;
@@ -195,13 +195,12 @@ namespace Presentation.Views.Extensions
                 {
                     if (_horizontalMoved)
                     {
-                        _backVelocity -= ReversingVelocity(content.anchoredPosition.x);
-                        content.anchoredPosition += _backVelocity * Time.deltaTime * Vector2.right;
-                        if ((int)Mathf.Sign(_backVelocity) == (int)Mathf.Sign(content.anchoredPosition.x) ||
+                        velocity -= ReversingVelocity(content.anchoredPosition.x) * Vector2.right;
+                        if ((int)Mathf.Sign(_prevOffsetX) != (int)Mathf.Sign(content.anchoredPosition.x) ||
                             Mathf.Abs(content.anchoredPosition.x) < 1f)
                         {
+                            velocity = Vector2.zero;
                             content.anchoredPosition = new Vector2(0f, content.anchoredPosition.y);
-                            _backVelocity = 0f;
                             _horizontalMoved = false;
                         }
                     }
@@ -214,6 +213,7 @@ namespace Presentation.Views.Extensions
                 {
                     _horizontalMoved = true;
                 }
+                _prevOffsetX = content.anchoredPosition.x;
             }
             
             AdjustContent();
@@ -221,7 +221,7 @@ namespace Presentation.Views.Extensions
 
             float ReversingVelocity(float offset)
             {
-                return (Mathf.Sqrt(Mathf.Abs(offset) + 1000) * 100 * Mathf.Sign(offset)) * Time.deltaTime;
+                return (Mathf.Sqrt(Mathf.Abs(offset) + 1000) * 1000 * Mathf.Sign(offset)) * Time.deltaTime;
             }
         }
 
