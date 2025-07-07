@@ -33,6 +33,20 @@ namespace Domain.Entity
             IsAllDay = true;
         }
         
+        /**
+         * 終日(複数日)の場合のコンストラクタ.
+         */
+        public ScheduleDuration(CCDateOnly day, CCDateOnly endDay)
+        {
+            if (day.CompareTo(endDay) > 0)
+            {
+                (day, endDay) = (endDay, day);
+            }
+            StartTime = new CCDateTime(day, new CCTimeOnly(0, 0, 0));
+            EndTime = new CCDateTime(endDay, new CCTimeOnly(23, 59, 59));
+            IsAllDay = true;
+        }
+        
         public CCDateTime StartTime { get; }
         public CCDateTime EndTime { get; }
         public bool IsAllDay { get; }
