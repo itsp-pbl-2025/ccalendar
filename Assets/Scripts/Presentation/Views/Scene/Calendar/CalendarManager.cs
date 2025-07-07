@@ -5,6 +5,7 @@ using Domain.Entity;
 using Domain.Enum;
 using Presentation.Presenter;
 using Presentation.Views.Extensions;
+using Presentation.Views.Popup;
 using UnityEngine;
 
 namespace Presentation.Views.Scene.Calendar
@@ -17,6 +18,7 @@ namespace Presentation.Views.Scene.Calendar
         private const float WidthDayContainer = 980f;
         private const float ThresholdPageSwitch = 1/3f;
 
+        [SerializeField] private CalendarSidebarPopup sidebarPopupPrefab;
         [SerializeField] private PartsScheduleInDay schedulePrefab;
         [SerializeField] private CanvasGroup dayCanvas, weekCanvas;
         [SerializeField] private ScalableScrollRect dayScrollRect;
@@ -48,8 +50,14 @@ namespace Presentation.Views.Scene.Calendar
             
             SwitchMode(_historyService.TryGetHistory(HistoryType.PreviousCalendarType, out CalendarType type) ? type : CalendarType.OneDay);
         }
+
+        public void ShowSidebar()
+        {
+            var window = PopupManager.Instance.ShowPopup(sidebarPopupPrefab);
+            window.Init(this);
+        }
         
-        private void SwitchMode(CalendarType type)
+        public void SwitchMode(CalendarType type)
         {
             // 同じか、無効なやつに変えようとしてたらすぐ止める
             if (type is CalendarType.Invalid || _calendarType == type) return;
