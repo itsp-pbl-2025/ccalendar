@@ -7,6 +7,7 @@ namespace Presentation
     {
         Base,
         Sample,
+        TaskPreview,
         Calendar,
     }
     
@@ -20,6 +21,7 @@ namespace Presentation
             {
                 SceneOf.Base => "BaseScene",
                 SceneOf.Sample => "SampleScene",
+                SceneOf.TaskPreview => "TaskPreviewScene",
                 SceneOf.Calendar => "CalendarScene",
                 _ => string.Empty
             };
