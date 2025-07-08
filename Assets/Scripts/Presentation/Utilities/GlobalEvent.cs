@@ -11,5 +11,10 @@
         /// InAppContext.ThemeのColorThemeが変更された直後
         /// </summary>
         OnThemeUpdated,
+        
+        /// <summary>
+        /// 新規タスクが作成された直後
+        /// </summary>
+        OnTaskCreated,
     }
 }

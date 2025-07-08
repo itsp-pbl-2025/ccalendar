@@ -2,6 +2,7 @@ using System;
 using AppCore.UseCases;
 using Domain.Entity;
 using Presentation.Presenter;
+using Presentation.Utilities;
 using TMPro;
 using UnityEngine;
 
@@ -87,6 +88,9 @@ namespace Presentation.Views.Popup.Task
                 
                 CCTask task = new (0, _title, _description, _priority, new CCDateTime(_deadlineDate, _deadlineTime));
                 InAppContext.Context.GetService<TaskService>().CreateTask(task);
+                
+                // タスクリスト更新イベント発火
+                InAppContext.EventDispatcher.SendGlobalEvent(GlobalEvent.OnTaskCreated);
                 
                 Debug.Log("Created new task 🦊");
             }
