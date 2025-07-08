@@ -12,6 +12,7 @@ namespace AppCore.Native
     public class NativeService : IService {
         public string Name { get; }
         private INative _native;
+        
         public NativeService(string name = "")
         {
             Name = name != "" ? name : GetType().Name;
@@ -29,6 +30,9 @@ namespace AppCore.Native
 
              Console.WriteLine("NativeService is constructed with:" + _native.GetName());
         }
+
+        public void Setup() {}
+        
         public void Dispose(){}
 
         public void ScheduleNotificationWithSchedule(Schedule schedule)

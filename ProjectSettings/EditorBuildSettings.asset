@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TaskPreviewScene.unity
     guid: 4f48c52c66fc54d40b7115d8a6f02a4f
+  - enabled: 1
+    path: Assets/Scenes/CalendarScene.unity
+    guid: b116b93044b358d41b72adfcbb5be661
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 272b714c3cd953d41b7a2a969a15b9f8, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 45d92a134f2c5074393196fdffbf96f5, type: 2}

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace AppCore.Utilities
@@ -90,7 +90,7 @@ namespace AppCore.Utilities
         
         private Uri BuildUrl(string relativePath) => new Uri(_baseUrl, relativePath);
 
-        public async UniTask<Result<TResponse>> GetAsync<TResponse>(string relativePath)
+        public async Task<Result<TResponse>> GetAsync<TResponse>(string relativePath)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace AppCore.Utilities
             }
         }
 
-        public async UniTask<Result<TResponse>> PostAsync<TResponse, TRequest>(string relativePath, TRequest postData)
+        public async Task<Result<TResponse>> PostAsync<TResponse, TRequest>(string relativePath, TRequest postData)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace AppCore.Utilities
             }
         }
 
-        public async UniTask<Result> PostAsync<TRequest>(string relativePath, TRequest postData)
+        public async Task<Result> PostAsync<TRequest>(string relativePath, TRequest postData)
         {
             try
             {

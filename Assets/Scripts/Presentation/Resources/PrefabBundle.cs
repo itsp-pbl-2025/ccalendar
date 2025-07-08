@@ -34,7 +34,7 @@ namespace Presentation.Resources
             return new List<ColorTheme>(_builtinThemes);
         }
 
-        public ColorTheme GetThemeByName(string name)
+        public ColorTheme GetThemeOrDefault(string name)
         {
             if (_builtinThemes.Count == 0)
             {

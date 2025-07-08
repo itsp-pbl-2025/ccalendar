@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.Api;
+using Domain.Entity;
 
 namespace Test.MockData
 {
     public static class MockHoliday
     {
-        public static (DateTime start, DateTime end) GetMockHolidayDuration()
+        public static (CCDateOnly start, CCDateOnly end) GetMockHolidayDuration()
         {
-            return (new DateTime(2022, 1, 1), new DateTime(2022, 12, 31));
+            return (new CCDateOnly(2022, 1, 1), new CCDateOnly(2022, 12, 31));
         }
         
+        /// <returns>2022年の祝日一覧</returns>
         public static List<HolidayRaw> GetMockHolidayRaws()
         {
             return new List<HolidayRaw>
@@ -96,6 +98,27 @@ namespace Test.MockData
                     name = "勤労感謝の日",
                 },
             };
+        }
+
+        public static CCDateOnly GetRandomNormalDay()
+        {
+            var holidays = new HashSet<CCDateOnly>();
+            foreach (var holidayRaw in GetMockHolidayRaws())
+            {
+                if (holidayRaw.TryParseDate(out var date))
+                {
+                    holidays.Add(date);
+                }
+            }
+            
+            var random = new Random();
+            var dayInitial = new CCDateOnly(2022, 1, 1);
+            while (true)
+            {
+                var date = dayInitial.AddDays(random.Next(0, 364));
+                if (holidays.Contains(date)) continue;
+                return date;
+            }
         }
     }
 }

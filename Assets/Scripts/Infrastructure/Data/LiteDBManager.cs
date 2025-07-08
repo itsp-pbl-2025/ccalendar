@@ -23,20 +23,14 @@ namespace Infrastructure.Data
             DB = new LiteDatabase(_mem);
             BsonMapper.Global.EmptyStringToNull = false;
         }
-        
+
         /// <summary>
         /// 指定したパスにあるデータベースを開きます。存在しない場合、新しいデータベースを作成します。
         /// </summary>
         /// <param name="path">データベースのパス</param>
-        public LiteDBManager(string path)
+        /// <param name="key">データベースの鍵</param>
+        public LiteDBManager(string path, string key)
         {
-            var key = SecureStringStorage.KeyStorage.Load();
-            if (key == null)
-            {
-                key = SecureStringStorage.PasswordGenerator.Generate();
-                SecureStringStorage.KeyStorage.Save(key);
-            }
-
             var conn = new ConnectionString { Filename = path, Password = key };
             try
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Entity;
 using Presentation.Utilities;
 using Presentation.Views.Extensions;
 using UnityEngine;
@@ -12,20 +13,22 @@ namespace Presentation.Views.Popup
         [SerializeField, Tooltip("7x6")] private List<ButtonWithLabel> dateButtons;
         [SerializeField] private ButtonRP monthLeft, monthRight, monthDefault;
         
-        private Action<DateTime> _onDateDefined;
+        private Action<CCDateOnly> _onDateDefined;
 
-        private readonly Dictionary<int, DateTime> _targetDateDictionary = new();
+        private readonly Dictionary<int, CCDateOnly> _targetDateDictionary = new();
         
-        private DateTime _selectedDateTime;
-        private DateTime _sinceDateTime = DateTime.MinValue, _untilDateTime = DateTime.MaxValue;
+        private CCDateOnly _selectedDateOnly = CCDateOnly.Default;
+        private CCDateOnly _sinceDateOnly = CCDateOnly.Default, _untilDateOnly = CCDateOnly.MaxValue;
         private int _targetYear, _targetMonth;
-        
-        public void Init(Action<DateTime> onDateTimeDefined, DateTime target = default)
+
+        public void Init(Action<CCDateOnly> onDateOnlyDefined, CCDateOnly? target = null, CCDateOnly? selected = null)
         {
-            _onDateDefined = onDateTimeDefined;
-            if (target == default) target = DateTime.Now;
+            _onDateDefined = onDateOnlyDefined;
+            _selectedDateOnly = selected ?? CCDateOnly.Default;
+
+            var focusMonth = target ?? CCDateOnly.Today;
             
-            SetMonth(target.Year, target.Month);
+            SetMonth(focusMonth.Year.Value, focusMonth.Month.Value);
 
             for (var i = 0; i < dateButtons.Count; i++)
             {
@@ -45,24 +48,24 @@ namespace Presentation.Views.Popup
             Reload();
         }
 
-        public void SetLimitationSince(DateTime since)
+        public void SetLimitationSince(CCDateOnly since)
         {
-            _sinceDateTime = since;
+            _sinceDateOnly = since;
             Reload();
         }
         
-        public void SetLimitationUntil(DateTime until)
+        public void SetLimitationUntil(CCDateOnly until)
         {
-            _untilDateTime = until;
+            _untilDateOnly = until;
             Reload();
         }
 
-        private void OnPressDateButton(DateTime selectedDate)
+        private void OnPressDateButton(CCDateOnly selectedDate)
         {
-            _selectedDateTime = selectedDate;
-            if (selectedDate.Year != _targetYear || selectedDate.Month != _targetMonth)
+            _selectedDateOnly = selectedDate;
+            if (selectedDate.Year.Value != _targetYear || selectedDate.Month.Value != _targetMonth)
             {
-                SetMonth(selectedDate.Year, selectedDate.Month);
+                SetMonth(selectedDate.Year.Value, selectedDate.Month.Value);
             }
             else
             {
@@ -98,13 +101,13 @@ namespace Presentation.Views.Popup
 
         public void OnPressDefaultButton()
         {
-            var now = DateTime.Now;
-            SetMonth(now.Year, now.Month);
+            var now = CCDateOnly.Today;
+            SetMonth(now.Year.Value, now.Month.Value);
         }
 
         public void OnPressDefineButton()
         {
-            _onDateDefined?.Invoke(_selectedDateTime);
+            _onDateDefined?.Invoke(_selectedDateOnly);
             CloseWindow();
         }
 
@@ -118,11 +121,11 @@ namespace Presentation.Views.Popup
 
         private void Reload()
         {
-            dateText.text = _selectedDateTime == default ? "未選択" : _selectedDateTime.ToString("yyyy年 MM月 dd日");
+            dateText.text = _selectedDateOnly.IsDefault() ? "未選択" : _selectedDateOnly.ToDateTime().ToString("yyyy年 MM月 dd日");
             monthText.text = $"{_targetYear}年{_targetMonth}月";
             
-            var month1 = new DateTime(_targetYear, _targetMonth, 1);
-            var week = month1.DayOfWeek;
+            var month1 = new CCDateOnly(_targetYear, _targetMonth, 1);
+            var week = month1.ToDateTime().DayOfWeek;
             var indexDate = month1.AddDays(-(int)week);
             
             _targetDateDictionary.Clear();
@@ -131,28 +134,29 @@ namespace Presentation.Views.Popup
                 var buttonDate = indexDate.AddDays(i);
                 _targetDateDictionary.Add(i, buttonDate);
                 var button = dateButtons[i];
-                var outOfMonth = buttonDate.Month != _targetMonth || buttonDate.Year != _targetYear;
-                var outOfRange = buttonDate < _sinceDateTime || buttonDate > _untilDateTime;
-                button.Label.text = buttonDate.Day.ToString();
+                var outOfMonth = buttonDate.Month.Value != _targetMonth || buttonDate.Year.Value != _targetYear;
+                var outOfRange = buttonDate.CompareTo(_sinceDateOnly) < 0 || _untilDateOnly.CompareTo(buttonDate) < 0;
+                button.Label.text = buttonDate.Day.Value.ToString();
                 button.Button.interactable = !outOfRange;
                 button.Button.imageRx.colorType = ColorOf.Surface;
-                if (buttonDate == _selectedDateTime)
+                if (_selectedDateOnly.CompareTo(buttonDate) == 0)
                 {
                     button.Button.Select();
                     button.Button.imageRx.colorType = ColorOf.Secondary;
                 }
+                var buttonDayOfWeek = buttonDate.ToDateTime().DayOfWeek;
                 button.Label.colorType = 
                     outOfRange ? ColorOf.TextDisabled :
                     outOfMonth ? ColorOf.TextTertiary : 
-                    buttonDate.DayOfWeek is DayOfWeek.Saturday ? ColorOf.TextSaturday :
-                    buttonDate.DayOfWeek is DayOfWeek.Sunday ? ColorOf.TextHoliday : ColorOf.TextDefault;
+                    buttonDayOfWeek is DayOfWeek.Saturday ? ColorOf.TextSaturday :
+                    buttonDayOfWeek is DayOfWeek.Sunday ? ColorOf.TextHoliday : ColorOf.TextDefault;
             }
             
-            monthLeft.interactable = month1.AddDays(-1) > _sinceDateTime;
-            monthRight.interactable = month1.AddMonths(1) < _untilDateTime;
+            monthLeft.interactable = month1.AddDays(-1).CompareTo(_sinceDateOnly) > 0;
+            monthRight.interactable = month1.AddMonths(1).CompareTo(_untilDateOnly) < 0;
             
-            var now = DateTime.Now;
-            monthDefault.interactable = _targetYear != now.Year || _targetMonth != now.Month;
+            var now = CCDateOnly.Today;
+            monthDefault.interactable = _targetYear != now.Year.Value || _targetMonth != now.Month.Value;
         }
     }
 }

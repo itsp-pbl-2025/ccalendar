@@ -17,15 +17,15 @@ namespace Presentation.Views.Popup
         
         private SingleButtonPopup _prefabSingleButtonPopup;
         private DoubleButtonPopup _prefabDoubleButtonPopup;
-
-        private readonly Stack<PopupWindow> _showingPopups = new();
+        
+        private readonly List<PopupWindow> _showingPopups = new();
         
         public T ShowPopup<T>(T popup) where T : PopupWindow
         {
             var window = Instantiate(popup, popupParent);
             window.SetupWithCanvas(autoAspectCanvas);
             window.OnOpenWindow();
-            _showingPopups.Push(window);
+            _showingPopups.Add(window);
             return window;
         }
 
@@ -55,26 +55,19 @@ namespace Presentation.Views.Popup
         {
             if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
             {
-                if (_showingPopups.Count > 0 && _showingPopups.Peek().EnableClosingByButton())
+                var lastPopup = _showingPopups[^1];
+                if (_showingPopups.Count > 0 && lastPopup.EnableClosingByButton())
                 {
-                    CloseFrontPopup();
+                    ClosePopup(lastPopup);
                 }
             }
         }
 
         public bool ClosePopup(PopupWindow window)
         {
-            if (!_showingPopups.TryPeek(out var front)) return false;
-            if (front != window) return false;
-            
-            return CloseFrontPopup();
-        }
-
-        private bool CloseFrontPopup()
-        {
             if (_showingPopups.Count == 0) return false;
+            if (!_showingPopups.Remove(window)) return false;
             
-            var window = _showingPopups.Pop();
             window.CloseWindow();
             window.UnsetFromCanvas(autoAspectCanvas);
             Destroy(window.gameObject);

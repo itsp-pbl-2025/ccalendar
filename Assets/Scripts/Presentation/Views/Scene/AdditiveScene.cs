@@ -40,8 +40,8 @@ namespace Presentation.Views.Scene
 #if UNITY_EDITOR
         private async UniTask DebugAwake()
         {
-            await SceneManager.LoadSceneAsync(SceneOf.Base.ToName(), LoadSceneMode.Additive);
             InAppContext.SetDebugFlag();
+            await SceneManager.LoadSceneAsync(SceneOf.Base.ToName(), LoadSceneMode.Additive);
             
             // AppRunnerがInAppContextを完全にロードして完了するまで待機する
             while (true)
@@ -50,6 +50,7 @@ namespace Presentation.Views.Scene
                 await UniTask.Yield();
             }
             
+            transitioner.ShowCanvasFast();
             OnSceneLoaded();
         }
 #endif

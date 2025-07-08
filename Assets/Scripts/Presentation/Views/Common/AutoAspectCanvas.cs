@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Presentation.Utilities;
 using UnityEngine;
-using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 #endif
@@ -55,10 +56,8 @@ namespace Presentation.Views.Common
         {
             // DeviceSimulatorでスクリーンを切り替える瞬間に発生する場合がある 一度でも起きるとすべての子要素のYがNaNになる
             if (Screen.height == 0) return;
-            
-            // anchorMaxのY(上端)をsafeAreaに合わせて調整する 上以外の要素は今のところ考慮しない(下端の丸みなど)
-            var screen = Screen.safeArea;
-            var anchorMax = new Vector2(1, (screen.position + screen.size).y / Screen.height);
+
+            var (safeMin, safeMax) = GetSafeAnchors();
 
             foreach (var fullRect in _fullRectTransforms)
             {
@@ -68,7 +67,8 @@ namespace Presentation.Views.Common
             
             foreach (var safeRect in _safeRectTransforms)
             {
-                safeRect.anchorMax = anchorMax;
+                safeRect.anchorMin = safeMin;
+                safeRect.anchorMax = safeMax;
             }
 
             foreach (var fixedRect in _fixedRectTransforms)
@@ -119,6 +119,46 @@ namespace Presentation.Views.Common
             
             AdjustArea();
 #endif
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (hasFocus)
+            {
+                AdjustArea();
+            }
+        }
+
+        private static (Vector2 min, Vector2 max) GetSafeAnchors()
+        {
+            var wholeArea = new Vector2(Screen.width, Screen.height);
+            var safeArea = Screen.safeArea;
+            
+#if PLATFORM_ANDROID && !UNITY_EDITOR
+            // Androidの一部環境ではナビゲーションバーがsafeAreaに考慮されないので、下端をAndroidJavaObjectを使って計算する
+            Vector2 safeMin;
+            try
+            {
+                using var unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                using var activity = unity.GetStatic<AndroidJavaObject>("currentActivity");
+                using var helper = new AndroidJavaObject("itsp.teamc.safearea.SafeAreaHelper");
+                var navBarHeight = helper.CallStatic<int>("getNavigationBarHeight", activity);
+
+                safeMin = new Vector2(0, navBarHeight).Divide(wholeArea);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("NavBar height fetch failed: " + e);
+                var density = Screen.dpi / 160f;
+                var navBarPx = Mathf.RoundToInt(48f * density);
+                safeMin = new Vector2(0f, navBarPx / (float)Screen.height);
+            }
+#else
+            var safeMin = safeArea.position.Divide(wholeArea);
+#endif
+            var safeMax = (safeArea.position + safeArea.size).Divide(wholeArea);
+            
+            return (safeMin, safeMax);
         }
     }
 }
