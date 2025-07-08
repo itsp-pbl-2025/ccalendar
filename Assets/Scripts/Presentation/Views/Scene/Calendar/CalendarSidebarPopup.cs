@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Presentation.Presenter;
 using Presentation.Views.Extensions;
 using Presentation.Views.Popup;
 using UnityEngine;
@@ -59,12 +60,14 @@ namespace Presentation.Views.Scene.Calendar
 
         public void OpenAllDayScheduleCreationPopup()
         {
-            throw new NotImplementedException();
+            var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<ScheduleCreationPopup>());
+            window.Init(_calendarManager.CurrentTargetDate, true);
         }
 
         public void OpenScheduleCreationPopup()
         {
-            throw new NotImplementedException();
+            var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<ScheduleCreationPopup>());
+            window.Init(_calendarManager.CurrentTargetDate, false);
         }
 
         private async UniTask CloseWindowAsync()

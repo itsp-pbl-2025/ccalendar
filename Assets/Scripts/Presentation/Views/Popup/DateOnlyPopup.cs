@@ -21,16 +21,14 @@ namespace Presentation.Views.Popup
         private CCDateOnly _sinceDateOnly = CCDateOnly.Default, _untilDateOnly = CCDateOnly.MaxValue;
         private int _targetYear, _targetMonth;
 
-        public void Init(Action<CCDateOnly> onDateOnlyDefined)
-        {
-            Init(onDateOnlyDefined, CCDateOnly.Today);
-        }
-        
-        public void Init(Action<CCDateOnly> onDateOnlyDefined, CCDateOnly target)
+        public void Init(Action<CCDateOnly> onDateOnlyDefined, CCDateOnly? target = null, CCDateOnly? selected = null)
         {
             _onDateDefined = onDateOnlyDefined;
+            _selectedDateOnly = selected ?? CCDateOnly.Default;
+
+            var focusMonth = target ?? CCDateOnly.Today;
             
-            SetMonth(target.Year.Value, target.Month.Value);
+            SetMonth(focusMonth.Year.Value, focusMonth.Month.Value);
 
             for (var i = 0; i < dateButtons.Count; i++)
             {
@@ -138,7 +136,7 @@ namespace Presentation.Views.Popup
                 var button = dateButtons[i];
                 var outOfMonth = buttonDate.Month.Value != _targetMonth || buttonDate.Year.Value != _targetYear;
                 var outOfRange = buttonDate.CompareTo(_sinceDateOnly) < 0 || _untilDateOnly.CompareTo(buttonDate) < 0;
-                button.Label.text = buttonDate.Day.ToString();
+                button.Label.text = buttonDate.Day.Value.ToString();
                 button.Button.interactable = !outOfRange;
                 button.Button.imageRx.colorType = ColorOf.Surface;
                 if (_selectedDateOnly.CompareTo(buttonDate) == 0)

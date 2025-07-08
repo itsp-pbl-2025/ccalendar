@@ -32,6 +32,7 @@ namespace Presentation.Views.Scene.Calendar
         private HistoryService _historyService;
         
         private CalendarType _calendarType = CalendarType.Invalid;
+        public CCDateOnly CurrentTargetDate => _targetDate;
         private CCDateOnly _targetDate;
         
         private readonly Dictionary<int, PartsDayIconLabel> _dayIcons = new();
