@@ -32,9 +32,9 @@ namespace Presentation.Views.Private
             window.Init(OnTimeSelected);
         }
 
-        private void OnDateSelected(CCDateTime dt)
+        private void OnDateSelected(CCDateOnly dt)
         {
-            dateText.text = dt == default ? "" : dt.ToString("yyyy年MM月dd日");
+            dateText.text = dt.IsDefault() ? "" : dt.ToDateTime().ToString("yyyy年MM月dd日");
         }
 
         private void OnTimeSelected(CCTimeOnly to)
