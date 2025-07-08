@@ -13,13 +13,13 @@ namespace Infrastructure.Data.DAO
                 Title = ts.Title,
                 Description = ts.Description,
                 Priority = ts.Priority,
-                Deadline = ts.Deadline,
+                Deadline = ts.Deadline.ToDateTime(),
             };
         }
 
         public static CCTask ToDomain(this DCCTask ts)
         {
-            return new CCTask(ts.Id, ts.Title, ts.Description, ts.Priority, ts.Deadline);
+            return new CCTask(ts.Id, ts.Title, ts.Description, ts.Priority, new CCDateTime(ts.Deadline));
         }
     }
 }

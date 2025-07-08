@@ -15,13 +15,13 @@ namespace Presentation.Views.Popup.Task
         private string _title = "";
         private string _description = "";
         private int _priority;
-        private DateTime _deadlineDate;
-        private TimeOnlyPopup.CCTimeOnly _deadlineTime;
+        private CCDateOnly _deadlineDate;
+        private CCTimeOnly _deadlineTime;
 
         public void Awake()
         {
-            _deadlineDate = DateTime.Now.AddDays(1); // set current time
-            _deadlineTime = new();
+            _deadlineDate = CCDateOnly.Today.AddDays(1); // set current time
+            _deadlineTime = CCTimeOnly.Now;
             SetDeadlineText();
         }
 
@@ -63,7 +63,7 @@ namespace Presentation.Views.Popup.Task
             });
         }
 
-        private void OpenDateOnlyPopup(Action<DateTime> onDateTimeDefined)
+        private void OpenDateOnlyPopup(Action<CCDateOnly> onDateTimeDefined)
         {
             var popup = InAppContext.Prefabs.GetPopup<DateOnlyPopup>();
             var window = PopupManager.Instance.ShowPopup(popup);
@@ -72,7 +72,7 @@ namespace Presentation.Views.Popup.Task
         
         private void SetDeadlineText()
         {
-            deadlineText.text = $"締め切り: {_deadlineDate:yyyy年MM月dd日} {_deadlineTime.Hour:D2}:{_deadlineTime.Minute:D2}:{_deadlineTime.Second:D2}";
+            deadlineText.text = $"締め切り: {_deadlineTime.WithDate(_deadlineDate):yyyy年MM月dd日 hh:mm:ss}";
         }
 
         public void CloseWindow(bool isCreateTask)
@@ -85,7 +85,7 @@ namespace Presentation.Views.Popup.Task
                     return;
                 }
                 
-                CCTask task = new (0, _title, _description, _priority, _deadlineDate);
+                CCTask task = new (0, _title, _description, _priority, new CCDateTime(_deadlineDate, _deadlineTime));
                 InAppContext.Context.GetService<TaskService>().CreateTask(task);
                 
                 Debug.Log("Created new task 🦊");

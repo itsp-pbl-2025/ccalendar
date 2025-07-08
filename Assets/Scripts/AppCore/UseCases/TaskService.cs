@@ -11,6 +11,8 @@ namespace AppCore.UseCases
         
         public string Name { get; }
         
+        public void Setup() { }
+
         public TaskService(ITaskRepository repo, string name = "")
         {
             Name = name != "" ? name : GetType().Name;
