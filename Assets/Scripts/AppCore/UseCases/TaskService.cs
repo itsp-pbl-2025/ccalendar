@@ -48,7 +48,10 @@ namespace AppCore.UseCases
                 CCDateTime newDeadline;
                 // If the task is periodic, we need to create a new instance of the task with updated properties
                 switch (task.Periodic.PeriodicType)
-                {
+                {   
+                    case TaskPeriodicType.EveryDay:
+                        newDeadline = task.Deadline.AddDays(task.Periodic.Span);
+                        break;
                     case TaskPeriodicType.EveryWeekday:
                         // This logic assumes we advance by 'Span' number of weekdays.
                         var currentDate = task.Deadline;
