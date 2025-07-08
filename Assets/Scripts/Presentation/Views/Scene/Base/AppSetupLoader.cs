@@ -32,7 +32,7 @@ namespace Presentation.Views.Scene.Base
             if (_initialized) return;
             _initialized = true;
             
-            InAppContext.SceneLoader.ChangeScene(SceneOf.Sample, SceneTransition.FadeLeft);
+            InAppContext.SceneLoader.ChangeScene(SceneOf.Calendar, SceneTransition.FadeLeft);
         }
     }
 }
