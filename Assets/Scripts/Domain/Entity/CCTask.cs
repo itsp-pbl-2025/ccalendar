@@ -4,7 +4,7 @@ namespace Domain.Entity
 {
     public record CCTask(int Id, string Title, string Description, int Priority, DateTime Deadline, TimeSpan Duration)
     {
-        private const TimeSpan DefaultDuration = TimeSpan.FromHours(1);
+        static readonly private TimeSpan DefaultDuration = TimeSpan.FromHours(1);
         public CCTask(int Id, string Title, string Description, int Priority, DateTime Deadline)
             : this(Id, Title, Description, Priority, Deadline, DefaultDuration){}
         public int Id { get; } = Id;

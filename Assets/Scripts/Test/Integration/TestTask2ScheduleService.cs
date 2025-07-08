@@ -24,23 +24,22 @@ namespace Test.Integration
             var startDate = new DateTime(2025, 7, 1, 9, 0, 0);
 
             // 3. サービス実行
-            var service = ctx.GetService<Task2ScheduleService>();
+            Task2ScheduleService service = ctx.GetService<Task2ScheduleService>();
             service.GenerateSchedule(tasks, startDate);
 
             // 4. 生成されたスケジュールを取得
-            var schedules = ctx
-                .GetService<ScheduleService>()
-                .GetSchedules()
-                .AsValueEnumerable()
-                .ToDictionary(x => x.Title);
+            ScheduleService scheduleService = ctx.GetService<ScheduleService>();
+            List<Schedule> schedules = scheduleService.GetSchedules();
 
             // 5. 期待順序(締切順)で検証
             var sortedTasks = tasks.OrderBy(t => t.Deadline).ToList();
             var current = startDate;
             foreach (var task in sortedTasks)
             {
-                Assert.IsTrue(schedules.TryGetValue(task.Title, out var sched), 
+                Assert.IsNotNull(schedules.Find(sched => sched.Title == task.Title),
                     $"スケジュール '{task.Title}' が見つかりません。");
+                
+                var sched = schedules.Find(sched => sched.Title == task.Title);
                 
                 // Descriptionのチェック
                 Assert.AreEqual(task.Description, sched.Description, 
@@ -52,7 +51,7 @@ namespace Test.Integration
                 Assert.AreEqual(current.Add(task.Duration), sched.Duration.EndTime, 
                     $"'{task.Title}' の終了時刻が期待値と違います。");
                 
-                schedules.Remove(task.Title);
+                schedules.Remove(sched);
                 current = current.Add(task.Duration);
             }
 
