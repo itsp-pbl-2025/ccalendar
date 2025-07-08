@@ -88,7 +88,7 @@ namespace AppCore.UseCases
                 );
                 
                 CCTask updatedTask = new CCTask(
-                    Id: task.Id,
+                    Id: 0, // New task, so Id is set to 0
                     Title: task.Title,
                     Description: task.Description,
                     Priority: task.Priority,
@@ -98,7 +98,7 @@ namespace AppCore.UseCases
                     IsCompleted: false
                 );
                 CreateTask(updatedTask);
-                return UpdateTask(updatedTask);
+                return UpdateTask(completedTask);
             }
         }
 
