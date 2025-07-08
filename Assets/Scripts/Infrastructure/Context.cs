@@ -29,6 +29,7 @@ namespace Infrastructure
             _services.Add(new ScheduleService(ScheduleRepo));
             _services.Add(new HolidayService(this));
             _services.Add(new HistoryService(HistoryRepo));
+            _services.Add(new TaskService(TaskRepo));
 
             foreach (var service in _services)
             {

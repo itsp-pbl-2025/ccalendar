@@ -66,14 +66,13 @@ namespace AppCore.Utilities
             }
         }
         
-        private static readonly HttpClient CommonHttpClient = new();
+        private static readonly HttpClient CommonHttpClient = new() { Timeout = TimeSpan.FromSeconds(10) };
         private readonly HttpClient _httpClient;
         
         private Uri _baseUrl;
 
         public RequestHandler(string baseUrl)
         {
-            CommonHttpClient.Timeout = TimeSpan.FromSeconds(10);
             _httpClient = CommonHttpClient;
             _baseUrl = new Uri(baseUrl, UriKind.Absolute);
         }
