@@ -18,41 +18,8 @@ namespace Domain.Entity
         
         public DateTime Deadline { get; } = Deadline;
         
-        public bool IsCompleted { get; set; } = false;
-        
+        public bool IsCompleted { get; } = false;
+
         public TaskPeriodic? Periodic { get; } = Periodic;
-
-        public CCTask? CompleteTask()
-        {
-            IsCompleted = true;
-            if (Periodic is null)
-            {
-                // If the task is not periodic, return null as it cannot be completed again
-                return null;
-            }
-
-            CCTimeSpan newTimeSpan;
-            // If the task is periodic, return a new instance with updated deadline
-            switch (Periodic.PeriodicType)
-            {
-                case TaskPeriodicType.EveryWeekday:
-                    newTimeSpan = CCTimeSpan.FromDays(Periodic.Span);
-                    break;
-                case TaskPeriodicType.EveryWeek:
-                    newTimeSpan = CCTimeSpan.FromDays(Periodic.Span * 7);
-                    break;
-                case TaskPeriodicType.EveryMonth:
-                    newTimeSpan = CCTimeSpan.FromDays(Periodic.Span * 30);
-                    break;
-                case TaskPeriodicType.EveryYear:
-                    newTimeSpan = CCTimeSpan.FromDays(Periodic.Span * 365); break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            var newDeadline = Deadline.Add(newTimeSpan.ToTimeSpan());
-            return new CCTask(Id, Title, Description, Priority, newDeadline, Duration,
-                Periodic);
-        }
     }
 }
