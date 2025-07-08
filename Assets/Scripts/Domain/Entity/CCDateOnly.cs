@@ -35,11 +35,20 @@ namespace Domain.Entity
             new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
                 .AddDays(days)
                 .ToDateOnly();
+        
+        public CCDateOnly AddMonths(int months) =>
+            new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
+                .AddMonths(months)
+                .ToDateOnly();
 
         public CCDateOnly AddYears(int years) =>
             new CCDateTime(Year.Value, Month.Value, Day.Value, 0, 0, 0)
                 .AddYears(years)
                 .ToDateOnly();
+        
+        public static CCDateOnly Default => new(1, 1, 1);
+        public static CCDateOnly MinValue => new(1, 1, 1);
+        public static CCDateOnly MaxValue => new(9999, 12, 31);
         
         public DateTime ToDateTime()
         {
@@ -59,6 +68,11 @@ namespace Domain.Entity
         public override int GetHashCode()
         {
             return HashCode.Combine(Year, Month, Day);
+        }
+
+        public bool IsDefault()
+        {
+            return Year.Value == 1 && Month.Value == 1 && Day.Value == 1;
         }
     }
     

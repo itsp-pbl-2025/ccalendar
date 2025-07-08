@@ -52,6 +52,11 @@ namespace Domain.Entity
             return new CCTimeOnly(dateTime.Hour.Value, dateTime.Minute.Value, dateTime.Second.Value);
         }
 
+        public DateTime WithDate(CCDateOnly date)
+        {
+            return new DateTime(date.Year.Value, date.Month.Value, date.Day.Value, Hour.Value, Minute.Value, Second.Value);
+        }
+
         public bool Equals(CCTimeOnly other)
         {
             return Hour.Equals(other.Hour) && Minute.Equals(other.Minute) && Second.Equals(other.Second);

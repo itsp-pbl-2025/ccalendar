@@ -9,6 +9,8 @@ namespace Presentation.Views.Popup
         [SerializeField] protected RectTransform safeRect, fixedRect;
         [SerializeField] protected RectTransform outOfWindowRect;
 
+        private Action _closingCallback;
+        
         public virtual void OnOpenWindow()
         {
             // play se
@@ -33,10 +35,16 @@ namespace Presentation.Views.Popup
             return true;
         }
 
+        public void SetOnClosingCallback(Action closingCallback)
+        {
+            _closingCallback = closingCallback;
+        }
+
         public virtual void CloseWindow()
         {
             if (PopupManager.Instance.ClosePopup(this))
             {
+                _closingCallback?.Invoke();
                 // play se
             }
         }

@@ -53,5 +53,19 @@
         /// <para>type: Dictionary&lt;CCDateOnly, string&gt;</para>
         /// </summary>
         CachedHolidays = 201,
+        
+        // 1XXX: SceneSettings
+        
+        // 10XX: BaseScene
+        
+        // 11XX: TaskScene
+        
+        // 12XX: CalendarScene
+        
+        /// <summary>
+        /// 表示するカレンダータイプの設定
+        /// type: CalendarType
+        /// </summary>
+        PreviousCalendarType = 1201,
     }
 }

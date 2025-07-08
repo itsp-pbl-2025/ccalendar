@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Presentation.Presenter;
 using Presentation.Utilities;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.SceneManagement;
 
 namespace Presentation.Views.Scene
@@ -36,6 +37,7 @@ namespace Presentation.Views.Scene
                 await UniTask.Yield();
             }
             
+            EnhancedTouchSupport.Enable();
             BaseSceneReady = true;
             InAppContext.EventDispatcher.SendGlobalEvent(GlobalEvent.OnAppLoaded);
         }

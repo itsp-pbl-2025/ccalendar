@@ -7,6 +7,7 @@ namespace Presentation
     {
         Base,
         Sample,
+        Calendar,
     }
     
     public static class SceneSettings
@@ -19,6 +20,7 @@ namespace Presentation
             {
                 SceneOf.Base => "BaseScene",
                 SceneOf.Sample => "SampleScene",
+                SceneOf.Calendar => "CalendarScene",
                 _ => string.Empty
             };
         }
