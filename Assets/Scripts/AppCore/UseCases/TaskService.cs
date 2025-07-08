@@ -84,7 +84,7 @@ namespace AppCore.UseCases
                     Title: task.Title,
                     Description: task.Description,
                     Priority: task.Priority,
-                    Deadline: newDeadline,
+                    Deadline: task.Deadline,
                     Duration: task.Duration,
                     Periodic: task.Periodic,
                     IsCompleted: true
