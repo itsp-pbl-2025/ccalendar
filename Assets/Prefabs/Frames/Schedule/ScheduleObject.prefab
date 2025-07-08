@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 6658744238428063087}
-  button: {fileID: 0}
+  button: {fileID: 5590871511574300504}
   label: {fileID: 5111671328459349125}
 --- !u!1 &3609903132096083528
 GameObject:
@@ -160,7 +160,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Onsche\u4F5C\u6210\u59D4\u54E1\u4F1A\n\u5927\u5CA1\u5C71\u30AD\u30E3\u30F3\u30D1\u30B9
-    M-107(H113)"
+    M-107(H113)\n\u3042\u3042\u3042"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 295d62ca199f21d4092b8fe29807433c, type: 2}
   m_sharedMaterial: {fileID: 5777620395734874977, guid: 295d62ca199f21d4092b8fe29807433c, type: 2}
@@ -187,11 +187,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.35
-  m_fontSizeBase: 32
+  m_fontSize: 32
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 24
+  m_fontSizeMin: 32
   m_fontSizeMax: 36
   m_fontStyle: 0
   m_HorizontalAlignment: 1
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68fa1521ba04219be9672e0feab668d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonRP: {fileID: 0}
+  buttonRP: {fileID: 5590871511574300504}
   transitionMode: 1
   targetGraphic: {fileID: 5111671328459349125}
   colorTints:

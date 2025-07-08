@@ -7,6 +7,8 @@ namespace Domain.Entity
     [JsonConverter(typeof(CCTimeOnlyConverter))]
     public readonly struct CCTimeOnly : IComparable<CCTimeOnly>, IEquatable<CCTimeOnly>
     {
+        public const int SecondsInDay = 24 * 60 * 60;
+        
         public Hour Hour { get; }
         public Minute Minute { get; }
         public Second Second { get; }
@@ -19,6 +21,8 @@ namespace Domain.Entity
         }
         
         public static CCTimeOnly Now => CCDateTime.Now.ToTimeOnly();
+        
+        public int GetAllSeconds() => Hour.Value * 3600 + 60 * Minute.Value + Second.Value; 
 
         public int CompareTo(CCTimeOnly other)
         {

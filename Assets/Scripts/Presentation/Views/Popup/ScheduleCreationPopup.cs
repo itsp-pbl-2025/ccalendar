@@ -15,7 +15,6 @@ namespace Presentation.Views.Popup
 {
     public class ScheduleCreationPopup : PopupWindow
     {
-        private const string ScheduleTitleDefault = "(タイトルなし)";
         private const float HeightHeaderArea = 120f;
         private const float HeightInputFieldMargin = 13f;
         
@@ -121,12 +120,11 @@ namespace Presentation.Views.Popup
             if (ReloadWarn(true)) return;
             
             var service = InAppContext.Context.GetService<ScheduleService>();
-            var title = _scheduleTitle == "" ? ScheduleTitleDefault : _scheduleTitle;
             var duration = _isAllDay
                 ? new ScheduleDuration(_startDate, _endDate)
                 : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
             
-            service.CreateSchedule(new Schedule(0, title, _scheduleDescription, duration));
+            service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, duration));
             
             CloseWindow();
         }
