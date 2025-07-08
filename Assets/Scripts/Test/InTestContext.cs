@@ -29,7 +29,7 @@ namespace Test
             {
                 _serviceFactories.Add(typeof(SampleService), name => new SampleService(ScheduleRepo, name));
                 _serviceFactories.Add(typeof(ScheduleService), name => new ScheduleService(ScheduleRepo, name));
-                _serviceFactories.Add(typeof(HolidayService), name => new HolidayService(ScheduleRepo, name));
+                _serviceFactories.Add(typeof(HolidayService), name => new HolidayService(this, name));
                 _serviceFactories.Add(typeof(HistoryService), name => new HistoryService(HistoryRepo, name));
                 _serviceFactories.Add(typeof(Task2ScheduleService), name => new Task2ScheduleService(this, name));
             }
@@ -49,6 +49,7 @@ namespace Test
                 {
                     var service = factory(name);
                     _services.Add(service);
+                    service.Setup();
                     if (service is T typedService) return typedService;
                     throw new InvalidOperationException($"ServiceFactory of type {typeof(T).Name} creates wrong service type.");
                 }

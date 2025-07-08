@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Domain.Entity;
 using Presentation.Utilities;
 using Presentation.Views.Extensions;
 using R3;
@@ -9,54 +10,6 @@ namespace Presentation.Views.Popup
 {
     public class TimeOnlyPopup : PopupWindow
     {
-        #region CCTimeOnly
-        
-        public readonly struct CCTimeOnly
-        {
-            private readonly long _ticks;
-
-            public int Second => (int)(_ticks / TimeSpan.TicksPerSecond) % 60;
-            public int Minute => (int)(_ticks / TimeSpan.TicksPerMinute) % 60;
-            public int Hour => (int)(_ticks / TimeSpan.TicksPerHour) % 24;
-            
-            public CCTimeOnly(long ticks)
-            {
-                _ticks = ticks;
-            }
-            
-            public CCTimeOnly(int hour, int minute, int second)
-            {
-                _ticks = ((hour * 60 + minute) * 60 + second) * TimeSpan.TicksPerSecond;
-            }
-
-            public CCTimeOnly(DateTime dateTime)
-            {
-                _ticks = dateTime.Ticks - dateTime.Date.Ticks;
-            }
-
-            public CCTimeOnly AddHour(int hour)
-            {
-                return new CCTimeOnly(_ticks + hour * TimeSpan.TicksPerHour);
-            }
-
-            public CCTimeOnly AddMinute(int minute)
-            {
-                return new CCTimeOnly(_ticks + minute * TimeSpan.TicksPerMinute);
-            }
-
-            public CCTimeOnly AddSecond(int second)
-            {
-                return new CCTimeOnly(_ticks + second * TimeSpan.TicksPerSecond);
-            }
-
-            public DateTime GetDateTime(DateTime day)
-            {
-                return new DateTime(day.Date.Ticks + _ticks);
-            }
-        }
-
-        #endregion
-
         private enum SelectState
         {
             Hour,
@@ -85,7 +38,7 @@ namespace Presentation.Views.Popup
             _onTimeDefined = onTimeDefined;
             
             _state = SelectState.Hour;
-            target ??= new CCTimeOnly(DateTime.Now);
+            target ??= CCDateTime.Now.ToTimeOnly();
             SetTime(target.Value);
 
             rectInputHandler.State.Subscribe(s =>
@@ -110,9 +63,9 @@ namespace Presentation.Views.Popup
 
         private void SetTime(CCTimeOnly time, bool setPoint = true)
         {
-            _selectedTime = time.AddSecond(-time.Second);
-            _targetHour = time.Hour;
-            _targetMinute = time.Minute;
+            _selectedTime = time.AddSeconds(-time.Second.Value);
+            _targetHour = time.Hour.Value;
+            _targetMinute = time.Minute.Value;
             ReloadTime(setPoint);
         }
 
@@ -146,7 +99,7 @@ namespace Presentation.Views.Popup
 
         public void OnPressDefaultButton()
         {
-            SetTime(new CCTimeOnly(DateTime.Now));
+            SetTime(CCDateTime.Now.ToTimeOnly());
         }
 
         public void OnPressStateButton(bool setMinute)

@@ -17,6 +17,8 @@ namespace AppCore.UseCases
             _scheduleRepo = repo;
         }
 
+        public void Setup() {}
+
         public void CreateSchedule(Schedule schedule)
         {
             _scheduleRepo.Insert(schedule);
