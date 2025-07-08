@@ -10,6 +10,11 @@ namespace AppCore.UseCases
     {
         
         public string Name { get; }
+        public void Setup()
+        {
+            
+        }
+
         private readonly IContext _context;
         private readonly ScheduleService _scheduleService;
         
@@ -19,6 +24,9 @@ namespace AppCore.UseCases
             _context = context;
             _scheduleService = context.GetService<ScheduleService>();
         }
+        
+        // public void Setup() {}
+        
         /// <summary>
         /// スケジュールを自動生成するためのメソッド。
         /// TODO: すでに存在するスケジュールと重複しないようにする。
@@ -27,15 +35,16 @@ namespace AppCore.UseCases
         /// </summary>
         /// <param name="tasks">スケジュールを設定するタスクのリスト</param>
         /// <param name="startDate">スケジュールの自動設定を開始する開始時刻</param>
-        public void GenerateSchedule(IEnumerable<CCTask> tasks, DateTime startDate)
+        public void GenerateSchedule(IEnumerable<CCTask> tasks, CCDateTime startDate)
         {
             List<CCTask> sortedTasks = SortCCTasksByDeadline(tasks);
 
-            DateTime currentDate = startDate;
+            CCDateTime currentDate = startDate;
             foreach (var task in sortedTasks)
-            {
+            {   
+                // タスクの開始日時を設定
                 ScheduleDuration duration = new ScheduleDuration(
-                    StartTime:currentDate, EndTime:currentDate.Add(task.Duration)
+                    currentDate, currentDate.Add(task.Duration)
                 );
                 Schedule schedule = new Schedule(
                     0, // Idは後で設定されるため0を仮置き
@@ -62,11 +71,6 @@ namespace AppCore.UseCases
         
         public void Dispose()
         {
-        }
-
-        public void SetUp()
-        {
-            
         }
     }
 }

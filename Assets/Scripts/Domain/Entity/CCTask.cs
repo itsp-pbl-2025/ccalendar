@@ -2,9 +2,9 @@ using System;
 
 namespace Domain.Entity
 {
-    public record CCTask(int Id, string Title, string Description, int Priority, DateTime Deadline, TimeSpan Duration)
+    public record CCTask(int Id, string Title, string Description, int Priority, DateTime Deadline, CCTimeSpan Duration)
     {
-        private static readonly TimeSpan DefaultDuration = TimeSpan.FromHours(1);
+        private static readonly CCTimeSpan DefaultDuration = CCTimeSpan.FromHours(1);
         public CCTask(int Id, string Title, string Description, int Priority, DateTime Deadline)
             : this(Id, Title, Description, Priority, Deadline, DefaultDuration){}
         public int Id { get; } = Id;
@@ -12,7 +12,7 @@ namespace Domain.Entity
         public string Description { get; } = Description;
         public int Priority { get; } = Priority;
         
-        public TimeSpan Duration { get; } = Duration;
+        public CCTimeSpan Duration { get; } = Duration;
         
         public DateTime Deadline { get; } = Deadline;
     }

@@ -21,7 +21,7 @@ namespace Test.Integration
             var tasks = MockTask.GetMockTasksWithoutId().Select(task => task.ToDomain()).ToList();
             
             // 2. 開始日時を設定
-            var startDate = new DateTime(2025, 7, 1, 9, 0, 0);
+            var startDate = new CCDateTime(2025, 7, 1, 9, 0, 0);
 
             // 3. サービス実行
             Task2ScheduleService service = ctx.GetService<Task2ScheduleService>();
