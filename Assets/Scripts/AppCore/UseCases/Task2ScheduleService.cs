@@ -63,5 +63,10 @@ namespace AppCore.UseCases
         public void Dispose()
         {
         }
+
+        public void SetUp()
+        {
+            
+        }
     }
 }
