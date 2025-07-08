@@ -3,7 +3,7 @@ using Domain.Enum;
 
 namespace Domain.Entity
 {
-    public record CCTask(int Id, string Title, string Description, int Priority, CCDateTime Deadline, CCTimeSpan Duration, TaskPeriodic? Periodic = null)
+    public record CCTask(int Id, string Title, string Description, int Priority, CCDateTime Deadline, CCTimeSpan Duration, TaskPeriodic? Periodic = null, bool IsCompleted = false)
     {
         private static readonly CCTimeSpan DefaultDuration = CCTimeSpan.FromHours(1);
         
@@ -15,8 +15,8 @@ namespace Domain.Entity
         public string Description { get; } = Description;
         public int Priority { get; } = Priority;
         public CCTimeSpan Duration { get; } = Duration;
-        
-        public bool IsCompleted { get; } = false;
+
+        public bool IsCompleted { get; } = IsCompleted;
 
         public TaskPeriodic? Periodic { get; } = Periodic;
         public CCDateTime Deadline { get; } = Deadline;
