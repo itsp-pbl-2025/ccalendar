@@ -36,10 +36,10 @@ namespace Test.Integration
             var current = startDate;
             foreach (var task in sortedTasks)
             {
-                Assert.IsNotNull(schedules.Find(sched => sched.Title == task.Title),
-                    $"スケジュール '{task.Title}' が見つかりません。");
+                Schedule sched = schedules.Find(sched => sched.Title == task.Title);
                 
-                var sched = schedules.Find(sched => sched.Title == task.Title);
+                Assert.IsNotNull(sched,
+                    $"スケジュール '{task.Title}' が見つかりません。");
                 
                 // Descriptionのチェック
                 Assert.AreEqual(task.Description, sched.Description, 
