@@ -42,9 +42,26 @@ namespace Presentation.Views.Popup
         
         public void Init(CCDateOnly atDay, bool isAllDay)
         {
-            _startDate = _endDate = atDay;
-            _startTime = new CCTimeOnly(CCTimeOnly.Now.Hour.Value+1, 0, 0);
-            _endTime = new CCTimeOnly(CCTimeOnly.Now.Hour.Value+2, 0, 0);
+            var nowHour = CCTimeOnly.Now.Hour.Value;
+            if (nowHour is 23)
+            {
+                _startTime = new CCTimeOnly();
+                _endTime = new CCTimeOnly(1, 0, 0);
+                _startDate = _endDate = atDay.AddDays(1);
+            }
+            else if (nowHour is 22)
+            {
+                _startTime = new CCTimeOnly(nowHour+1, 0, 0);
+                _endTime = new CCTimeOnly();
+                _startDate = atDay;
+                _endDate = atDay.AddDays(1);
+            }
+            else
+            {
+                _startTime = new CCTimeOnly(nowHour + 1, 0, 0);
+                _endTime = new CCTimeOnly(nowHour + 2, 0, 0);
+                _startDate = _endDate = atDay;
+            }
             
             ReloadDateButtonLabel(Limit.Start);
             ReloadDateButtonLabel(Limit.End);
