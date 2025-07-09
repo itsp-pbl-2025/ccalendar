@@ -41,7 +41,7 @@ namespace Presentation.Views.Scene.Calendar
         private List<PartsWeekDaysLabel> _weekSeparators;
         
         private readonly Dictionary<int, RectTransform> _dayPageContents = new();
-        private readonly Dictionary<CCDateOnly, List<PartsScheduleInDay>> _scheduleInDays = new();
+        private readonly Dictionary<int, List<PartsScheduleInDay>> _scheduleInDays = new();
         
         private RectTransform _currentDateIconPage, _currentDayPage, _currentWeekPage;
 
@@ -69,7 +69,6 @@ namespace Presentation.Views.Scene.Calendar
 
             var nextModeIsWeek = IsCalendarModeWeek(type);
             var fromInvalid = _calendarType is CalendarType.Invalid;
-            var prevDate = _targetDate;
             var initAlpha = 1f;
             
             _typeSeq?.Complete();
@@ -84,7 +83,8 @@ namespace Presentation.Views.Scene.Calendar
                 dayCanvas.interactable = false;
                 weekCanvas.interactable = false;
             }
-            
+
+            var targetMoveOffset = 0;
             // どのくらいスクロールしたらページを隣にするか？
             switch (type)
             {
@@ -95,16 +95,22 @@ namespace Presentation.Views.Scene.Calendar
                     dayScrollRect.SetStepPageSettings(WidthDayContainer/3, ThresholdPageSwitch, StepDateIcon);
                     break;
                 case CalendarType.OneWeek:
-                    _targetDate = _targetDate.AddDays(-(int)_targetDate.ToDateTime().DayOfWeek);
+                    targetMoveOffset = -(int)_targetDate.ToDateTime().DayOfWeek;
+                    _targetDate = _targetDate.AddDays(targetMoveOffset);
+                    
                     dayScrollRect.SetStepPageSettings(WidthDayContainer, ThresholdPageSwitch, StepDateIcon);
                     break;
                 case CalendarType.ThreeWeeks:
-                    _targetDate = _targetDate.AddDays(-(int)_targetDate.ToDateTime().DayOfWeek);
+                    targetMoveOffset = -(int)_targetDate.ToDateTime().DayOfWeek;
+                    _targetDate = _targetDate.AddDays(targetMoveOffset);
+                    
                     dayScrollRect.SetStepPageSettings(WidthDayContainer, ThresholdPageSwitch, null);
                     break;
                 case CalendarType.OneMonth:
                     var firstWeek = _targetDate.AddDays(-_targetDate.ToDateTime().Day);
-                    _targetDate = _targetDate.AddDays(-(int)firstWeek.ToDateTime().DayOfWeek);
+                    targetMoveOffset = -_targetDate.ToDateTime().Day-(int)firstWeek.ToDateTime().DayOfWeek;
+                    _targetDate = _targetDate.AddDays(targetMoveOffset);
+                    
                     dayScrollRect.SetStepPageSettings(WidthDayContainer, ThresholdPageSwitch, null);
                     break;
             }
@@ -167,11 +173,11 @@ namespace Presentation.Views.Scene.Calendar
                             {
                                 dayPage.anchorMin = new Vector2(1/3f * (offset + 1), 0f);
                                 dayPage.anchorMax = new Vector2(1/3f * (offset + 2), 1f);
-                                RefreshTypedDayIcon(offset, _targetDate, CalendarType.OneDay);
+                                CreateSingleDayContainer(offset, _targetDate, CalendarType.OneDay);
                             }
                             else
                             {
-                                RemoveDayContainer(offset, _targetDate);
+                                RemoveDayContainer(offset);
                             }
                         }
                         break;
@@ -206,7 +212,7 @@ namespace Presentation.Views.Scene.Calendar
                                 }
                                 else
                                 {
-                                    RemoveDayContainer(offset, _targetDate);
+                                    RemoveDayContainer(offset);
                                 }
                             }
                         }
@@ -228,6 +234,46 @@ namespace Presentation.Views.Scene.Calendar
                             {
                                 CreateSingleDayContainer(offset, _targetDate, CalendarType.OneWeek);
                             }
+                        }
+
+                        if (targetMoveOffset == 0) break;
+                        if (_calendarType is CalendarType.OneDay)
+                        {
+                            if (Mathf.Sign(targetMoveOffset) > 0)
+                            {
+                                for (var offset = -1; offset <= 1; offset++)
+                                {
+                                    MoveAllScheduleToDayContainer(offset, offset-targetMoveOffset);
+                                }
+                            }
+                            else
+                            {
+                                for (var offset = 1; offset >= -1; offset--)
+                                {
+                                    MoveAllScheduleToDayContainer(offset, offset-targetMoveOffset);
+                                }
+                            }
+                        }
+                        else if (_calendarType is CalendarType.ThreeDays)
+                        {
+                            if (Mathf.Sign(targetMoveOffset) > 0)
+                            {
+                                for (var offset = -3; offset <= 5; offset++)
+                                {
+                                    MoveAllScheduleToDayContainer(offset, offset-targetMoveOffset);
+                                }
+                            }
+                            else
+                            {
+                                for (var offset = 5; offset >= -3; offset--)
+                                {
+                                    MoveAllScheduleToDayContainer(offset, offset-targetMoveOffset);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException(nameof(_calendarType), _calendarType, null);
                         }
                         break;
                     case CalendarType.ThreeWeeks: case CalendarType.OneMonth: default:
@@ -292,36 +338,36 @@ namespace Presentation.Views.Scene.Calendar
                             }
                             break;
                         case > 0:
-                            for (var offset = -1-stepPages; offset < 2; offset++)
+                            for (var offset = -1; offset < 2+stepPages; offset++)
                             {
-                                if (offset < -1)
+                                if (offset < -1+stepPages)
                                 {
-                                    CleanupDayContainer(offset, _targetDate);
+                                    CleanupDayContainer(offset);
                                 }
-                                else if (offset <= 1-stepPages)
+                                else if (offset < 2)
                                 {
-                                    MoveAllScheduleToDayContainer(offset, _targetDate);
+                                    MoveAllScheduleToDayContainer(offset, offset-stepPages);
                                 }
                                 else
                                 {
-                                    FillScheduleInDayContainer(offset, _targetDate);
+                                    FillScheduleInDayContainer(offset-stepPages, _targetDate);
                                 }
                             }
                             break;
                         case < 0:
-                            for (var offset = 1-stepPages; offset >= -1; offset--)
+                            for (var offset = 1; offset > -2+stepPages; offset--)
                             {
-                                if (offset > 1)
+                                if (offset > 1+stepPages)
                                 {
-                                    CleanupDayContainer(offset, _targetDate);
+                                    CleanupDayContainer(offset);
                                 }
-                                else if (offset >= -1-stepPages)
+                                else if (offset > -2)
                                 {
-                                    MoveAllScheduleToDayContainer(offset, _targetDate);
+                                    MoveAllScheduleToDayContainer(offset, offset-stepPages);
                                 }
                                 else
                                 {
-                                    FillScheduleInDayContainer(offset, _targetDate);
+                                    FillScheduleInDayContainer(offset-stepPages, _targetDate);
                                 }
                             }
                             break;
@@ -356,36 +402,36 @@ namespace Presentation.Views.Scene.Calendar
                             }
                             break;
                         case > 0:
-                            for (var offset = -3-stepPages; offset < 6; offset++)
+                            for (var offset = -3; offset < 6+stepPages; offset++)
                             {
-                                if (offset < -3)
+                                if (offset < -3+stepPages)
                                 {
-                                    CleanupDayContainer(offset, _targetDate);
+                                    CleanupDayContainer(offset);
                                 }
-                                else if (offset <= 6-stepPages)
+                                else if (offset <= 6)
                                 {
-                                    MoveAllScheduleToDayContainer(offset, _targetDate);
+                                    MoveAllScheduleToDayContainer(offset, offset-stepPages);
                                 }
                                 else
                                 {
-                                    FillScheduleInDayContainer(offset, _targetDate);
+                                    FillScheduleInDayContainer(offset-stepPages, _targetDate);
                                 }
                             }
                             break;
                         case < 0:
-                            for (var offset = 5-stepPages; offset >= -3; offset--)
+                            for (var offset = 5; offset > -4+stepPages; offset--)
                             {
-                                if (offset >= 6)
+                                if (offset > 5+stepPages)
                                 {
-                                    CleanupDayContainer(offset, _targetDate);
+                                    CleanupDayContainer(offset);
                                 }
-                                else if (offset > -3-stepPages)
+                                else if (offset > -4)
                                 {
-                                    MoveAllScheduleToDayContainer(offset, _targetDate);
+                                    MoveAllScheduleToDayContainer(offset, offset-stepPages);
                                 }
                                 else
                                 {
-                                    FillScheduleInDayContainer(offset, _targetDate);
+                                    FillScheduleInDayContainer(offset-stepPages, _targetDate);
                                 }
                             }
                             break;
@@ -420,36 +466,36 @@ namespace Presentation.Views.Scene.Calendar
                             }
                             break;
                         case > 0:
-                            for (var offset = -1-stepPages; offset < 2; offset++)
+                            for (var offset = -1; offset < 2+stepPages; offset++)
                             {
-                                if (offset < -1)
+                                if (offset < -1+stepPages)
                                 {
-                                    for (var j=0; j<7; j++) CleanupDayContainer(offset*7+j, _targetDate);
+                                    for (var j=0; j<7; j++) CleanupDayContainer(offset*7+j);
                                 }
-                                else if (offset <= 1-stepPages)
+                                else if (offset < 2)
                                 {
-                                    for (var j=0; j<7; j++) MoveAllScheduleToDayContainer(offset*7+j, _targetDate);
+                                    for (var j=0; j<7; j++) MoveAllScheduleToDayContainer(offset*7+j, (offset-stepPages)*7+j);
                                 }
                                 else
                                 {
-                                    for (var j=0; j<7; j++) FillScheduleInDayContainer(offset*7+j, _targetDate);
+                                    for (var j=0; j<7; j++) FillScheduleInDayContainer((offset-stepPages)*7+j, _targetDate);
                                 }
                             }
                             break;
                         case < 0:
-                            for (var offset = 1-stepPages; offset >= -1; offset--)
+                            for (var offset = 1; offset > -2+stepPages; offset--)
                             {
-                                if (offset > 1)
+                                if (offset > 1+stepPages)
                                 {
-                                    for (var j=0; j<7; j++) CleanupDayContainer(offset*7+j, _targetDate);
+                                    for (var j=6; j>=0; j--) CleanupDayContainer(offset*7+j);
                                 }
-                                else if (offset >= -1-stepPages)
+                                else if (offset >= -2)
                                 {
-                                    for (var j=0; j<7; j++) MoveAllScheduleToDayContainer(offset*7+j, _targetDate);
+                                    for (var j=6; j>=0; j--) MoveAllScheduleToDayContainer(offset*7+j, (offset-stepPages)*7+j);
                                 }
                                 else
                                 {
-                                    for (var j=0; j<7; j++) FillScheduleInDayContainer(offset*7+j, _targetDate);
+                                    for (var j=6; j>=0; j--) FillScheduleInDayContainer((offset-stepPages)*7+j, _targetDate);
                                 }
                             }
                             break;
@@ -494,6 +540,7 @@ namespace Presentation.Views.Scene.Calendar
             var widthInAnchor = 1f / (3 * containersInPage);
             var day = targetDate.AddDays(offset);
             RefreshTypedDayIcon(offset, targetDate, calendarType);
+            CleanupDayContainer(offset);
 
             var dayPage = Instantiate(dayPageContent, dayContainer);
             dayPage.gameObject.SetActive(true);
@@ -501,7 +548,6 @@ namespace Presentation.Views.Scene.Calendar
             dayPage.anchorMax = new Vector2(widthInAnchor * (offset + containersInPage + 1), 1f);
             _dayPageContents.Add(offset, dayPage);
 
-            CleanupDayContainer(offset, targetDate);
             var inDay = new List<PartsScheduleInDay>();
             foreach (var schedule in _scheduleService.GetSchedulesInDuration(new ScheduleDuration(day)))
             {
@@ -510,7 +556,7 @@ namespace Presentation.Views.Scene.Calendar
                 node.Transform(0f, 1f);
                 inDay.Add(node);
             }
-            _scheduleInDays.Add(day, inDay);
+            _scheduleInDays.Add(offset, inDay);
         }
 
         /// <summary>
@@ -520,12 +566,10 @@ namespace Presentation.Views.Scene.Calendar
         /// <param name="targetDate">更新の基準となる日付</param>
         private void FillScheduleInDayContainer(int offset, CCDateOnly targetDate)
         {
-            CleanupDayContainer(offset, targetDate);
             var day = targetDate.AddDays(offset);
-            // TODO: ここoffsetの役割が被ってるから、ここのoffsetは本来_targetDateからの距離じゃなきゃいけなくて、制限がある
             var dayPage = _dayPageContents[offset];
             
-            CleanupDayContainer(offset, targetDate);
+            CleanupDayContainer(offset);
             var inDay = new List<PartsScheduleInDay>();
             foreach (var schedule in _scheduleService.GetSchedulesInDuration(new ScheduleDuration(day)))
             {
@@ -534,19 +578,19 @@ namespace Presentation.Views.Scene.Calendar
                 node.Transform(0f, 1f);
                 inDay.Add(node);
             }
-            _scheduleInDays.Add(day, inDay);
+            Debug.Log($"Summon {inDay.Count} schedules at {offset}");
+            _scheduleInDays.Add(offset, inDay);
         }
 
         /// <summary>
         /// 特定の日付におけるスケジュールオブジェクトを削除する
         /// </summary>
         /// <param name="offset">日付からの日距離</param>
-        /// <param name="targetDate">削除の基準となる日付</param>
-        private void CleanupDayContainer(int offset, CCDateOnly targetDate)
+        private void CleanupDayContainer(int offset)
         {
-            var day = targetDate.AddDays(offset);
-            if (_scheduleInDays.Remove(day, out var inDay))
+            if (_scheduleInDays.Remove(offset, out var inDay))
             {
+                Debug.Log($"Delete {inDay.Count} schedules at {offset}");
                 foreach (var node in inDay)
                 {
                     node.SetParent(animationContainer);
@@ -554,37 +598,30 @@ namespace Presentation.Views.Scene.Calendar
                 }
             }
         }
-        
+
         /// <summary>
         /// 特定の日付コンテナを削除する
         /// </summary>
         /// <param name="offset">日付からの日距離</param>
-        /// <param name="targetDate">削除の基準となる日付</param>
-        private void RemoveDayContainer(int offset, CCDateOnly targetDate)
+        private void RemoveDayContainer(int offset)
         {
-            var day = targetDate.AddDays(offset);
+            CleanupDayContainer(offset);
             if (_dayIcons.Remove(offset, out var dayIcon)) Destroy(dayIcon.gameObject);
-            if (_scheduleInDays.Remove(day, out var inDay))
-            {
-                foreach (var node in inDay)
-                {
-                    node.SetParent(animationContainer);
-                    node.Decay();
-                }
-            }
             if (_dayPageContents.Remove(offset, out var dayPage)) Destroy(dayPage.gameObject);
         }
 
         /// <summary>
         /// ページ移動に伴ってズレたスケジュールオブジェクトを正しい親に帰属させる
         /// </summary>
+        /// <param name="from"></param>
         /// <param name="to"></param>
-        /// <param name="targetDate"></param>
-        private void MoveAllScheduleToDayContainer(int to, CCDateOnly targetDate)
+        private void MoveAllScheduleToDayContainer(int from, int to)
         {
-            var day = targetDate.AddDays(to);
-            var dayPage = _dayPageContents[to];
-            if (!_scheduleInDays.TryGetValue(day, out var inDay)) return;
+            if (!_dayPageContents.TryGetValue(to, out var dayPage)) return;
+            if (!_scheduleInDays.Remove(from, out var inDay)) return;
+            CleanupDayContainer(to);
+            _scheduleInDays.Add(to, inDay);
+            Debug.Log($"Move {inDay.Count} schedules from {from} to {to}");
             foreach (var node in inDay)
             {
                 node.SetParent(dayPage);
