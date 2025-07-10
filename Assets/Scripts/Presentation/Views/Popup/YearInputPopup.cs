@@ -18,11 +18,10 @@ namespace Presentation.Views.Popup
         private Action<int> _onYearDefined;
         private int _currentYear;
         private bool _isInputMode;
-
+        
         private void Start()
         {
-            // 仮のコールバックと現在年で初期化
-            Init(year => Debug.Log($"年が選択されました: {year}"));
+            // 
         }
         
         public void Init(Action<int> onYearDefined, int? initialYear = null)
@@ -38,8 +37,13 @@ namespace Presentation.Views.Popup
             SetInputMode(false);
         }
 
+        private bool _listenersSetup = false;
         private void SetupListeners()
         {
+            //二重登録防止
+            if (_listenersSetup) return;
+            _listenersSetup = true;
+            
             positiveButton.onClick.AddListener(OnPressDefineButton);
             negativeButton.onClick.AddListener(CloseWindow);
             yearDecrementButton.onClick.AddListener(() => ChangeYear(-1));
@@ -76,8 +80,13 @@ namespace Presentation.Views.Popup
             SetInputMode(false);
         }
 
+        private bool _isSubmitted = false;
         private void OnPressDefineButton()
         {
+            //二重クリック防止
+            if (_isSubmitted) return;
+            _isSubmitted = true;
+            
             if (_isInputMode)
             {
                 ApplyInputAndReturn();
