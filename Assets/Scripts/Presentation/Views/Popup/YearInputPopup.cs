@@ -96,6 +96,13 @@ namespace Presentation.Views.Popup
             _isInputMode = inputMode;
             inputFieldContainer.SetActive(inputMode);
             yearLabel.gameObject.SetActive(!inputMode);
+            //1クリックで入力できる状態に
+            if (inputMode)
+            {
+                // InputFieldを有効化し、フォーカスを当てる
+                yearInputField.Select();
+                yearInputField.ActivateInputField();
+            }
         }
 
         private void ApplyInputAndReturn()
