@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace Presentation.Views.Sample
+namespace Presentation.Views.Scene.Sample
 {
     public class NativeSwitchLabel : MonoBehaviour
     {
