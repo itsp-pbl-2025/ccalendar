@@ -823,7 +823,7 @@ namespace Presentation.Views.Scene.Calendar
             {
                 Destroy(weekPage.gameObject);
             }
-            _dayPageContents.Clear();
+            _weekPageContents.Clear();
         }
 
         #endregion
