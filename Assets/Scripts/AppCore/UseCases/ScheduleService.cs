@@ -69,70 +69,13 @@ namespace AppCore.UseCases
 
             return ret;
         }
-
-        public Dictionary<CCDateOnly, List<UnitSchedule>> GetSchedulesBeginInDuration(ScheduleDuration duration)
-        {
-            var ret = new Dictionary<CCDateOnly, List<UnitSchedule>>();
-
-            foreach (var schedule in _scheduleRepo.GetAll())
-            {
-                if (schedule.Periodic is null)
-                {
-                    if (duration.IsInSet(schedule.Duration.StartTime))
-                    {
-                        TryPushValue(schedule.Duration.StartTime.ToDateOnly(), schedule);
-                    }
-                }
-                else
-                {
-                    var index = 0;
-                    var currentDuration = schedule.Duration;
-                    while (currentDuration.StartTime.CompareTo(duration.EndTime) <= 0)
-                    {
-                        var nextDuration = GetDurationByPeriodic(schedule.Duration, schedule.Periodic, index++);
-                        if (duration.IsInSet(nextDuration.StartTime))
-                        {
-                            TryPushValue(schedule.Duration.StartTime.ToDateOnly(),
-                                new UnitSchedule(schedule.Id, schedule.Title, schedule.Description, nextDuration));
-                        }
-                        currentDuration = nextDuration;
-                    }
-                }
-            }
-
-            return ret;
-
-            void TryPushValue(CCDateOnly key, UnitSchedule schedule)
-            {
-                if (ret.TryGetValue(key, out var list))
-                {
-                    list.Add(schedule);
-                }
-                else
-                {
-                    ret.Add(key, new List<UnitSchedule> { schedule });
-                }
-            }
-        }
-
-        public Dictionary<CCDateOnly, List<UnitSchedule>> GetSchedulesInDuration(CCDateOnly startDate, CCDateOnly endDate)
-        {
-            var ret = new Dictionary<CCDateOnly, List<UnitSchedule>>();
-
-            for (var date = startDate; date.CompareTo(endDate) <= 0; date = date.AddDays(1))
-            {
-                ret.Add(date, GetSchedulesInDuration(new ScheduleDuration(date)));
-            }
-            
-            return ret;
-        }
-
+        
         private ScheduleDuration GetDurationByPeriodic(ScheduleDuration duration, SchedulePeriodic periodic, int loop)
         {
             switch (periodic.PeriodicType)
             {
                 case SchedulePeriodicType.EveryDay:
-                    return new ScheduleDuration(duration.StartTime.AddDays(loop), duration.EndTime.AddDays(loop));
+                    return new ScheduleDuration(duration.StartTime.AddDays(periodic.Span*loop), duration.EndTime.AddDays(periodic.Span*loop));
                 case SchedulePeriodicType.EveryWeekday:
                 {
                     var weekdays = 
