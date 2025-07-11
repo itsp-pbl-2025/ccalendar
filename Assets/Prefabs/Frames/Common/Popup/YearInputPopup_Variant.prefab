@@ -241,7 +241,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2905451880760823653}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5917179969498398073}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnPressDefineButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4420384600978942710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,7 +731,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1700229457558872482}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5917179969498398073}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnIncrementYear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8671623558180510647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -976,7 +1000,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7289611080762109365}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5917179969498398073}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnBackgroundClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2633826588820235069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1258,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2314685972356145857}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5917179969498398073}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnLabelClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3922175147198101922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1361,7 +1409,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 141134046795316716}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5917179969498398073}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnDecrementYear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1427591221377958126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1540,7 +1600,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 2025
+  m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -2350,7 +2410,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6973131246721502315}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5917179969498398073}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: CloseWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6092975653727217597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3013,7 +3085,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1947112351581636360, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
       propertyPath: m_Name
-      value: YearInputPopup Variant
+      value: YearInputPopup_Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5281206361761490911, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
       propertyPath: m_Pivot.x

@@ -9,10 +9,10 @@ public class TestYearInputPopup : MonoBehaviour
 
     private void Start()
     {
-        openButton.onClick.AddListener(OpenPopup);
+        //
     }
 
-    private void OpenPopup()
+    public void OpenPopup()
     {
         var popup = PopupManager.Instance.ShowPopup(yearInputPopupPrefab);
         popup.Init(OnYearSelected, 2025);
