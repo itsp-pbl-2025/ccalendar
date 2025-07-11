@@ -22,7 +22,8 @@ namespace Presentation.Views.Popup
 
         [SerializeField] private RectTransform popupRectTransform;
         [SerializeField] private VerticalLayoutGroup scheduleContentGroup;
-        [SerializeField] private ImageRx backgroundImage, hideBackgroundImage, hideButtonIcon, allDayIcon;
+        [SerializeField] private ImageRx backgroundImage, hideBackgroundImage, allDayIcon;
+        [SerializeField] private ButtonRP hideButton;
         [SerializeField] private RectTransform scheduleTitleArea, scheduleDescriptionArea;
         [SerializeField] private TMP_InputField scheduleTitleField, scheduleDescriptionField;
         [SerializeField] private ButtonWithLabel startDateButton, startTimeButton, endDateButton, endTimeButton, repetitionButton;
@@ -116,13 +117,13 @@ namespace Presentation.Views.Popup
             {
                 backgroundImage.enabled = false;
                 hideBackgroundImage.enabled = true;
-                hideButtonIcon.rectTransform.localRotation = Quaternion.Euler(0f, 0f, 90f);
+                hideButton.imageRx.rectTransform.localRotation = Quaternion.Euler(0f, 0f, 90f);
                 var destinationHeight = safeRect.rect.height - (HeightHeaderArea + scheduleTitleArea.rect.height);
                 _seq.Append(popupRectTransform.DOAnchorPosY(-destinationHeight, timePopupHide).SetEase(Ease.OutQuad));
             }
             else
             {
-                hideButtonIcon.rectTransform.localRotation = Quaternion.Euler(0f, 0f, -90f);
+                hideButton.imageRx.rectTransform.localRotation = Quaternion.Euler(0f, 0f, -90f);
                 _seq.Append(popupRectTransform.DOAnchorPosY(0, timePopupHide).SetEase(Ease.InQuad))
                     .OnComplete(() =>
                     {
