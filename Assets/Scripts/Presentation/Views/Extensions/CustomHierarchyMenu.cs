@@ -173,48 +173,6 @@ namespace Presentation.Views.Extensions
         
         #endregion
 
-        #region ScalableScrollRect
-
-        private static bool MayReplacingScrollRect()
-        {
-            return Selection.activeGameObject && Selection.activeGameObject.GetComponent<ScrollRect>() && !Selection.activeGameObject.GetComponent<ScalableScrollRect>();
-        }
-
-        [MenuItem("GameObject/UI/Replace ScrollRect As Scalable", true, 1031)]
-        public static bool ValidateReplaceScrollRect()
-        {
-            return !MayReplacingLabel();
-        }
-
-        [MenuItem("GameObject/UI/Replace ScrollRect As Scalable", false, 1031)]
-        public static void ReplaceScrollRect()
-        {
-            var selectedGameObject = Selection.activeGameObject;
-            if (!selectedGameObject)
-            {
-                Debug.LogWarning("No GameObject selected for ScrollRect replacement.");
-                return;
-            }
-
-            if (!selectedGameObject.TryGetComponent<ScrollRect>(out var oldScrollRect))
-            {
-                Debug.LogWarning($"Selected GameObject '{selectedGameObject.name}' does not have an ScrollRect component.");
-                return;
-            }
-
-            Undo.RegisterCompleteObjectUndo(selectedGameObject, "Replace ScrollRect with ScalableScrollRect");
-            
-            // 元のImageコンポーネントを削除して、ReactiveImageコンポーネントを追加する
-            var serialize = JsonUtility.ToJson(oldScrollRect);
-            Object.DestroyImmediate(oldScrollRect);
-            var labelRx = selectedGameObject.AddComponent<ScalableScrollRect>();
-            JsonUtility.FromJsonOverwrite(serialize, labelRx);
-
-            EditorUtility.SetDirty(selectedGameObject);
-        }
-
-        #endregion
-        
         private static Canvas FindCanvasForUIObject()
         {
             var canvas = Object.FindAnyObjectByType<Canvas>();
