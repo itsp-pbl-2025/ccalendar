@@ -10,6 +10,8 @@ namespace Presentation.Views.Scene.Calendar
         private const string ScheduleTitleDefault = "(タイトルなし)";
         private const float TimeTransform = 0.25f;
         private const float TimeDecay = 0.125f;
+        private const float PpuMultiplierInDay = 32f;
+        private const float PpuMultiplierInWeek = 48f;
 
         [SerializeField] private RectTransform rectTransform;
         [SerializeField] private ButtonRP button;
@@ -34,44 +36,120 @@ namespace Presentation.Views.Scene.Calendar
             return true;
         }
 
-        public void Transform(float left, float right, bool instant = false)
+        public void TransformInDay(float left, float right, bool instant = false)
         {
-            if (_mortal)  return;
+            const float fontSizeMax = 36f;
+            const float fontSizeMin = 32f;
             
-            _seq?.Complete();
+            if (_mortal) return;
+            
+            _seq?.Kill();
             _seq = DOTween.Sequence();
             
             var bottom = (CCTimeOnly.SecondsInDay - _schedule.Duration.EndTime.ToTimeOnly().GetAllSeconds()) / (float)CCTimeOnly.SecondsInDay;
             var top = (CCTimeOnly.SecondsInDay - _schedule.Duration.StartTime.ToTimeOnly().GetAllSeconds()) / (float)CCTimeOnly.SecondsInDay;
 
-            var bottomLeft = new Vector2(left, bottom);
-            var topRight = new Vector2(right, top);
-            
+            var anchorMinTo = new Vector2(left, bottom);
+            var anchorMaxTo = new Vector2(right, top);
+
+            imageFrame.pixelsPerUnitMultiplier = PpuMultiplierInDay;
             if (instant)
             {
-                rectTransform.anchorMin = bottomLeft;
-                rectTransform.anchorMax = topRight;
+                rectTransform.anchorMin = anchorMinTo;
+                rectTransform.anchorMax = anchorMaxTo;
+                rectTransform.anchoredPosition = Vector2.zero;
+                rectTransform.sizeDelta = Vector2.zero;
+                scheduleLabel.fontSizeMax = fontSizeMax;
+                scheduleLabel.fontSizeMin = fontSizeMin;
             }
             else
             {
-                _seq.Append(DOVirtual.Vector2(rectTransform.anchorMin, bottomLeft, TimeTransform, v =>
+                var anchorMinFrom = rectTransform.anchorMin;
+                var anchorMaxFrom = rectTransform.anchorMax;
+                var positionFrom = rectTransform.anchoredPosition;
+                var sizeFrom = rectTransform.sizeDelta;
+                var labelFontMaxFrom = scheduleLabel.fontSizeMax;
+                var labelFontMinFrom = scheduleLabel.fontSizeMin;
+                
+                _seq.Append(DOVirtual.Float(0, 1, TimeTransform, v =>
                 {
-                    rectTransform.anchorMin = v;
-                })).Join(DOVirtual.Vector2(rectTransform.anchorMax, topRight, TimeTransform, v =>
-                {
-                    rectTransform.anchorMax = v;
+                    rectTransform.anchorMin = Vector2.Lerp(anchorMinFrom, anchorMinTo, v);
+                    rectTransform.anchorMax = Vector2.Lerp(anchorMaxFrom, anchorMaxTo, v);
+                    rectTransform.anchoredPosition = Vector2.Lerp(positionFrom, Vector2.zero, v);
+                    rectTransform.sizeDelta = Vector2.Lerp(sizeFrom, Vector2.zero, v);
+                    scheduleLabel.fontSizeMin = Mathf.Lerp(labelFontMinFrom, fontSizeMin, v);
+                    scheduleLabel.fontSizeMax = Mathf.Lerp(labelFontMaxFrom, fontSizeMax, v);
                 }));
             }
         }
 
-        public void SetParent(RectTransform parent, bool keepPosition = true)
+        public void TransformInWeek(float offsetY, float height, bool instant = false)
         {
-            rectTransform.SetParent(parent);
-            if (keepPosition) rectTransform.anchoredPosition = Vector2.zero;
+            const float fontSizeMax = 20f;
+            const float fontSizeMin = 18f;
+
+            if (_mortal) return;
+            
+            _seq?.Complete();
+            _seq = DOTween.Sequence();
+            
+            var positionTo = new Vector2(0, -offsetY);
+            var sizeTo = new Vector2(0, height);
+            
+            imageFrame.pixelsPerUnitMultiplier = PpuMultiplierInWeek;
+            if (instant)
+            {
+                rectTransform.anchorMin = Vector2.up;
+                rectTransform.anchorMax = Vector2.one;
+                rectTransform.anchoredPosition = positionTo;
+                rectTransform.sizeDelta = sizeTo;
+                scheduleLabel.fontSizeMax = fontSizeMax;
+                scheduleLabel.fontSizeMin = fontSizeMin;
+            }
+            else
+            {
+                var anchorMinFrom = rectTransform.anchorMin;
+                var anchorMaxFrom = rectTransform.anchorMax;
+                var positionFrom = rectTransform.anchoredPosition;
+                var sizeFrom = rectTransform.sizeDelta;
+                var labelFontMaxFrom = scheduleLabel.fontSizeMax;
+                var labelFontMinFrom = scheduleLabel.fontSizeMin;
+                
+                _seq.Append(DOVirtual.Float(0, 1, TimeTransform, v =>
+                {
+                    rectTransform.anchorMin = Vector2.Lerp(anchorMinFrom, Vector2.up, v);
+                    rectTransform.anchorMax = Vector2.Lerp(anchorMaxFrom, Vector2.one, v);
+                    rectTransform.anchoredPosition = Vector2.Lerp(positionFrom, positionTo, v);
+                    rectTransform.sizeDelta = Vector2.Lerp(sizeFrom, sizeTo, v);
+                    scheduleLabel.fontSizeMin = Mathf.Lerp(labelFontMinFrom, fontSizeMin, v);
+                    scheduleLabel.fontSizeMax = Mathf.Lerp(labelFontMaxFrom, fontSizeMax, v);
+                }));
+            }
         }
 
-        public void Decay()
+        public void SetParent(RectTransform parent, bool keepPosition = false)
         {
+            if (keepPosition)
+            {
+                var prevPosition = transform.position;
+                rectTransform.SetParent(parent);
+                transform.position = prevPosition;
+            }
+            else
+            {
+                rectTransform.SetParent(parent);
+                rectTransform.anchoredPosition = Vector2.zero;
+            }
+        }
+
+        public void Decay(bool instant = false)
+        {
+            if (instant)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            
             _mortal = true;
             _seq?.Kill();
             _seq = DOTween.Sequence();

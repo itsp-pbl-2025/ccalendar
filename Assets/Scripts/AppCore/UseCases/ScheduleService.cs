@@ -49,13 +49,13 @@ namespace AppCore.UseCases
             {
                 if (schedule.Periodic is null)
                 {
-                    if (schedule.Duration.IsCollided(duration)) ret.Add(schedule);
+                    if (duration.IsCollided(schedule.Duration)) ret.Add(schedule);
                 }
                 else
                 {
                     var index = 0;
                     var currentDuration = schedule.Duration;
-                    while (currentDuration.StartTime.CompareTo(currentDuration.EndTime) <= 0)
+                    while (currentDuration.StartTime.CompareTo(duration.EndTime) <= 0)
                     {
                         var nextDuration = GetDurationByPeriodic(schedule.Duration, schedule.Periodic, index++);
                         if (nextDuration.IsCollided(duration))
@@ -68,6 +68,51 @@ namespace AppCore.UseCases
             }
 
             return ret;
+        }
+
+        public Dictionary<CCDateOnly, List<UnitSchedule>> GetSchedulesBeginInDuration(ScheduleDuration duration)
+        {
+            var ret = new Dictionary<CCDateOnly, List<UnitSchedule>>();
+
+            foreach (var schedule in _scheduleRepo.GetAll())
+            {
+                if (schedule.Periodic is null)
+                {
+                    if (duration.IsInSet(schedule.Duration.StartTime))
+                    {
+                        TryPushValue(schedule.Duration.StartTime.ToDateOnly(), schedule);
+                    }
+                }
+                else
+                {
+                    var index = 0;
+                    var currentDuration = schedule.Duration;
+                    while (currentDuration.StartTime.CompareTo(duration.EndTime) <= 0)
+                    {
+                        var nextDuration = GetDurationByPeriodic(schedule.Duration, schedule.Periodic, index++);
+                        if (duration.IsInSet(nextDuration.StartTime))
+                        {
+                            TryPushValue(schedule.Duration.StartTime.ToDateOnly(),
+                                new UnitSchedule(schedule.Id, schedule.Title, schedule.Description, nextDuration));
+                        }
+                        currentDuration = nextDuration;
+                    }
+                }
+            }
+
+            return ret;
+
+            void TryPushValue(CCDateOnly key, UnitSchedule schedule)
+            {
+                if (ret.TryGetValue(key, out var list))
+                {
+                    list.Add(schedule);
+                }
+                else
+                {
+                    ret.Add(key, new List<UnitSchedule> { schedule });
+                }
+            }
         }
 
         public Dictionary<CCDateOnly, List<UnitSchedule>> GetSchedulesInDuration(CCDateOnly startDate, CCDateOnly endDate)
