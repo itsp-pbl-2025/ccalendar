@@ -27,7 +27,12 @@ namespace Test.MockData
                     "Every Week Schedule",
                     "Repeat it every week! UwU",
                     new ScheduleDuration(CCDateTime.Today.AddHours(17), CCDateTime.Today.AddHours(18)),
-                    new SchedulePeriodic(SchedulePeriodicType.EveryWeek, 1)),
+                    new SchedulePeriodic(
+                        SchedulePeriodicType.EveryWeek,
+                        Span: 1,
+                        StartDate: CCDateOnly.Today,
+                        EndDate: CCDateOnly.Today.AddDays(30)
+                    )),
                 new(0, "", "", new ScheduleDuration(CCDateOnly.Today.AddDays(10))),
             };
 
