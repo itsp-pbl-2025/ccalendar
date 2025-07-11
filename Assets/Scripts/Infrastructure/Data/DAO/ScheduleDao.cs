@@ -24,6 +24,8 @@ namespace Infrastructure.Data.DAO
                     {
                         PeriodicType = sc.Periodic.PeriodicType,
                         Span = sc.Periodic.Span,
+                        StartDate = sc.Periodic.StartDate.ToDateTime(),
+                        EndDate = sc.Periodic.EndDate?.ToDateTime()
                     },
             };
         }
@@ -34,7 +36,12 @@ namespace Infrastructure.Data.DAO
                 new ScheduleDuration(new CCDateTime(sc.Duration.StartTime), new CCDateTime(sc.Duration.EndTime), sc.Duration.IsAllDay);
             SchedulePeriodic periodic = sc.Periodic is null
                 ? null
-                : new SchedulePeriodic(sc.Periodic.PeriodicType, sc.Periodic.Span);
+                : new SchedulePeriodic(
+                    sc.Periodic.PeriodicType,
+                    sc.Periodic.Span,
+                    new CCDateTime(sc.Periodic.StartDate).ToDateOnly(),
+                    sc.Periodic.EndDate.HasValue ? new CCDateTime(sc.Periodic.EndDate.Value).ToDateOnly() : null
+                    );
             return new Schedule(sc.Id, sc.Title, sc.Description, duration, periodic);
         }
     }
