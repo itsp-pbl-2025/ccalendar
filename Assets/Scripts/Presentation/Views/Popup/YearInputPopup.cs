@@ -1,7 +1,7 @@
 ﻿using System;
+using Presentation.Views.Extensions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Presentation.Views.Popup
 {
@@ -9,67 +9,49 @@ namespace Presentation.Views.Popup
     {
         [SerializeField] private GameObject inputFieldContainer; // 入力モード用のオブジェクト
         [SerializeField] private TMP_InputField yearInputField;
-        [SerializeField] private TextMeshProUGUI yearLabel;
+        [SerializeField] private ButtonWithLabel yearButton;
 
         private Action<int> _onYearDefined;
         private int _currentYear;
         private bool _isInputMode;
-        private bool _isSubmitted = false;
-        
-        private void Start()
-        {
-            // 
-        }
+        private bool _isSubmitted;
         
         public void Init(Action<int> onYearDefined, int? initialYear = null)
         {
             _onYearDefined = onYearDefined;
             _currentYear = initialYear ?? DateTime.Now.Year;
-
-
+            
             SetYear(_currentYear);
             SetInputMode(false);
             _isSubmitted = false;
         }
         
-        public void OnDecrementYear() => ChangeYear(-1);
-        public void OnIncrementYear() => ChangeYear(1);
-        public void OnLabelClick() => SetInputMode(true);
         public void OnBackgroundClick()
         {
             if (_isInputMode) ApplyInputAndReturn();
         }
-        
 
         private void SetYear(int year)
         {
             _currentYear = Mathf.Clamp(year, 1, 9999);
-            yearLabel.text = _currentYear.ToString();
+            yearButton.Label.text = _currentYear.ToString();
             yearInputField.text = _currentYear.ToString();
         }
 
-        private void ChangeYear(int delta)
+        public void ChangeYear(int delta)
         {
-            int baseYear;
-
             // 入力モード中 or 入力直後などに対応
-            if (int.TryParse(yearInputField.text, out int parsed))
-            {
-                baseYear = parsed;
-            }
-            else
-            {
-                baseYear = _currentYear;
-            }
+            var baseYear = int.TryParse(yearInputField.text, out var parsed) ? parsed : _currentYear;
 
             SetYear(baseYear + delta);
         }
 
-        private void SetInputMode(bool inputMode)
+        public void SetInputMode(bool inputMode)
         {
             _isInputMode = inputMode;
             inputFieldContainer.SetActive(inputMode);
-            yearLabel.gameObject.SetActive(!inputMode);
+            yearButton.Button.interactable = !inputMode;
+            yearButton.Label.enabled = !inputMode;
             //1クリックで入力できる状態に
             if (inputMode)
             {
@@ -87,7 +69,6 @@ namespace Presentation.Views.Popup
             }
             SetInputMode(false);
         }
-
         
         public void OnPressDefineButton()
         {
