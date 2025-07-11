@@ -4,7 +4,7 @@ using Presentation.Views.Extensions;
 using Presentation.Views.Popup;
 using UnityEngine;
 
-namespace Presentation.Views.Sample
+namespace Presentation.Views.Scene.Sample
 {
     public class SampleRelationExplainer : MonoBehaviour
     {
