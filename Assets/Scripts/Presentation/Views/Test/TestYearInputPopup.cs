@@ -2,7 +2,7 @@
 using Presentation.Views.Popup;
 using UnityEngine.UI;
 
-public class YearInputPopupTester : MonoBehaviour
+public class TestYearInputPopup : MonoBehaviour
 {
     [SerializeField] private Button openButton;
     [SerializeField] private YearInputPopup yearInputPopupPrefab;

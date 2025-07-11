@@ -18,6 +18,7 @@ namespace Presentation.Views.Popup
         private Action<int> _onYearDefined;
         private int _currentYear;
         private bool _isInputMode;
+        private bool _isSubmitted = false;
         
         private void Start()
         {
@@ -33,24 +34,38 @@ namespace Presentation.Views.Popup
             yearInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
 
             SetYear(_currentYear);
-            SetupListeners();
             SetInputMode(false);
+            _isSubmitted = false;
         }
-
-        private bool _listenersSetup = false;
-        private void SetupListeners()
+        
+        private void OnEnable()
         {
-            //二重登録防止
-            if (_listenersSetup) return;
-            _listenersSetup = true;
-            
             positiveButton.onClick.AddListener(OnPressDefineButton);
             negativeButton.onClick.AddListener(CloseWindow);
-            yearDecrementButton.onClick.AddListener(() => ChangeYear(-1));
-            yearIncrementButton.onClick.AddListener(() => ChangeYear(1));
-            yearLabelButton.onClick.AddListener(() => SetInputMode(true));
-            frameBackgroundButton.onClick.AddListener(() => { if (_isInputMode) ApplyInputAndReturn(); });
+            yearDecrementButton.onClick.AddListener(OnDecrementYear);
+            yearIncrementButton.onClick.AddListener(OnIncrementYear);
+            yearLabelButton.onClick.AddListener(OnLabelClick);
+            frameBackgroundButton.onClick.AddListener(OnBackgroundClick);
         }
+        
+        private void OnDisable()
+        {
+            positiveButton.onClick.RemoveListener(OnPressDefineButton);
+            negativeButton.onClick.RemoveListener(CloseWindow);
+            yearDecrementButton.onClick.RemoveListener(OnDecrementYear);
+            yearIncrementButton.onClick.RemoveListener(OnIncrementYear);
+            yearLabelButton.onClick.RemoveListener(OnLabelClick);
+            frameBackgroundButton.onClick.RemoveListener(OnBackgroundClick);
+        }
+        
+        private void OnDecrementYear() => ChangeYear(-1);
+        private void OnIncrementYear() => ChangeYear(1);
+        private void OnLabelClick() => SetInputMode(true);
+        private void OnBackgroundClick()
+        {
+            if (_isInputMode) ApplyInputAndReturn();
+        }
+        
 
         private void SetYear(int year)
         {
@@ -61,7 +76,19 @@ namespace Presentation.Views.Popup
 
         private void ChangeYear(int delta)
         {
-            SetYear(_currentYear + delta);
+            int baseYear;
+
+            // 入力モード中 or 入力直後などに対応
+            if (int.TryParse(yearInputField.text, out int parsed))
+            {
+                baseYear = parsed;
+            }
+            else
+            {
+                baseYear = _currentYear;
+            }
+
+            SetYear(baseYear + delta);
         }
 
         private void SetInputMode(bool inputMode)
@@ -80,7 +107,7 @@ namespace Presentation.Views.Popup
             SetInputMode(false);
         }
 
-        private bool _isSubmitted = false;
+        
         private void OnPressDefineButton()
         {
             //二重クリック防止
