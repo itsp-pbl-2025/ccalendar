@@ -1,4 +1,6 @@
 ﻿using AppCore.UseCases;
+using Domain.Entity;
+using Domain.Enum;
 using Infrastructure.Data.DAO;
 using LiteDB;
 using NUnit.Framework;
@@ -91,6 +93,29 @@ namespace Test.Integration
             Assert.IsTrue(schedules.Count == 0);
             
             ctx.Dispose();
+        }
+        [Test]
+        public void IsInRange_WithEndDate_WorksAsExpected()
+        {
+            var start = new CCDateOnly(2025, 7, 10);
+            var end = new CCDateOnly(2025, 7, 20);
+            var periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, 1, start, end);
+
+            Assert.IsFalse(periodic.IsInRange(new CCDateOnly(2025, 7, 9)));  // before start
+            Assert.IsTrue (periodic.IsInRange(new CCDateOnly(2025, 7, 10))); // exact start
+            Assert.IsTrue (periodic.IsInRange(new CCDateOnly(2025, 7, 15))); // between
+            Assert.IsTrue (periodic.IsInRange(new CCDateOnly(2025, 7, 20))); // exact end
+            Assert.IsFalse(periodic.IsInRange(new CCDateOnly(2025, 7, 21))); // after end
+        }
+        [Test]
+        public void IsInRange_WithoutEndDate_WorksAsExpected()
+        {
+            var start = new CCDateOnly(2025, 7, 10);
+            var periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, 1, start, null);
+
+            Assert.IsFalse(periodic.IsInRange(new CCDateOnly(2025, 7, 9)));  // before start
+            Assert.IsTrue (periodic.IsInRange(new CCDateOnly(2025, 7, 10))); // exact start
+            Assert.IsTrue (periodic.IsInRange(new CCDateOnly(2100, 1, 1)));  // far future
         }
     }
 }
