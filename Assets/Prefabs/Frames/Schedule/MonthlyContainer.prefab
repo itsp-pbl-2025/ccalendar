@@ -213,6 +213,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &2310925374851887725
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,6 +523,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &4593471331520004338
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +600,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &4981695872669394575
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +677,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &5208079789018256068
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +823,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &6328038800367490995
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,6 +900,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &6446363626399669152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1114,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &7598652942216428908
 GameObject:
   m_ObjectHideFlags: 0

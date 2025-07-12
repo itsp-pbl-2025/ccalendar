@@ -1,6 +1,8 @@
 ﻿using DG.Tweening;
 using Domain.Entity;
+using Presentation.Presenter;
 using Presentation.Views.Extensions;
+using Presentation.Views.Popup;
 using UnityEngine;
 
 namespace Presentation.Views.Scene.Calendar
@@ -124,6 +126,15 @@ namespace Presentation.Views.Scene.Calendar
                     scheduleLabel.fontSizeMin = Mathf.Lerp(labelFontMinFrom, fontSizeMin, v);
                     scheduleLabel.fontSizeMax = Mathf.Lerp(labelFontMaxFrom, fontSizeMax, v);
                 }));
+            }
+        }
+
+        public void OnPress()
+        {
+            if (PopupManager.Instance.ShowPopupUnique(InAppContext.Prefabs.GetPopup<ScheduleCreationPopup>(),
+                    out var window))
+            {
+                window.Init(_schedule);
             }
         }
 

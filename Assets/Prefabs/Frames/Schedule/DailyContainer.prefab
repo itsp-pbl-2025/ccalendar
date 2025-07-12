@@ -140,3 +140,4 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
