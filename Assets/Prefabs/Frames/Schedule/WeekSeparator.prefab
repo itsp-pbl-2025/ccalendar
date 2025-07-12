@@ -137,6 +137,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 22
+  mAlpha: 1
 --- !u!1 &2576789681741136840
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,6 +275,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 22
+  mAlpha: 1
 --- !u!1 &2995129788673391325
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +482,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 22
+  mAlpha: 1
 --- !u!1 &4041010151174594171
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +620,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 2
+  mAlpha: 1
 --- !u!1 &5171022057522636298
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,6 +758,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 22
+  mAlpha: 1
 --- !u!1 &5220139328622057468
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,6 +835,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 10
+  mAlpha: 1
 --- !u!1 &6472959060956397880
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,6 +973,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 22
+  mAlpha: 1
 --- !u!1 &6500512868910178409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,6 +1111,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 25
+  mAlpha: 1
 --- !u!1 &8886531577593354923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,3 +1249,4 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 26
+  mAlpha: 1

@@ -78,6 +78,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 32
   mColorType: 28
+  mAlpha: 1
 --- !u!114 &902836695886501427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +233,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 21
+  mAlpha: 1
 --- !u!114 &2986461554138536748
 MonoBehaviour:
   m_ObjectHideFlags: 0

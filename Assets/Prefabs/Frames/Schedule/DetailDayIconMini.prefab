@@ -76,6 +76,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 15
+  mAlpha: 1
 --- !u!1 &5141480533989244639
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +216,7 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 21
+  mAlpha: 1
 --- !u!1 &7479277847495838973
 GameObject:
   m_ObjectHideFlags: 0
