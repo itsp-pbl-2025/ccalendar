@@ -230,6 +230,82 @@ namespace Presentation.Views.Extensions
 
             return canvas;
         }
+        
+        [MenuItem("Tools/OnscheUI/Fix RegularPrefab RxAlpha", false, 50)]
+        public static void FixImageRxLabelRxAlphaOverrides()
+        {
+            var guids = AssetDatabase.FindAssets("t:GameObject");
+            var initializedCount = 0;
+
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+                if (PrefabUtility.GetPrefabAssetType(prefabAsset) != PrefabAssetType.Regular) continue;
+                
+                var prefabRoot = PrefabUtility.LoadPrefabContents(path);
+
+                var changed = false;
+                var imageRxs = prefabRoot.GetComponentsInChildren<ImageRx>(true);
+                foreach (var imageRx in imageRxs)
+                {
+                    var serializedImageRx = new SerializedObject(imageRx);
+                    var mAlphaProp = serializedImageRx.FindProperty("mAlpha");
+
+                    if (mAlphaProp != null)
+                    {
+                        mAlphaProp.floatValue = mAlphaProp.floatValue; // 値を.prefabファイルに明示的に書き込む
+                        serializedImageRx.ApplyModifiedProperties();
+                        changed = true;
+                        Debug.Log($"Initialized mAlpha to 1f for ImageRx on original prefab: {prefabAsset.name} (Component: {imageRx.name})");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"mAlpha property not found on ImageRx component of prefab: {prefabAsset.name} (Component: {imageRx.name}). Check field name.");
+                    }
+                }
+
+                var labelRxs = prefabRoot.GetComponentsInChildren<LabelRx>(true);
+                foreach (var labelRx in labelRxs)
+                {
+                    SerializedObject serializedLabelRx = new SerializedObject(labelRx);
+                    SerializedProperty mAlphaProp = serializedLabelRx.FindProperty("mAlpha");
+
+                    if (mAlphaProp != null)
+                    {
+                        mAlphaProp.floatValue = mAlphaProp.floatValue; // 値を.prefabファイルに明示的に書き込む
+                        serializedLabelRx.ApplyModifiedProperties();
+                        changed = true;
+                        Debug.Log($"Initialized mAlpha to 1f for LabelRx on original prefab: {prefabAsset.name} (Component: {labelRx.name})");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"mAlpha property not found on LabelRx component of prefab: {prefabAsset.name} (Component: {labelRx.name}). Check field name.");
+                    }
+                }
+
+                // Prefab の変更を保存
+                if (changed)
+                {
+                    PrefabUtility.SaveAsPrefabAsset(prefabRoot, path);
+                    initializedCount++;
+                }
+
+                // Prefab の内容をアンロード
+                PrefabUtility.UnloadPrefabContents(prefabRoot);
+            }
+
+            if (initializedCount > 0)
+            {
+                AssetDatabase.SaveAssets(); // すべての変更をアセットデータベースに保存
+                Debug.Log($"Finished initializing mAlpha to 1f for {initializedCount} Original Prefabs.");
+            }
+            else
+            {
+                Debug.Log("No Original Prefabs found needing mAlpha initialization, or all were already 1f.");
+            }
+        }
     }
 }
 #endif
