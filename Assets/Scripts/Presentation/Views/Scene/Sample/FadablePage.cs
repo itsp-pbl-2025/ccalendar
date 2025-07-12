@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Presentation.Views.Sample
+namespace Presentation.Views.Scene.Sample
 {
     public class FadablePage : MonoBehaviour
     {

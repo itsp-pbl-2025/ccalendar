@@ -774,6 +774,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 2
+  mAlpha: 1
 --- !u!1 &4892434267019335415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1023,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!1 &6367480211600968928
 GameObject:
   m_ObjectHideFlags: 0

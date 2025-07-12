@@ -76,3 +76,4 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 12
   mColorType: 10
+  mAlpha: 1

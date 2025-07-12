@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Presentation.Views.Sample
+namespace Presentation.Views.Scene.Sample
 {
     public class AutoPaginator : MonoBehaviour
     {

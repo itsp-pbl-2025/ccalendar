@@ -76,6 +76,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 6
   mColorType: 23
+  mAlpha: 1
 --- !u!1 &9032648919283453220
 GameObject:
   m_ObjectHideFlags: 0
