@@ -80,29 +80,12 @@ namespace Presentation.Views.Common
             }
         }        
 #endif
-        [FormerlySerializedAs("normalColor")]
-        [SerializeField]
-        private ColorOf m_NormalColor;
-
-        [FormerlySerializedAs("highlightedColor")]
-        [SerializeField]
-        private ColorOf m_HighlightedColor;
-
-        [FormerlySerializedAs("pressedColor")]
-        [SerializeField]
-        private ColorOf m_PressedColor;
-
-        [FormerlySerializedAs("m_HighlightedColor")]
-        [SerializeField]
-        private ColorOf m_SelectedColor;
-
-        [FormerlySerializedAs("disabledColor")]
-        [SerializeField]
-        private ColorOf m_DisabledColor;
-
-        [FormerlySerializedAs("fadeDuration")]
-        [SerializeField]
-        private float m_FadeDuration;
+        [SerializeField] private ColorOf m_NormalColor;
+        [SerializeField] private ColorOf m_HighlightedColor;
+        [SerializeField] private ColorOf m_PressedColor;
+        [SerializeField] private ColorOf m_SelectedColor;
+        [SerializeField] private ColorOf m_DisabledColor;
+        [SerializeField] private float m_FadeDuration;
         
         public ColorOf normalColor       { get => m_NormalColor; set => m_NormalColor = value; }
         
@@ -164,7 +147,7 @@ namespace Presentation.Views.Common
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(m_NormalColor, m_HighlightedColor, m_PressedColor, m_SelectedColor, m_DisabledColor, m_FadeDuration);
         }
     }
 }

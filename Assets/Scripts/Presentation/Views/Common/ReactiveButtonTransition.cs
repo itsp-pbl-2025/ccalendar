@@ -134,7 +134,7 @@ namespace Presentation.Views.Common
                 case Transition.ColorType:
                     if (!targetGraphic)
                     {
-                        Debug.LogError("Color Tint Transition is enabled, but no Graphic is assigned.");
+                        Debug.LogError("Color Type Transition is enabled, but no Graphic is assigned.");
                         return;
                     }
                     buttonRP.State
@@ -208,32 +208,31 @@ namespace Presentation.Views.Common
                 _ => colorTypes.disabledColor,
             };
 
+            var toColor = to is ColorOf.Transparent 
+                ? Color.clear 
+                : InAppContext.Theme.GetColor(to).SetAlpha(targetGraphic.color.a);
+
             if (instant)
+            {
+                AtCompletedState();
+            }
+            else
+            {
+                _seq = DOTween.Sequence()
+                    .Append(DOVirtual.Color(targetGraphic.color, toColor, colorTypes.fadeDuration, c => targetGraphic.color = c))
+                    .OnComplete(AtCompletedState);
+            }
+
+            return;
+
+            void AtCompletedState()
             {
                 if (targetGraphic is ImageRx imageRx)
                     imageRx.colorType = to;
                 else if (targetGraphic is LabelRx labelRx)
                     labelRx.colorType = to;
                 else
-                {
-                    targetGraphic.color = to is ColorOf.Transparent ? Color.clear :
-                        InAppContext.Theme.GetColor(to).SetAlpha(targetGraphic.color.a);
-                }
-            }
-            else
-            {
-                var toColor = to is ColorOf.Transparent ? Color.clear :
-                    InAppContext.Theme.GetColor(to).SetAlpha(targetGraphic.color.a);
-                _seq = DOTween.Sequence().Append(DOVirtual.Color(targetGraphic.color, toColor, colorTypes.fadeDuration, c => targetGraphic.color = c))
-                    .OnComplete(() =>
-                    {
-                        if (targetGraphic is ImageRx imageRx)
-                            imageRx.colorType = to;
-                        else if (targetGraphic is LabelRx labelRx)
-                            labelRx.colorType = to;
-                        else
-                            targetGraphic.color = toColor;
-                    });
+                    targetGraphic.color = toColor;
             }
         }
         
