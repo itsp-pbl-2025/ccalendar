@@ -266,25 +266,6 @@ namespace Presentation.Views.Extensions
                     }
                 }
 
-                var labelRxs = prefabRoot.GetComponentsInChildren<LabelRx>(true);
-                foreach (var labelRx in labelRxs)
-                {
-                    SerializedObject serializedLabelRx = new SerializedObject(labelRx);
-                    SerializedProperty mAlphaProp = serializedLabelRx.FindProperty("mAlpha");
-
-                    if (mAlphaProp != null)
-                    {
-                        mAlphaProp.floatValue = mAlphaProp.floatValue; // 値を.prefabファイルに明示的に書き込む
-                        serializedLabelRx.ApplyModifiedProperties();
-                        changed = true;
-                        Debug.Log($"Initialized mAlpha to 1f for LabelRx on original prefab: {prefabAsset.name} (Component: {labelRx.name})");
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"mAlpha property not found on LabelRx component of prefab: {prefabAsset.name} (Component: {labelRx.name}). Check field name.");
-                    }
-                }
-
                 // Prefab の変更を保存
                 if (changed)
                 {

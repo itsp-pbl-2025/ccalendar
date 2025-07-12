@@ -14,7 +14,6 @@ namespace Presentation.Views.Extensions
     public class LabelRx : TextMeshProUGUI
     {
         [SerializeField] private ColorOf mColorType;
-        [SerializeField, Range(0f, 1f)] private float mAlpha = 1f;
 
         // ReSharper disable once InconsistentNaming
         public ColorOf colorType
@@ -40,14 +39,11 @@ namespace Presentation.Views.Extensions
             get => base.color;
             set
             {
-                if (!Mathf.Approximately(color.r, value.r) ||
-                    !Mathf.Approximately(color.g, value.g) ||
-                    !Mathf.Approximately(color.b, value.b))
+                if (!base.color.IsApproximatedTo(value))
                 {
                     colorType = ColorOf.Custom;
                 }
 
-                mAlpha = value.a;
                 base.color = value;
             }
         }
@@ -59,11 +55,9 @@ namespace Presentation.Views.Extensions
         public class LabelRxEditor : TMP_EditorPanelUI
         {
             private SerializedProperty _colorProp;
-            private SerializedProperty _alphaProp;
             protected override void OnEnable()
             {
                 _colorProp = serializedObject.FindProperty("mColorType");
-                _alphaProp = serializedObject.FindProperty("mAlpha");
                 base.OnEnable();
             }
 
@@ -74,7 +68,6 @@ namespace Presentation.Views.Extensions
                 EditorGUILayout.LabelField("基本的には以下から色を選択してください。", EditorStyles.label);
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(_colorProp);
-                EditorGUILayout.PropertyField(_alphaProp);
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
@@ -103,11 +96,11 @@ namespace Presentation.Views.Extensions
         {
             if (colorType is ColorOf.Custom)
             {
-                color = color.SetAlpha(mAlpha);
+                base.color = color.SetAlpha(alpha);
             }
             else
             {
-                color = AssetInEditor.Theme.GetColor(colorType).SetAlpha(mAlpha);
+                base.color = AssetInEditor.Theme.GetColor(colorType).SetAlpha(alpha);
             }
 
             if (!font)
@@ -158,11 +151,11 @@ namespace Presentation.Views.Extensions
         {
             if (colorType is ColorOf.Custom)
             {
-                color = color.SetAlpha(mAlpha);
+                base.color = color.SetAlpha(alpha);
             }
             else
             {
-                color = InAppContext.Theme.GetColor(colorType).SetAlpha(mAlpha);
+                base.color = InAppContext.Theme.GetColor(colorType).SetAlpha(alpha);
             }
         }
     }

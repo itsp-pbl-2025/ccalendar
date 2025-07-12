@@ -19,5 +19,10 @@ namespace Presentation.Utilities
         {
             return new Color(color.r, color.g, color.b, alpha);
         }
+
+        public static bool IsApproximatedTo(this Color a, Color b)
+        {
+            return Mathf.Approximately(a.r, b.r) && Mathf.Approximately(a.g, b.g) && Mathf.Approximately(a.b, b.b);
+        }
     }
 }

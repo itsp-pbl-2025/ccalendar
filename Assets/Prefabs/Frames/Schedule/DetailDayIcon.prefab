@@ -137,7 +137,6 @@ MonoBehaviour:
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   mColorType: 21
-  mAlpha: 1
 --- !u!1 &3430027652998930655
 GameObject:
   m_ObjectHideFlags: 0

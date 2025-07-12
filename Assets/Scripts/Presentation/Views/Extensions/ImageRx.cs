@@ -51,9 +51,7 @@ namespace Presentation.Views.Extensions
             get => base.color;
             set
             {
-                if (!Mathf.Approximately(color.r, value.r) ||
-                    !Mathf.Approximately(color.g, value.g) ||
-                    !Mathf.Approximately(color.b, value.b))
+                if (!base.color.IsApproximatedTo(value))
                 {
                     colorType = ColorOf.Custom;
                 }
