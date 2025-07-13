@@ -94,14 +94,12 @@ namespace Presentation.Views.Extensions
 
         private void RenewColorInEditor()
         {
-            if (colorType is ColorOf.Custom)
+            base.color = colorType switch
             {
-                base.color = color.SetAlpha(alpha);
-            }
-            else
-            {
-                base.color = AssetInEditor.Theme.GetColor(colorType).SetAlpha(alpha);
-            }
+                ColorOf.Custom => color.SetAlpha(alpha),
+                ColorOf.Transparent => Color.clear,
+                _ => AssetInEditor.Theme.GetColor(colorType).SetAlpha(alpha)
+            };
 
             if (!font)
             {
@@ -149,14 +147,12 @@ namespace Presentation.Views.Extensions
 
         private void RenewColor()
         {
-            if (colorType is ColorOf.Custom)
+            base.color = colorType switch
             {
-                base.color = color.SetAlpha(alpha);
-            }
-            else
-            {
-                base.color = InAppContext.Theme.GetColor(colorType).SetAlpha(alpha);
-            }
+                ColorOf.Custom => color.SetAlpha(alpha),
+                ColorOf.Transparent => Color.clear,
+                _ => InAppContext.Theme.GetColor(colorType).SetAlpha(alpha)
+            };
         }
     }
 }
