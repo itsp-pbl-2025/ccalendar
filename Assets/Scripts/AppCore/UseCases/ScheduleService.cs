@@ -45,6 +45,7 @@ namespace AppCore.UseCases
         {
             var ret = new List<UnitSchedule>();
 
+            // TODO: GetDurationByPeriodicの計算回数を少なくするためキャッシュ処理を実装する
             foreach (var schedule in _scheduleRepo.GetAll())
             {
                 if (schedule.Periodic is null)
@@ -57,6 +58,7 @@ namespace AppCore.UseCases
                     var currentDuration = schedule.Duration;
                     while (currentDuration.StartTime.CompareTo(duration.EndTime) <= 0)
                     {
+                        // TODO: SchedulePeriodic.ExcludeIndicesを実装し、特定のindexをはじく
                         var nextDuration = GetDurationByPeriodic(schedule.Duration, schedule.Periodic, index++);
                         if (nextDuration.IsCollided(duration))
                         {
@@ -82,7 +84,13 @@ namespace AppCore.UseCases
                         Enum.GetValues(typeof(DayOfWeek)).AsValueEnumerable().Select(day => (DayOfWeek)day)
                             .ToDictionary(day => (int)day, day => (periodic.Span & (1 << (int)day)) != 0);
 
+                    // TODO: ループ処理が正当かどうかを確かめる
                     var next = (int)duration.StartTime.DayOfWeek;
+                    if (loop is 0 && weekdays[next])
+                    {
+                        return duration;
+                    }
+                    
                     var elapseDays = 0;
                     for (var i = 0; i < loop+1; elapseDays++)
                     {
