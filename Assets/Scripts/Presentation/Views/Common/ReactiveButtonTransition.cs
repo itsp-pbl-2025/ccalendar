@@ -208,9 +208,13 @@ namespace Presentation.Views.Common
                 _ => colorTypes.disabledColor,
             };
 
-            var toColor = to is ColorOf.Transparent 
-                ? Color.clear 
-                : InAppContext.Theme.GetColor(to).SetAlpha(targetGraphic.color.a);
+            var fromColor = targetGraphic.color;
+            var toColor = to switch
+            {
+                ColorOf.Custom => fromColor.SetAlpha(targetGraphic.color.a),
+                ColorOf.Transparent => Color.clear, 
+                _ => InAppContext.Theme.GetColor(to).SetAlpha(targetGraphic.color.a)
+            };
 
             if (instant)
             {
@@ -219,7 +223,7 @@ namespace Presentation.Views.Common
             else
             {
                 _seq = DOTween.Sequence()
-                    .Append(DOVirtual.Color(targetGraphic.color, toColor, colorTypes.fadeDuration, c => targetGraphic.color = c))
+                    .Append(DOVirtual.Color(fromColor, toColor, colorTypes.fadeDuration, c => targetGraphic.color = c))
                     .OnComplete(AtCompletedState);
             }
 

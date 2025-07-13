@@ -110,15 +110,13 @@ namespace Presentation.Views.Extensions
 
         private void RenewColorInEditor()
         {
-            if (colorType is ColorOf.Custom)
+            base.color = colorType switch
             {
-                base.color = color.SetAlpha(mAlpha);
-            }
-            else
-            {
-                base.color = AssetInEditor.Theme.GetColor(colorType).SetAlpha(mAlpha);
-            }
-            
+                ColorOf.Custom => color.SetAlpha(mAlpha),
+                ColorOf.Transparent => Color.clear,
+                _ => AssetInEditor.Theme.GetColor(colorType).SetAlpha(mAlpha)
+            };
+
             SetVerticesDirty();
         }
         
@@ -155,14 +153,12 @@ namespace Presentation.Views.Extensions
 
         private void RenewColor()
         {
-            if (colorType is ColorOf.Custom)
+            base.color = colorType switch
             {
-                base.color = base.color.SetAlpha(mAlpha);
-            }
-            else
-            {
-                base.color = InAppContext.Theme.GetColor(colorType).SetAlpha(mAlpha);
-            }
+                ColorOf.Custom => base.color.SetAlpha(mAlpha),
+                ColorOf.Transparent => Color.clear,
+                _ => InAppContext.Theme.GetColor(colorType).SetAlpha(mAlpha)
+            };
         }
     }
 }
