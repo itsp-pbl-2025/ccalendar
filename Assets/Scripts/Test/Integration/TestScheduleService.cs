@@ -1,4 +1,5 @@
-﻿using AppCore.UseCases;
+using System.Collections.Generic;
+using AppCore.UseCases;
 using Domain.Entity;
 using Domain.Enum;
 using Infrastructure.Data.DAO;
@@ -73,7 +74,7 @@ namespace Test.Integration
         }
         
         [Test]
-        public void GetSchedules()
+        public void TestGetSchedules()
         {
             var ctx = InTestContext.Context;
 
@@ -91,6 +92,36 @@ namespace Test.Integration
                 Assert.IsTrue(schedules.Remove(ds.Id));
             }
             Assert.IsTrue(schedules.Count == 0);
+            
+            ctx.Dispose();
+        }
+        
+        [Test]
+        public void TestGetSchedulesInDuration()
+        {
+            var ctx = InTestContext.Context;
+
+            var (ok, ng) = MockSchedule.GetMockSchedulesBoundary();
+            var okIds = new HashSet<int>();
+
+            foreach (var dok in ok)
+            {
+                var result = ctx.ScheduleRepo.Insert(dok.ToDomain());
+                okIds.Add(result.Id);
+            }
+            foreach (var dng in ng)
+            {
+                ctx.ScheduleRepo.InsertUpdate(dng.ToDomain());
+            }
+            
+            var service = ctx.GetService<ScheduleService>();
+            var schedules = service.GetSchedulesInDuration(new ScheduleDuration(CCDateOnly.Today));
+            foreach (var schedule in schedules)
+            {
+                Assert.IsTrue(okIds.Contains(schedule.Id));
+                okIds.Remove(schedule.Id);
+            }
+            Assert.IsTrue(okIds.Count == 0);
             
             ctx.Dispose();
         }

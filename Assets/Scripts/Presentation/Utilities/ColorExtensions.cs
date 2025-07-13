@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Presentation.Utilities
 {
@@ -12,6 +13,16 @@ namespace Presentation.Utilities
                 DayOfWeek.Sunday => ColorOf.TextHoliday,
                 _ => defaultColor
             };
+        }
+
+        public static Color SetAlpha(this Color color, float alpha)
+        {
+            return new Color(color.r, color.g, color.b, alpha);
+        }
+
+        public static bool IsApproximatedTo(this Color a, Color b)
+        {
+            return Mathf.Approximately(a.r, b.r) && Mathf.Approximately(a.g, b.g) && Mathf.Approximately(a.b, b.b);
         }
     }
 }

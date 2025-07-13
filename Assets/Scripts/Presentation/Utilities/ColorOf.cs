@@ -38,6 +38,7 @@
         TextHoliday,     // 日曜日/祝日の色
         Link,            // リンクの色
         
+        Transparent,     // 指定した場合、完全に透明にする
         Custom,          // カスタム色
     }
 }

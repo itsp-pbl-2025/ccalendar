@@ -11,13 +11,16 @@ namespace Presentation.Views.Scene.Calendar
 {
     public class PartsWeekDaysLabel : MonoBehaviour
     {
-        [SerializeField] public RectTransform rectTransform;
-        [SerializeField] public ImageRx todayPointer;
-        [SerializeField] public List<LabelRx> dateLabels;
+        private const float HeightScheduleInWeek = 40f;
+        
+        [SerializeField] private RectTransform rectTransform;
+        [SerializeField] private ImageRx todayPointer;
+        [SerializeField] private List<LabelRx> dateLabels;
+        [SerializeField] private List<RectTransform> scheduleParents;
 
         private HolidayService _holidayService;
 
-        private void Init(CCDateOnly date, bool isFirstRow = false)
+        public void Init(CCDateOnly date, bool isFirstRow = false)
         {
             _holidayService ??= InAppContext.Context.GetService<HolidayService>();
 
@@ -33,21 +36,44 @@ namespace Presentation.Views.Scene.Calendar
                 if (_holidayService.IsHoliday(day)) labelColor = ColorOf.TextHoliday;
                 label.colorType = labelColor;
 
-                var showMonth = isFirstRow || day.Day.Value == 1;
+                var showMonth = (isFirstRow && dayOfWeek is DayOfWeek.Sunday) || day.Day.Value == 1;
                 label.text = showMonth ? day.ToDateTime().ToString("M/d") : day.Day.Value.ToString();
 
                 if (today.Equals(day))
                 {
-                    todayPointer.rectTransform.anchoredPosition = label.rectTransform.anchoredPosition;
+                    todayPointer.rectTransform.anchorMin =
+                        new Vector2(label.rectTransform.anchorMin.x, todayPointer.rectTransform.anchorMin.y);
+                    todayPointer.rectTransform.anchorMax =
+                        new Vector2(label.rectTransform.anchorMax.x, todayPointer.rectTransform.anchorMax.y);
+                    todayPointer.rectTransform.anchoredPosition =
+                        new Vector2(0f, todayPointer.rectTransform.anchoredPosition.y);
                     todayPointer.enabled = true;
                 }
             }
         }
 
-        public void SetAnchorY(float y)
+        private void SetAnchorY(float min, float max)
         {
-            rectTransform.anchorMax = new Vector2(rectTransform.anchorMax.x, y);
-            rectTransform.anchorMin = new Vector2(rectTransform.anchorMin.x, y);
+            rectTransform.anchorMax = new Vector2(rectTransform.anchorMax.x, max);
+            rectTransform.anchorMin = new Vector2(rectTransform.anchorMin.x, min);
+        }
+
+        public void SetOffset(int offset)
+        {
+            SetAnchorY((5 - offset) / 6f, (6 - offset) / 6f);
+        }
+        
+        public void PlaceSchedules(int column, List<PartsScheduleInDay> schedules, bool instant)
+        {
+            var parent = scheduleParents[column];
+
+            var offset = 0f;
+            foreach (var schedule in schedules)
+            {
+                schedule.SetParent(parent);
+                schedule.TransformInWeek(offset, HeightScheduleInWeek, instant);
+                offset += HeightScheduleInWeek;
+            }
         }
     }
 }

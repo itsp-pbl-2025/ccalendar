@@ -15,15 +15,16 @@ namespace Presentation.Views.Popup
 {
     public class ScheduleCreationPopup : PopupWindow
     {
-        private const string ScheduleTitleDefault = "(タイトルなし)";
-        private const float HeightHeaderArea = 120f;
+        private const float HeightHeaderArea = 132f;
         private const float HeightInputFieldMargin = 13f;
         
         private enum Limit { Start, End }
+        private enum Mode { New, Edit }
 
         [SerializeField] private RectTransform popupRectTransform;
         [SerializeField] private VerticalLayoutGroup scheduleContentGroup;
         [SerializeField] private ImageRx backgroundImage, hideBackgroundImage, hideButtonIcon, allDayIcon;
+        [SerializeField] private ButtonRP hideButton;
         [SerializeField] private RectTransform scheduleTitleArea, scheduleDescriptionArea;
         [SerializeField] private TMP_InputField scheduleTitleField, scheduleDescriptionField;
         [SerializeField] private ButtonWithLabel startDateButton, startTimeButton, endDateButton, endTimeButton, repetitionButton;
@@ -31,21 +32,43 @@ namespace Presentation.Views.Popup
 
         private RectTransform _scheduleTitleRect, _scheduleDescriptionRect;
 
+        private UnitSchedule _editSchedule;
         private Sequence _seq;
 
         private bool _isStateHide;
         private string _scheduleTitle, _scheduleDescription;
         private bool _titleUpdated, _descriptionUpdated;
         
+        private Mode _mode;
         private CCDateOnly _startDate, _endDate;
         private CCTimeOnly _startTime, _endTime;
+        private SchedulePeriodic _periodic;
         private bool _isAllDay;
         
         public void Init(CCDateOnly atDay, bool isAllDay)
         {
-            _startDate = _endDate = atDay;
-            _startTime = new CCTimeOnly(CCTimeOnly.Now.Hour.Value+1, 0, 0);
-            _endTime = new CCTimeOnly(CCTimeOnly.Now.Hour.Value+2, 0, 0);
+            _mode = Mode.New;
+            
+            var nowHour = CCTimeOnly.Now.Hour.Value;
+            if (nowHour is 23)
+            {
+                _startTime = new CCTimeOnly();
+                _endTime = new CCTimeOnly(1, 0, 0);
+                _startDate = _endDate = atDay.AddDays(1);
+            }
+            else if (nowHour is 22)
+            {
+                _startTime = new CCTimeOnly(nowHour+1, 0, 0);
+                _endTime = new CCTimeOnly();
+                _startDate = atDay;
+                _endDate = atDay.AddDays(1);
+            }
+            else
+            {
+                _startTime = new CCTimeOnly(nowHour + 1, 0, 0);
+                _endTime = new CCTimeOnly(nowHour + 2, 0, 0);
+                _startDate = _endDate = atDay;
+            }
             
             ReloadDateButtonLabel(Limit.Start);
             ReloadDateButtonLabel(Limit.End);
@@ -53,12 +76,46 @@ namespace Presentation.Views.Popup
             ReloadTimeButtonLabel(Limit.End);
             
             _isAllDay = isAllDay;
-            
             allDayToggle.isOn = isAllDay;
-            ToggleAllDay(isAllDay);
             
-            _scheduleTitleRect = scheduleTitleField.transform as RectTransform;
-            _scheduleDescriptionRect = scheduleDescriptionField.transform as RectTransform;
+            ReloadAll();
+        }
+
+        public void Init(UnitSchedule schedule)
+        {
+            _editSchedule = schedule;
+            _mode = Mode.Edit;
+            
+            _startDate = schedule.Duration.StartTime.ToDateOnly();
+            _startTime = schedule.Duration.StartTime.ToTimeOnly();
+            _endDate = schedule.Duration.EndTime.ToDateOnly();
+            _endTime = schedule.Duration.EndTime.ToTimeOnly();
+            
+            _isAllDay = schedule.Duration.IsAllDay;
+            allDayToggle.isOn = _isAllDay;
+
+            _scheduleTitle = schedule.Title;
+            _scheduleDescription = schedule.Description;
+            
+            ReloadAll();
+        }
+
+        private void ReloadAll()
+        {
+            _scheduleTitleRect ??= scheduleTitleField.transform as RectTransform;
+            _scheduleDescriptionRect ??= scheduleDescriptionField.transform as RectTransform;
+            
+            ToggleAllDay(_isAllDay);
+            
+            ReloadDateButtonLabel(Limit.Start);
+            ReloadDateButtonLabel(Limit.End);
+            ReloadTimeButtonLabel(Limit.Start);
+            ReloadTimeButtonLabel(Limit.End);
+
+            scheduleTitleField.text = _scheduleTitle;
+            scheduleDescriptionField.text = _scheduleDescription;
+
+            hideButton.interactable = _mode is Mode.New;
         }
 
         private void Update()
@@ -119,14 +176,19 @@ namespace Presentation.Views.Popup
         public void SubmitScheduleWithClosing()
         {
             if (ReloadWarn(true)) return;
-            
+
             var service = InAppContext.Context.GetService<ScheduleService>();
-            var title = _scheduleTitle == "" ? ScheduleTitleDefault : _scheduleTitle;
-            var duration = _isAllDay
-                ? new ScheduleDuration(_startDate, _endDate)
-                : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
+            if (_mode is Mode.New)
+            {
+                var duration = _isAllDay
+                    ? new ScheduleDuration(_startDate, _endDate)
+                    : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
             
-            service.CreateSchedule(new Schedule(0, title, _scheduleDescription, duration));
+                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, duration));
+            }
+            else
+            {
+            }
             
             CloseWindow();
         }
