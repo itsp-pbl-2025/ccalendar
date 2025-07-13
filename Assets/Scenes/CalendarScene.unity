@@ -324,6 +324,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &107737537
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -599,6 +600,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &154209894
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -830,6 +832,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 9
+  mAlpha: 1
 --- !u!222 &245325809
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1078,6 +1081,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &272527331
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1367,6 +1371,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &339314115
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1717,6 +1722,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &382904029
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1793,6 +1799,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &407660766
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1869,6 +1876,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &445371882
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1945,6 +1953,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &507097381
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2123,6 +2132,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &530533875
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3227,6 +3237,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &824017370
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3440,6 +3451,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &911840737
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3516,6 +3528,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &961603239
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3592,6 +3605,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &984768327
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3600,6 +3614,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984768324}
   m_CullTransparentMesh: 1
+--- !u!20 &986700890 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7456196797583569811, guid: 70fd1607782178c4b9ee9a90445449fe, type: 3}
+  m_PrefabInstance: {fileID: 1191628753}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1011444338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3705,6 +3724,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1017806749
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3736,7 +3756,7 @@ PrefabInstance:
     - target: {fileID: 4567376349890465261, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 986700890}
     - target: {fileID: 4567376349890465261, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -4212,6 +4232,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1135884849
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4288,6 +4309,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1138584679
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4364,6 +4386,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1141161563
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4756,6 +4779,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 9
+  mAlpha: 1
 --- !u!222 &1284592059
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4977,6 +5001,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1408808987
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5053,6 +5078,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1423879284
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5677,6 +5703,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1744595288
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5941,6 +5968,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1775371700
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6017,6 +6045,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &1839403272
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6550,6 +6579,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 8
+  mAlpha: 1
 --- !u!222 &2070824288
 CanvasRenderer:
   m_ObjectHideFlags: 0

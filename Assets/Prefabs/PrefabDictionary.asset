@@ -21,5 +21,6 @@ MonoBehaviour:
   - {fileID: 1033166699883100115, guid: b3ad4d1f3aca9b848bffca1bdad07a61, type: 3}
   - {fileID: 3284728246072251474, guid: ec370882a0d492d43ac34cd45a20452a, type: 3}
   - {fileID: 5917179969498398073, guid: 4f944a6c6c495b341b0e51da053b5a20, type: 3}
+  - {fileID: 7095110515011688251, guid: c7d1455008190124db315082d3c4ac43, type: 3}
   themes:
   - {fileID: 11400000, guid: c28f0f400e905164d909a569e38287ca, type: 2}
