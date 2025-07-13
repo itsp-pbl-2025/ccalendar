@@ -84,7 +84,7 @@ namespace Test.MockData
                 new(0, "Repeating Schedule By Every Weekday",
                     "1:00 ~ 2:00",
                     new ScheduleDuration(CCDateTime.Today.AddDays(-2).AddHours(1), CCDateTime.Today.AddDays(-2).AddHours(2)),
-                    new SchedulePeriodic(SchedulePeriodicType.EveryWeekday, 1 << 7 - 1)),
+                    new SchedulePeriodic(SchedulePeriodicType.EveryWeekday, (1 << 7) - 1)),
             }.AsValueEnumerable().Select(e => e.FromDomain()).ToList();
             var ng = new List<Schedule>
             {
