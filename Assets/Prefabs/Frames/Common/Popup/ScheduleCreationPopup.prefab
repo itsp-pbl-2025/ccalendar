@@ -728,6 +728,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 7
+  mAlpha: 1
 --- !u!1 &1923563650390361906
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +963,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 7
+  mAlpha: 1
 --- !u!1 &2097257763428626899
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1191,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 7
+  mAlpha: 1
 --- !u!1 &3119274241888363168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,6 +1386,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 6
   mColorType: 23
+  mAlpha: 1
 --- !u!114 &5856462243959129120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1405,6 +1409,13 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  colorTypes:
+    m_NormalColor: 9
+    m_HighlightedColor: 9
+    m_PressedColor: 6
+    m_SelectedColor: 9
+    m_DisabledColor: 8
     m_FadeDuration: 0.1
   colorAssigns:
     m_NormalColor: {r: 0.37254903, g: 0.38823533, b: 0.40784317, a: 1}
@@ -1789,6 +1800,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 21
+  mAlpha: 1
 --- !u!1 &6246560907948025972
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,6 +2213,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 32
   mColorType: 6
+  mAlpha: 1
 --- !u!1 &9188027915028417231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2279,6 +2292,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 24
   mColorType: 22
+  mAlpha: 1
 --- !u!1001 &834729457951370185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2287,6 +2301,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 744176300110254701}
     m_Modifications:
+    - target: {fileID: 993506032132528956, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+      propertyPath: transitionMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 993506032132528956, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+      propertyPath: colorTypes.m_NormalColor
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 993506032132528956, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+      propertyPath: colorTypes.m_PressedColor
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 993506032132528956, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+      propertyPath: colorTypes.m_DisabledColor
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 993506032132528956, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+      propertyPath: colorTypes.m_SelectedColor
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 993506032132528956, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+      propertyPath: colorTypes.m_HighlightedColor
+      value: 23
+      objectReference: {fileID: 0}
     - target: {fileID: 2207673411866583481, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
       propertyPath: m_SizeDelta.x
       value: 120
@@ -2310,6 +2348,10 @@ PrefabInstance:
     - target: {fileID: 2207673411866583481, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3868892317592035662, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3868892317592035662, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -2461,6 +2503,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97346a4484134c849bf63ff04941f577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4477878839656139399 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3868892317592035662, guid: a7f873d53e5250d4eb00d06b26b39cab, type: 3}
+  m_PrefabInstance: {fileID: 834729457951370185}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f4aa891e2547f9b61d9250291cb221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7763823914565008328 stripped
@@ -2775,11 +2828,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2787,6 +2844,10 @@ PrefabInstance:
       objectReference: {fileID: 3284728246072251474}
     - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
@@ -3862,6 +3923,7 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
   mColorType: 6
+  mAlpha: 1
 --- !u!224 &5625477113399675004 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 665364596629387970, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
@@ -3893,6 +3955,7 @@ MonoBehaviour:
   hideBackgroundImage: {fileID: 831442212332865353}
   hideButtonIcon: {fileID: 1261308160301153628}
   allDayIcon: {fileID: 1595492546019662875}
+  hideButton: {fileID: 4477878839656139399}
   scheduleTitleArea: {fileID: 188804844046542928}
   scheduleDescriptionArea: {fileID: 758851192568294540}
   scheduleTitleField: {fileID: 6187287753510027352}

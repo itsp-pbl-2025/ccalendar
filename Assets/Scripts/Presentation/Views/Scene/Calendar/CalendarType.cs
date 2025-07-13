@@ -6,7 +6,6 @@
         OneDay,
         ThreeDays,
         OneWeek,
-        ThreeWeeks,
         OneMonth,
     }
 }
