@@ -41,7 +41,7 @@ namespace Presentation.Views.Scene.Calendar
         public void TransformInDay(float left, float right, bool instant = false)
         {
             const float fontSizeMax = 36f;
-            const float fontSizeMin = 32f;
+            const float fontSizeMin = 16f;
             
             if (_mortal) return;
             
@@ -88,7 +88,7 @@ namespace Presentation.Views.Scene.Calendar
         public void TransformInWeek(float offsetY, float height, bool instant = false)
         {
             const float fontSizeMax = 20f;
-            const float fontSizeMin = 18f;
+            const float fontSizeMin = 16f;
 
             if (_mortal) return;
             
