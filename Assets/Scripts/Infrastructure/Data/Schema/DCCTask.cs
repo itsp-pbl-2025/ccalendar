@@ -13,9 +13,7 @@ namespace Infrastructure.Data.Schema
         public int Priority { get; set; }
         public DateTime Deadline { get; set; }
         public TimeSpan Duration { get; set; }
-        
+
         public bool IsCompleted { get; set; }
-		
-		public DTaskPeriodic? Periodic { get; set;  }
     }
 }

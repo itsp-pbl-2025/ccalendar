@@ -15,13 +15,6 @@ namespace Infrastructure.Data.DAO
                 Priority = ts.Priority,
                 Deadline = ts.Deadline.ToDateTime(),
                 Duration = ts.Duration.ToTimeSpan(),
-                Periodic = ts.Periodic is null
-                    ? null
-                    : new DTaskPeriodic()
-                    {
-                        PeriodicType = ts.Periodic.PeriodicType,
-                        Span = ts.Periodic.Span,
-                    },
                 IsCompleted = ts.IsCompleted
             };
         }
@@ -35,10 +28,7 @@ namespace Infrastructure.Data.DAO
                 ts.Description, 
                 ts.Priority, 
                 deadline, 
-                CCTimeSpan.FromTimeSpan(ts.Duration), 
-                ts.Periodic is null 
-                    ? null 
-                    : new TaskPeriodic(ts.Periodic.PeriodicType, ts.Periodic.Span), 
+                CCTimeSpan.FromTimeSpan(ts.Duration),
                 ts.IsCompleted
             );
         }
