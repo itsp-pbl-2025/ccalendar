@@ -9,6 +9,6 @@ namespace Infrastructure.Data.Schema
         public SchedulePeriodicType PeriodicType { get; set; }
         public int Span { get; set; }
         
-        public ImmutableList<int> ExcludeIndices { get; set; }
+        public ImmutableList<int> ExcludeIndices { get; set; } = ImmutableList<int>.Empty;
     }
 }
