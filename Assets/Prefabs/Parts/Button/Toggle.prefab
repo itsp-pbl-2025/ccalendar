@@ -509,7 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68fa1521ba04219be9672e0feab668d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonRP: {fileID: 0}
+  buttonRP: {fileID: 8982678788891769895}
   transitionMode: 1
   targetGraphic: {fileID: 6431050853943387946}
   colorTints:

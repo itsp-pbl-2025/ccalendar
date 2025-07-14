@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Presentation.Views.Extensions
 {
-    public class ToggleRP : Toggle
+    public class ToggleRP : Toggle, IButtonState
     {
         // ReSharper disable once InconsistentNaming
         public ImageRx imageRx => _imageRx ??= image as ImageRx;
