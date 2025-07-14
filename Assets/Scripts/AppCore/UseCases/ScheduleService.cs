@@ -55,8 +55,6 @@ namespace AppCore.UseCases
                 }
                 else
                 {
-                    var index = 0;
-                    var currentDuration = schedule.Duration;
                     
                     //周期的スケジュールの側の期限を終日で設定
                     CCDateTime? periodicEnd = schedule.Periodic.EndDate is null
@@ -72,7 +70,8 @@ namespace AppCore.UseCases
                         ? periodicEnd.Value
                         : duration.EndTime;
                     
-                    while (currentDuration.StartTime.CompareTo(loopLimit) <= 0)
+                    var index = 0;
+                    while (true)
                     {
                         
                         //キャッシュに保存されているか確認
@@ -81,13 +80,15 @@ namespace AppCore.UseCases
                             inner = new SortedDictionary<int, ScheduleDuration>();
                             _durationCache[schedule.Id] = inner;
                         }
-                        if (!inner.TryGetValue(index, out var nextDuration))
+                        if (!inner.TryGetValue(index, out var currentDuration))
                         {
-                            nextDuration = GetDurationByPeriodic(
+                            currentDuration = GetDurationByPeriodic(
                                 schedule.Duration, schedule.Periodic, index);
-                            inner[index] = nextDuration;
+                            inner[index] = currentDuration;
                         }
                         
+                        //範囲外なら終了
+                        if (currentDuration.StartTime.CompareTo(loopLimit) > 0) break;
                         
                         //ExcludeIndicesと一致するか判定
                         static bool ContainsIndex(IReadOnlyList<int> list, int value)
@@ -96,20 +97,19 @@ namespace AppCore.UseCases
                                 if (list[i] == value) return true;
                             return false;
                         }
-                        //SchedulePeriodic.ExcludeIndicesと一致する特定のindexをはじく
+                        //除外インデックスをスキップ
                         if (ContainsIndex(schedule.Periodic.ExcludeIndices, index))
                         {
                             index++;
-                            currentDuration = nextDuration;
                             continue;
                         }
-                        index++;
                         
-                        if (nextDuration.IsCollided(duration))
+                        
+                        if (currentDuration.IsCollided(duration))
                         {
-                            ret.Add(new UnitSchedule(schedule.Id, schedule.Title, schedule.Description, nextDuration));
+                            ret.Add(new UnitSchedule(schedule.Id, schedule.Title, schedule.Description, currentDuration));
                         }
-                        currentDuration = nextDuration;
+                        index++;
                     }
                 }
             }

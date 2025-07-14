@@ -18,10 +18,10 @@ namespace Domain.Entity
         // ExcludeIndices を省略したい場合の重載コンストラクタ
         public SchedulePeriodic(
             SchedulePeriodicType periodicType,
-            int span,
+            int Span,
             CCDateOnly StartDate,
             CCDateOnly? EndDate = null
-        ) : this(periodicType, span, DefaultExcludeIndices, StartDate, EndDate)
+        ) : this(periodicType, Span, DefaultExcludeIndices, StartDate, EndDate)
         { }
         
         public virtual bool Equals(SchedulePeriodic? other) =>
@@ -43,7 +43,9 @@ namespace Domain.Entity
         }
 
         public SchedulePeriodicType PeriodicType { get; } = PeriodicType;
-        public int Span { get; } = Span;
+        public int Span { get; } = Span > 0 
+            ? Span 
+            : throw new ArgumentOutOfRangeException(nameof(Span), "Spanは1以上の整数です。");
 
         /// <summary>繰り返しの開始日</summary>
         public CCDateOnly StartDate { get; } = StartDate;
