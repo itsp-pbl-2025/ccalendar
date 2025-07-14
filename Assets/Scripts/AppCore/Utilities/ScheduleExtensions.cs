@@ -12,44 +12,51 @@ namespace AppCore.Utilities
         {
             const string noRepeat = "繰り返しなし";
             if (periodic is null) return noRepeat;
+            
+            var text = "";
+            if (periodic.EndDate is not null)
+            {
+                text += periodic.EndDate.Value.ToDateTime().ToString("yyyy年MM月dd日") + "まで";
+            }
 
             var span = periodic.Span;
             switch (periodic.PeriodicType)
             {
                 case SchedulePeriodicType.EveryDay:
-                    if (span is 1)
-                    {
-                        return "毎日";
-                    }
-                    return $"{span}日に1回";
-                case SchedulePeriodicType.EveryWeekday:
-                    var weekdays = new List<DayOfWeek>();
+                    text += span is 1 ? "毎日" : $"{span}日に1回";
+                    break;
+                case SchedulePeriodicType.EveryWeek:
+                    var weekdays = new List<string>();
                     foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
                     {
                         if ((span & (1 << (int)day)) != 0)
                         {
-                            weekdays.Add(day);
+                            weekdays.Add(day.ToShortString());
                         }
                     }
                     if (weekdays.Count is 0) return noRepeat;
-                    if (weekdays.Count is 7) return "毎日";
-                    var joinedDay = string.Join(',', weekdays.AsValueEnumerable().Select(d => d.ToShortString()));
-                    return $"毎週{joinedDay}曜日";
-                case SchedulePeriodicType.EveryWeek:
-                    return "毎週";
+                    text += weekdays.Count is 7 ? "毎日" : $"毎週{string.Join(',', weekdays)}曜日";
+                    break;
                 case SchedulePeriodicType.EveryMonth:
                     if (span >= 100)
                     {
                         var index = span / 100;
                         var day = (DayOfWeek)(span % 100);
-                        return $"{(index > 4 ? "最終" : $"第{index}")}{day.ToLongString()}";
+                        text += $"{(index > 4 ? "毎月最終" : $"毎月第{index}")}{day.ToLongString()}";
                     }
-                    return $"毎月{span}日";
+                    else
+                    {
+                        text += $"毎月{span}日";
+                    }
+                    break;
                 case SchedulePeriodicType.EveryYear:
-                    return $"{span}年に1回";
+                    text += $"{span}年に1回";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            return text;
         }
     }
 }

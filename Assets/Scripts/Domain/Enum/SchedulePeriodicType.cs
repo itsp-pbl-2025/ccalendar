@@ -2,8 +2,8 @@ namespace Domain.Enum
 {
     public enum SchedulePeriodicType
     {
+        None,
         EveryDay,
-        EveryWeekday,
         EveryWeek,
         EveryMonth,
         EveryYear,

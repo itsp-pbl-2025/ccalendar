@@ -139,6 +139,8 @@ namespace Presentation.Views.Popup
 
             foreach (ValueEndDateType endDateType in Enum.GetValues(typeof(ValueEndDateType)))
             {
+                // Index指定による期限をいったん廃止する
+                if (endDateType is ValueEndDateType.IndexLimited) continue;
                 _endDayToggles.Add(endDateType, endDayToggles[(int)endDateType]);
             }
             
@@ -147,7 +149,7 @@ namespace Presentation.Views.Popup
             
             endDatePopupButton.Label.text = _endDate.ToDateTime().ToString("yyyy年MM月dd日");
             
-            _monthToggles[ValueMonthdayType.SpecifiedDay].Label.text = $"毎月{_dayOfMonthSpecified}日";
+            _monthToggles[ValueMonthdayType.SpecifiedDay].Label.text = $"{_dayOfMonthSpecified}日";
             _monthToggles[ValueMonthdayType.WeekIndex].Label.text = $"第{_weekIndexSpecified.index}{_weekIndexSpecified.dayOfWeek.ToLongString()}";
             _monthToggles[ValueMonthdayType.FinalWeek].Label.text = $"最終{_weekIndexSpecified.dayOfWeek.ToLongString()}";
             
@@ -196,6 +198,11 @@ namespace Presentation.Views.Popup
                     weekdaySettings.SetActive(false);
                     monthSettings.SetActive(false);
                     break;
+            }
+
+            foreach (var endDateSetting in endDateSettings)
+            {
+                endDateSetting.SetActive(_periodicType is not ValuePeriodicType.None);
             }
 
             if (_verticalLayoutRect)
@@ -308,6 +315,7 @@ namespace Presentation.Views.Popup
             if (_callback is not null)
             {
                 SchedulePeriodic periodic = null;
+                CCDateOnly? endDate = _endDayType is ValueEndDateType.Endless ? null : _endDate;
                 switch (_periodicType)
                 {
                     case ValuePeriodicType.None:
@@ -316,20 +324,20 @@ namespace Presentation.Views.Popup
                     case ValuePeriodicType.EveryDay:
                         if (int.TryParse(intervalInputField.text, out _span) && _span > 0)
                         {
-                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, _span);
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, _span, _startDate, endDate);
                         }
                         else
                         {
-                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, 1);
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, 1, _startDate, endDate);
                         }
                         break;
                     case ValuePeriodicType.EveryWeek:
                         var weekSpan = 0;
-                        foreach (var weekDay in _weekdaySet)
+                        foreach (var (weekDay, on) in _weekdaySet)
                         {
-                            weekSpan += 1 << (int)weekDay.Key;
+                            if (on) weekSpan += 1 << (int)weekDay;
                         }
-                        periodic = new SchedulePeriodic(SchedulePeriodicType.EveryWeek, weekSpan);
+                        periodic = new SchedulePeriodic(SchedulePeriodicType.EveryWeek, weekSpan, _startDate, endDate);
                         break;
                     case ValuePeriodicType.EveryMonth:
                         var monthSpan = _monthType switch
@@ -338,16 +346,16 @@ namespace Presentation.Views.Popup
                             ValueMonthdayType.FinalWeek => 500 + (int)_weekIndexSpecified.dayOfWeek,
                             _ => _weekIndexSpecified.index * 100 + (int)_weekIndexSpecified.dayOfWeek
                         };
-                        periodic = new SchedulePeriodic(SchedulePeriodicType.EveryMonth, monthSpan);
+                        periodic = new SchedulePeriodic(SchedulePeriodicType.EveryMonth, monthSpan, _startDate, endDate);
                         break;
                     case ValuePeriodicType.EveryYear:
                         if (int.TryParse(intervalInputField.text, out _span) && _span > 0)
                         {
-                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryYear, _span);
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryYear, _span, _startDate, endDate);
                         }
                         else
                         {
-                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryYear, 1);
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryYear, 1, _startDate, endDate);
                         }
                         break;
                 }
