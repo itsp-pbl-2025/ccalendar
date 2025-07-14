@@ -85,6 +85,32 @@ namespace Test.Unit
             
             ctx.Dispose();
         }
+
+        [Test]
+        public void TestGet()
+        {
+            var ctx = InTestContext.Context;
+            var repo = ctx.ScheduleRepo;
+
+            foreach (var ds in MockSchedule.GetMockSchedules())
+            {
+                repo.InsertUpdate(ds.ToDomain());
+            }
+
+            var schedules = MockSchedule.GetMockSchedules();
+            var scheduleMax = schedules.Count;
+            for (var i = 0; i < scheduleMax; i++)
+            {
+                var schedule = repo.Get(i + 1);
+                Assert.IsNotNull(schedule);
+                Assert.AreEqual(schedule, schedules[i].ToDomain());
+            }
+            
+            Assert.IsNull(repo.Get(0));
+            Assert.IsNull(repo.Get(scheduleMax+1));
+            
+            ctx.Dispose();
+        }
         
         [Test]
         public void TestGetAll()

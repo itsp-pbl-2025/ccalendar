@@ -9,6 +9,7 @@ namespace AppCore.Interfaces
         public bool Update(Schedule schedule);
         public bool InsertUpdate(Schedule schedule);
         public bool Remove(Schedule schedule);
+        public Schedule Get(int id);
         public ICollection<Schedule> GetAll();
     }
 }

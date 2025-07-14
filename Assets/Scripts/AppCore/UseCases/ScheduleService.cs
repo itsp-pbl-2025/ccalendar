@@ -26,6 +26,11 @@ namespace AppCore.UseCases
             _scheduleRepo.Insert(schedule);
         }
         
+        public Schedule FindSchedule(int id)
+        {
+            return _scheduleRepo.Get(id);
+        }
+        
         public bool UpdateSchedule(Schedule schedule)
         {
             return _scheduleRepo.Update(schedule);
