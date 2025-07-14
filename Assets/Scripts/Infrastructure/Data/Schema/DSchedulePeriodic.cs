@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using Domain.Enum;
 
 namespace Infrastructure.Data.Schema
@@ -7,5 +7,7 @@ namespace Infrastructure.Data.Schema
     {
         public SchedulePeriodicType PeriodicType { get; set; }
         public int Span { get; set; }
+        
+        public IReadOnlyList<int> ExcludeIndices { get; set; } = new List<int>();
     }
 }

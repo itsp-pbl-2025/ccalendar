@@ -1,4 +1,5 @@
 ﻿using Domain.Entity;
+using System.Collections.Generic;
 using Infrastructure.Data.Schema;
 
 namespace Infrastructure.Data.DAO
@@ -24,6 +25,7 @@ namespace Infrastructure.Data.DAO
                     {
                         PeriodicType = sc.Periodic.PeriodicType,
                         Span = sc.Periodic.Span,
+                        ExcludeIndices = sc.Periodic.ExcludeIndices,
                     },
             };
         }
@@ -34,7 +36,7 @@ namespace Infrastructure.Data.DAO
                 new ScheduleDuration(new CCDateTime(sc.Duration.StartTime), new CCDateTime(sc.Duration.EndTime), sc.Duration.IsAllDay);
             SchedulePeriodic periodic = sc.Periodic is null
                 ? null
-                : new SchedulePeriodic(sc.Periodic.PeriodicType, sc.Periodic.Span);
+                : new SchedulePeriodic(sc.Periodic.PeriodicType, sc.Periodic.Span, sc.Periodic.ExcludeIndices ?? new List<int>());
             return new Schedule(sc.Id, sc.Title, sc.Description, duration, periodic);
         }
     }
