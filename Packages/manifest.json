@@ -48,7 +48,8 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "org.nuget.system.collections.immutable": "9.0.7"
   },
   "scopedRegistries": [
     {
@@ -58,6 +59,16 @@
         "com.coffee.ui-effect"
       ],
       "overrideBuiltIns": true
+    },
+    {
+      "name": "OpenUPM",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "org.nuget.system.collections.immutable",
+        "org.nuget.system.memory",
+        "org.nuget.system.buffers",
+        "org.nuget"
+      ]
     }
   ]
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using Domain.Enum;
 
 namespace Domain.Entity
@@ -6,18 +6,20 @@ namespace Domain.Entity
     public record SchedulePeriodic(
         SchedulePeriodicType PeriodicType,
         int Span,
-        IReadOnlyList<int> ExcludeIndices
+        ImmutableList<int> ExcludeIndices
     )
     {
+        private static readonly ImmutableList<int> DefaultExcludeIndices = ImmutableList<int>.Empty;
+        
         // ExcludeIndices を省略したい場合の重載コンストラクタ
         public SchedulePeriodic(
             SchedulePeriodicType periodicType,
             int span
-        ) : this(periodicType, span, new List<int>())
+        ) : this(periodicType, span, DefaultExcludeIndices)
         { }
 
         public SchedulePeriodicType PeriodicType { get; } = PeriodicType;
         public int Span { get; } = Span;
-        public IReadOnlyList<int> ExcludeIndices { get; } = ExcludeIndices;
+        public ImmutableList<int> ExcludeIndices { get; } = ExcludeIndices;
     }
 }
