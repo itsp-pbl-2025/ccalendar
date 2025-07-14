@@ -8,7 +8,7 @@ namespace AppCore.Utilities
 {
     public static class ScheduleExtensions
     {
-        public static string ToString(this SchedulePeriodic periodic)
+        public static string ToExplainString(this SchedulePeriodic periodic)
         {
             const string noRepeat = "繰り返しなし";
             if (periodic is null) return noRepeat;
@@ -40,8 +40,8 @@ namespace AppCore.Utilities
                 case SchedulePeriodicType.EveryMonth:
                     if (span >= 100)
                     {
-                        var index = span % 100;
-                        var day = (DayOfWeek)(span / 100);
+                        var index = span / 100;
+                        var day = (DayOfWeek)(span % 100);
                         return $"{(index > 4 ? "最終" : $"第{index}")}{day.ToLongString()}";
                     }
                     return $"毎月{span}日";

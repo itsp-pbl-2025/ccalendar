@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using AppCore.UseCases;
+using AppCore.Utilities;
 using DG.Tweening;
 using Domain.Entity;
 using Presentation.Presenter;
@@ -319,7 +320,7 @@ namespace Presentation.Views.Popup
                 window.Init(periodic =>
                 {
                     _periodic = periodic;
-                    repetitionButton.Label.text = _periodic.ToString();
+                    repetitionButton.Label.text = _periodic.ToExplainString();
                 }, _originSchedule);
             }
             else
@@ -327,7 +328,7 @@ namespace Presentation.Views.Popup
                 window.Init(periodic =>
                 {
                     _periodic = periodic;
-                    repetitionButton.Label.text = _periodic.ToString();
+                    repetitionButton.Label.text = _periodic.ToExplainString();
                 }, new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration()));
             }
         }

@@ -4,7 +4,6 @@ using AppCore.Utilities;
 using Domain.Entity;
 using Domain.Enum;
 using Presentation.Presenter;
-using Presentation.Utilities;
 using Presentation.Views.Extensions;
 using TMPro;
 using UnityEngine;
@@ -27,6 +26,7 @@ namespace Presentation.Views.Popup
         {
             SpecifiedDay,
             WeekIndex,
+            FinalWeek,
         }
 
         private enum ValueEndDateType
@@ -40,6 +40,8 @@ namespace Presentation.Views.Popup
         [SerializeField] private VerticalLayoutGroup verticalLayoutGroup;
         [SerializeField] private List<ToggleWithLabel> periodicTypeToggles, weekdayToggles, monthToggles, endDayToggles;
         [SerializeField] private GameObject intervalSettings, weekdaySettings, monthSettings;
+        [SerializeField] private LabelRx intervalText;
+        [SerializeField] private CanvasGroup endDateRayGroup, endIndexRayGroup;
         [SerializeField] private ButtonWithLabel endDatePopupButton;
         [SerializeField] private TMP_InputField intervalInputField, endIndexInputField;
         
@@ -56,11 +58,11 @@ namespace Presentation.Views.Popup
         private readonly Dictionary<DayOfWeek, bool> _weekdaySet = new();
         private ValueMonthdayType _monthType;
         private int _dayOfMonthSpecified;
-        private (int index, DayOfWeek dayOfWeek) _weekIndexSpecified;
+        private (int index, DayOfWeek dayOfWeek, bool isFinalWeek) _weekIndexSpecified;
         private ValueEndDateType _endDayType;
         private CCDateOnly _startDate, _endDate = CCDateOnly.MaxValue;
         private int _endIndex;
-        private bool _initialized;
+        private bool _initialized, _needReload;
 
         public void Init(Action<SchedulePeriodic> onDefineCallback, Schedule originSchedule = null)
         {
@@ -95,12 +97,13 @@ namespace Presentation.Views.Popup
             
             // 毎月設定を作成
             var monthlyFlag = _periodicType is ValuePeriodicType.EveryMonth ? periodic?.Span ?? 0 : 0;
-            _monthType = monthlyFlag >= 100 ? ValueMonthdayType.WeekIndex : ValueMonthdayType.SpecifiedDay;
+            _monthType = monthlyFlag >= 500 ? ValueMonthdayType.FinalWeek : 
+                monthlyFlag >= 100 ? ValueMonthdayType.WeekIndex : ValueMonthdayType.SpecifiedDay;
 
             _dayOfMonthSpecified = _monthType is ValueMonthdayType.SpecifiedDay && monthlyFlag > 0 ? monthlyFlag : startDate.Day;
-            _weekIndexSpecified = _monthType is ValueMonthdayType.WeekIndex && monthlyFlag > 0
-                ? (monthlyFlag % 100, (DayOfWeek)(monthlyFlag / 100))
-                : (startDate.Day / 7 + 1, startDate.DayOfWeek);
+            _weekIndexSpecified = _monthType is not ValueMonthdayType.SpecifiedDay && monthlyFlag > 0
+                ? (monthlyFlag % 100, (DayOfWeek)(monthlyFlag / 100), monthlyFlag % 100 > 4)
+                : new CCDateOnly(startDate).GetDayOfWeekWithIndex();
             
             // TODO: 終了日設定を作成
             _endDayType = ValueEndDateType.Endless;
@@ -114,8 +117,10 @@ namespace Presentation.Views.Popup
         {
             _verticalLayoutRect = windowBaseRect.transform as RectTransform;
             
-            endDatePopupButton.Button.interactable = false;
-            endIndexInputField.interactable = false;
+            endDateRayGroup.blocksRaycasts = _endDayType is ValueEndDateType.DateLimited;
+            endDatePopupButton.Button.interactable = _endDayType is ValueEndDateType.DateLimited;
+            endIndexRayGroup.blocksRaycasts = _endDayType is ValueEndDateType.IndexLimited;
+            endIndexInputField.interactable = _endDayType is ValueEndDateType.IndexLimited;
 
             foreach (ValuePeriodicType periodicType in Enum.GetValues(typeof(ValuePeriodicType)))
             {
@@ -144,11 +149,18 @@ namespace Presentation.Views.Popup
             
             _monthToggles[ValueMonthdayType.SpecifiedDay].Label.text = $"毎月{_dayOfMonthSpecified}日";
             _monthToggles[ValueMonthdayType.WeekIndex].Label.text = $"第{_weekIndexSpecified.index}{_weekIndexSpecified.dayOfWeek.ToLongString()}";
+            _monthToggles[ValueMonthdayType.FinalWeek].Label.text = $"最終{_weekIndexSpecified.dayOfWeek.ToLongString()}";
+            
+            _monthToggles[ValueMonthdayType.WeekIndex].gameObject.SetActive(_weekIndexSpecified.index <= 4);
+            _monthToggles[ValueMonthdayType.FinalWeek].gameObject.SetActive(_weekIndexSpecified.isFinalWeek);
 
             ReloadAll();
             
             // トグルボタンの初期化
-            _periodicTypeToggles[_periodicType].Toggle.isOn = true;
+            foreach (ValuePeriodicType periodic in Enum.GetValues(typeof(ValuePeriodicType)))
+            {
+                _periodicTypeToggles[periodic].Toggle.isOn = periodic == _periodicType;
+            }
             foreach (var (dayOfWeek, on) in _weekdaySet)
             {
                 _weekdayToggles[dayOfWeek].Toggle.isOn = on;
@@ -185,28 +197,20 @@ namespace Presentation.Views.Popup
                     monthSettings.SetActive(false);
                     break;
             }
-            
+
             if (_verticalLayoutRect)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(_verticalLayoutRect);
+                Canvas.ForceUpdateCanvases();
+            }
+            windowBaseRect.sizeDelta = new Vector2(windowBaseRect.sizeDelta.x, verticalLayoutGroup.preferredHeight);
+        }
 
-                if (_verticalLayoutRect.childCount == 0)
-                {
-                    Debug.LogWarning("AnyPeriodicPopup doesn't have any content.");
-                    return;
-                }
-            
-                var lastChildRect = _verticalLayoutRect.GetChild(_verticalLayoutRect.childCount-1) as RectTransform;
-
-                if (lastChildRect == null)
-                {
-                    Debug.LogWarning("AnyPeriodicPopup's Last Child is not RectTransform-ed-Object.");
-                    return;
-                }
-            
-                Debug.Log($"Preferred Size: {Mathf.Abs(lastChildRect.anchoredPosition.y)} + {lastChildRect.rect.size.y * lastChildRect.pivot.y}");
-                windowBaseRect.sizeDelta = new Vector2(windowBaseRect.sizeDelta.x,
-                    Mathf.Abs(lastChildRect.rect.y) + lastChildRect.rect.size.y * lastChildRect.pivot.y);
+        private void LateUpdate()
+        {
+            if (_needReload)
+            {
+                _needReload = false;
             }
         }
 
@@ -222,8 +226,10 @@ namespace Presentation.Views.Popup
         {
             if (toggle) _periodicType = type;
             _periodicTypeToggles[type].Toggle.interactable = !toggle;
+
+            intervalText.text = _periodicType is ValuePeriodicType.EveryYear ? "年に1回" : "日に1回";
             
-            ReloadAll();
+            if (_initialized) ReloadAll();
         }
 
         #endregion
@@ -249,6 +255,7 @@ namespace Presentation.Views.Popup
 
         public void OnPressMonthdayTypeSpecifiedDay(bool toggle) => ToggleMonthdayType(ValueMonthdayType.SpecifiedDay, toggle);
         public void OnPressMonthdayTypeWeekIndex(bool toggle) => ToggleMonthdayType(ValueMonthdayType.WeekIndex, toggle);
+        public void OnPressMonthdayTypeFinalWeek(bool toggle) => ToggleMonthdayType(ValueMonthdayType.FinalWeek, toggle);
         
         private void ToggleMonthdayType(ValueMonthdayType type, bool toggle)
         {
@@ -268,19 +275,19 @@ namespace Presentation.Views.Popup
         {
             if (toggle) _endDayType = type;
 
-            switch (_endDayType)
+            switch (type)
             {
                 case ValueEndDateType.Endless:
                     break;
                 case ValueEndDateType.DateLimited:
-                    endDatePopupButton.Button.interactable = !toggle;
+                    endDateRayGroup.blocksRaycasts = toggle;
+                    endDatePopupButton.Button.interactable = toggle;
                     break;
                 case ValueEndDateType.IndexLimited:
-                    endIndexInputField.interactable = !toggle;
+                    endIndexRayGroup.blocksRaycasts = toggle;
+                    endIndexInputField.interactable = toggle;
                     break;
             }
-            
-            _endDayToggles[type].Toggle.interactable = !toggle;
         }
 
         public void EditEndDateLimited()
@@ -307,7 +314,14 @@ namespace Presentation.Views.Popup
                         // null
                         break;
                     case ValuePeriodicType.EveryDay:
-                        periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, _span);
+                        if (int.TryParse(intervalInputField.text, out _span) && _span > 0)
+                        {
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, _span);
+                        }
+                        else
+                        {
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryDay, 1);
+                        }
                         break;
                     case ValuePeriodicType.EveryWeek:
                         var weekSpan = 0;
@@ -318,19 +332,23 @@ namespace Presentation.Views.Popup
                         periodic = new SchedulePeriodic(SchedulePeriodicType.EveryWeek, weekSpan);
                         break;
                     case ValuePeriodicType.EveryMonth:
-                        var monthSpan = 0;
-                        if (_monthType is ValueMonthdayType.SpecifiedDay)
+                        var monthSpan = _monthType switch
                         {
-                            monthSpan = _dayOfMonthSpecified;
-                        }
-                        else
-                        {
-                            monthSpan = _weekIndexSpecified.index * 100 + (int)_weekIndexSpecified.dayOfWeek;
-                        }
+                            ValueMonthdayType.SpecifiedDay => _dayOfMonthSpecified,
+                            ValueMonthdayType.FinalWeek => 500 + (int)_weekIndexSpecified.dayOfWeek,
+                            _ => _weekIndexSpecified.index * 100 + (int)_weekIndexSpecified.dayOfWeek
+                        };
                         periodic = new SchedulePeriodic(SchedulePeriodicType.EveryMonth, monthSpan);
                         break;
                     case ValuePeriodicType.EveryYear:
-                        periodic = new SchedulePeriodic(SchedulePeriodicType.EveryYear, _span);
+                        if (int.TryParse(intervalInputField.text, out _span) && _span > 0)
+                        {
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryYear, _span);
+                        }
+                        else
+                        {
+                            periodic = new SchedulePeriodic(SchedulePeriodicType.EveryYear, 1);
+                        }
                         break;
                 }
                 _callback.Invoke(periodic);
