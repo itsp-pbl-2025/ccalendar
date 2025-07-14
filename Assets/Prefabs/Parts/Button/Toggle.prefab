@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 1016379416123311344}
   - component: {fileID: 7607555151501955336}
   - component: {fileID: 6307792761003306269}
+  - component: {fileID: 7063849129290129866}
   m_Layer: 5
   m_Name: Checkmark
   m_TagString: Untagged
@@ -282,6 +283,38 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
   mColorType: 4
   mAlpha: 1
+--- !u!114 &7063849129290129866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5197398325342615640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114621a30094a46a5f4769d925e51b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleRP: {fileID: 8982678788891769895}
+  transitionMode: 2
+  targetGraphic: {fileID: 6307792761003306269}
+  tintColorOn: {r: 1, g: 1, b: 1, a: 1}
+  tintColorOff: {r: 1, g: 1, b: 1, a: 1}
+  tintTransitionDuration: 0.1
+  typeColorOn: 4
+  typeAlphaOn: 1
+  typeColorOff: 28
+  typeAlphaOff: 1
+  typeTransitionDuration: 0.1
+  assignColorOn: {r: 0.21875, g: 0.63671875, b: 0.64453125, a: 1}
+  assignColorOff: {r: 1, g: 1, b: 1, a: 1}
+  assignTransitionDuration: 0.1
+  targetImage: {fileID: 6307792761003306269}
+  spriteOn: {fileID: 0}
+  spriteOff: {fileID: 0}
+  animator: {fileID: 0}
+  animOn: 
+  animOff: 
 --- !u!1 &6484651499385728563
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,10 +555,15 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   colorTypes:
     m_NormalColor: 9
+    m_NormalAlpha: 1
     m_HighlightedColor: 9
+    m_HighlightedAlpha: 1
     m_PressedColor: 6
+    m_PressedAlpha: 1
     m_SelectedColor: 9
+    m_SelectedAlpha: 1
     m_DisabledColor: 8
+    m_DisabledAlpha: 1
     m_FadeDuration: 0.1
   colorAssigns:
     m_NormalColor: {r: 0.96875, g: 0.9765625, b: 0.98828125, a: 1}
@@ -639,8 +677,8 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 241219509161159639}
-  toggleTransition: 1
-  graphic: {fileID: 6307792761003306269}
+  toggleTransition: 0
+  graphic: {fileID: 0}
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:

@@ -32,7 +32,10 @@ namespace Presentation.Views.Common
         [SerializeField] private Graphic targetGraphic;
         [SerializeField] private Color tintColorOn = Color.white, tintColorOff = Color.white;
         [SerializeField] private float tintTransitionDuration = 0.1f;
-        [SerializeField] private ColorOf typeColorOn = ColorOf.Primary, typeColorOff = ColorOf.Transparent;
+        [SerializeField] private ColorOf typeColorOn = ColorOf.Primary;
+        [SerializeField, Range(0f, 1f)] private float typeAlphaOn = 1f;
+        [SerializeField] private ColorOf typeColorOff = ColorOf.Transparent;
+        [SerializeField, Range(0f, 1f)] private float typeAlphaOff = 1f;
         [SerializeField] private float typeTransitionDuration = 0.1f;
         [SerializeField] private Color assignColorOn = Color.white, assignColorOff = Color.white;
         [SerializeField] private float assignTransitionDuration = 0.1f;
@@ -78,7 +81,7 @@ namespace Presentation.Views.Common
                 {
                     case Transition.ColorTint:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "toggleRP", "transitionMode", "targetImage", "animator", "typeColorOn", "typeColorOff", "typeTransitionDuration", "assignColorOn", "assignColorOff", "assignTransitionDuration", "spriteOn", "spriteOff", "animOn", "animOff");
+                            "m_Script", "toggleRP", "transitionMode", "targetImage", "animator", "typeColorOn", "typeAlphaOn", "typeColorOff", "typeAlphaOff", "typeTransitionDuration", "assignColorOn", "assignColorOff", "assignTransitionDuration", "spriteOn", "spriteOff", "animOn", "animOff");
                         break;
                     case Transition.ColorType:
                         DrawPropertiesExcluding(serializedObject,
@@ -86,15 +89,15 @@ namespace Presentation.Views.Common
                         break;
                     case Transition.ColorAssign:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "toggleRP", "transitionMode", "targetImage", "animator", "tintColorOn", "tintColorOff", "tintTransitionDuration", "typeColorOn", "typeColorOff", "typeTransitionDuration", "spriteOn", "spriteOff", "animOn", "animOff");
+                            "m_Script", "toggleRP", "transitionMode", "targetImage", "animator", "tintColorOn", "tintColorOff", "tintTransitionDuration", "typeColorOn", "typeAlphaOn", "typeColorOff", "typeAlphaOff", "typeTransitionDuration", "spriteOn", "spriteOff", "animOn", "animOff");
                         break;
                     case Transition.SpriteSwap:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "toggleRP", "transitionMode", "targetGraphic", "animator", "tintColorOn", "tintColorOff", "tintTransitionDuration", "typeColorOn", "typeColorOff", "typeTransitionDuration", "assignColorOn", "assignColorOff", "assignTransitionDuration", "animOn", "animOff");
+                            "m_Script", "toggleRP", "transitionMode", "targetGraphic", "animator", "tintColorOn", "tintColorOff", "tintTransitionDuration", "typeColorOn", "typeAlphaOn", "typeColorOff", "typeAlphaOff", "typeTransitionDuration", "assignColorOn", "assignColorOff", "assignTransitionDuration", "animOn", "animOff");
                         break;
                     case Transition.Animation:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "toggleRP", "transitionMode", "targetGraphic", "targetImage", "tintColorOn", "tintColorOff", "tintTransitionDuration", "typeColorOn", "typeColorOff", "typeTransitionDuration", "assignColorOn", "assignColorOff", "assignTransitionDuration", "spriteOn", "spriteOff");
+                            "m_Script", "toggleRP", "transitionMode", "targetGraphic", "targetImage", "tintColorOn", "tintColorOff", "tintTransitionDuration", "typeColorOn", "typeAlphaOn", "typeColorOff", "typeAlphaOff", "typeTransitionDuration", "assignColorOn", "assignColorOff", "assignTransitionDuration", "spriteOn", "spriteOff");
                         break;
                     default:
                         DrawPropertiesExcluding(serializedObject,
@@ -120,10 +123,12 @@ namespace Presentation.Views.Common
                 if (toggleRP.isOn)
                 {
                     assignColorOn = targetGraphic.color;
+                    typeAlphaOn = targetGraphic.color.a;
                 }
                 else
                 {
                     assignColorOff = targetGraphic.color;
+                    typeAlphaOff = targetGraphic.color.a;
                 }
             }
             EditorUtility.SetDirty(this);
@@ -142,6 +147,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Color Tint Transition is enabled, but no Graphic is assigned.");
                         return;
                     }
+                    ApplyColorTint(toggleRP.isOn, true);
                     toggleRP.Toggled
                         .Subscribe(t => ApplyColorTint(t.toggled, t.instant))
                         .AddTo(this);
@@ -152,6 +158,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Color Type Transition is enabled, but no Graphic is assigned.");
                         return;
                     }
+                    ApplyColorType(toggleRP.isOn, true);
                     toggleRP.Toggled
                         .Subscribe(t => ApplyColorType(t.toggled, t.instant))
                         .AddTo(this);
@@ -162,6 +169,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Color Assign Transition is enabled, but no Graphic is assigned.");
                         return;
                     }
+                    ApplyColorAssign(toggleRP.isOn, true);
                     toggleRP.Toggled
                         .Subscribe(t => ApplyColorAssign(t.toggled, t.instant))
                         .AddTo(this);
@@ -173,6 +181,7 @@ namespace Presentation.Views.Common
                         return;   
                     }
                     _originalSprite = targetImage.sprite;
+                    ApplySpriteSwap(toggleRP.isOn);
                     toggleRP.Toggled
                         .Subscribe(t => ApplySpriteSwap(t.toggled))
                         .AddTo(this);
@@ -183,6 +192,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Animation Transition is enabled, but no Animator is assigned.");
                         return;
                     }
+                    ApplyAnimation(toggleRP.isOn);
                     toggleRP.Toggled
                         .Subscribe(t => ApplyAnimation(t.toggled))
                         .AddTo(this);
@@ -206,13 +216,14 @@ namespace Presentation.Views.Common
         private void ApplyColorType(bool toggled, bool instant)
         {
             var to = toggled ? typeColorOn : typeColorOff;
+            var toAlpha = toggled ? typeAlphaOn : typeAlphaOff;
 
             var fromColor = targetGraphic.color;
             var toColor = to switch
             {
-                ColorOf.Custom => fromColor.SetAlpha(targetGraphic.color.a),
+                ColorOf.Custom => fromColor.SetAlpha(toAlpha),
                 ColorOf.Transparent => Color.clear, 
-                _ => InAppContext.Theme.GetColor(to).SetAlpha(targetGraphic.color.a)
+                _ => InAppContext.Theme.GetColor(to).SetAlpha(toAlpha)
             };
 
             if (instant)
@@ -231,11 +242,19 @@ namespace Presentation.Views.Common
             void AtCompletedState()
             {
                 if (targetGraphic is ImageRx imageRx)
+                {
+                    if (to is not ColorOf.Transparent) imageRx.alpha = toAlpha;
                     imageRx.colorType = to;
+                }
                 else if (targetGraphic is LabelRx labelRx)
+                {
+                    if (to is not ColorOf.Transparent) labelRx.alpha = toAlpha;
                     labelRx.colorType = to;
+                }
                 else
+                {
                     targetGraphic.color = toColor;
+                }
             }
         }
         

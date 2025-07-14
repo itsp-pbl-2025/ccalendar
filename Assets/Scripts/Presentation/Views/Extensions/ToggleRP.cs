@@ -1,4 +1,5 @@
-﻿using Presentation.Views.Common;
+﻿using System;
+using Presentation.Views.Common;
 using R3;
 using UnityEngine.UI;
 
@@ -15,12 +16,19 @@ namespace Presentation.Views.Extensions
         
         private readonly ReactiveProperty<(bool toggled, bool instant)> _toggled = new();
         public Observable<(bool toggled, bool instant)> Toggled => _toggled;
+        
+        private readonly ReactiveProperty<bool> _toggleIsOn = new();
 
         protected override void Awake()
         {
             base.Awake();
             
-            onValueChanged.AddListener(toggled => { _toggled.Value = (toggled, toggleTransition is ToggleTransition.None); });
+            _toggleIsOn.Subscribe(toggled => { _toggled.Value = (toggled, toggleTransition is ToggleTransition.None); }).AddTo(this);
+        }
+
+        private void Update()
+        {
+            _toggleIsOn.Value = isOn;
         }
 
         protected override void DoStateTransition(SelectionState state, bool instant)
