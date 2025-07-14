@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Domain.Enum;
-using System.Linq;
+using ZLinq;
 
 namespace Domain.Entity
 {
@@ -24,7 +24,7 @@ namespace Domain.Entity
             other is not null
             && PeriodicType == other.PeriodicType
             && Span == other.Span
-            && ExcludeIndices.SequenceEqual(other.ExcludeIndices);
+            && ExcludeIndices.AsValueEnumerable().SequenceEqual(other.ExcludeIndices.AsValueEnumerable());
 
         public override int GetHashCode()
         {
