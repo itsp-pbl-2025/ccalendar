@@ -1,4 +1,5 @@
 ﻿using Domain.Entity;
+using System.Collections.Generic;
 using Infrastructure.Data.Schema;
 
 namespace Infrastructure.Data.DAO
@@ -26,6 +27,7 @@ namespace Infrastructure.Data.DAO
                         Span = sc.Periodic.Span,
                         StartDate = sc.Periodic.StartDate.ToDateTime(),
                         EndDate = sc.Periodic.EndDate?.ToDateTime()
+                        ExcludeIndices = sc.Periodic.ExcludeIndices,
                     },
             };
         }
@@ -40,7 +42,8 @@ namespace Infrastructure.Data.DAO
                     sc.Periodic.PeriodicType,
                     sc.Periodic.Span,
                     new CCDateTime(sc.Periodic.StartDate).ToDateOnly(),
-                    sc.Periodic.EndDate.HasValue ? new CCDateTime(sc.Periodic.EndDate.Value).ToDateOnly() : null
+                    sc.Periodic.EndDate.HasValue ? new CCDateTime(sc.Periodic.EndDate.Value).ToDateOnly() : null,
+                    sc.Periodic.ExcludeIndices ?? new List<int>()
                     );
             return new Schedule(sc.Id, sc.Title, sc.Description, duration, periodic);
         }
