@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Domain.Enum;
 
 namespace Domain.Entity
@@ -6,5 +7,6 @@ namespace Domain.Entity
     {
         public SchedulePeriodicType PeriodicType { get; } = PeriodicType;
         public int Span { get; } = Span;
+        public List<int> ExcludeIndices { get; } = new List<int>();
     }
 }
