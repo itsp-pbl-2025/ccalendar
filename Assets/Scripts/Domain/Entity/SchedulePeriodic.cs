@@ -26,12 +26,17 @@ namespace Domain.Entity
             && Span == other.Span
             && ExcludeIndices.SequenceEqual(other.ExcludeIndices);
 
-        public override int GetHashCode() =>
-            HashCode.Combine(
-                PeriodicType,
-                Span,
-                ExcludeIndices.Aggregate(0, (h, v) => HashCode.Combine(h, v))
-            );
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(PeriodicType);
+            hash.Add(Span);
+            foreach (var i in ExcludeIndices)
+            {
+                hash.Add(i);
+            }
+            return hash.ToHashCode();
+        }
 
         public SchedulePeriodicType PeriodicType { get; } = PeriodicType;
         public int Span { get; } = Span;
