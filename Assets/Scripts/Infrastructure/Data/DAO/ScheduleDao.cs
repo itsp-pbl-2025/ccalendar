@@ -35,7 +35,7 @@ namespace Infrastructure.Data.DAO
                 new ScheduleDuration(new CCDateTime(sc.Duration.StartTime), new CCDateTime(sc.Duration.EndTime), sc.Duration.IsAllDay);
             SchedulePeriodic periodic = sc.Periodic is null
                 ? null
-                : new SchedulePeriodic(sc.Periodic.PeriodicType, sc.Periodic.Span, sc.Periodic.ExcludeIndices);
+                : new SchedulePeriodic(sc.Periodic.PeriodicType, sc.Periodic.Span, sc.Periodic.ExcludeIndices ?? System.Collections.Immutable.ImmutableList<int>.Empty);
             return new Schedule(sc.Id, sc.Title, sc.Description, duration, periodic);
         }
     }
