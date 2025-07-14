@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Immutable;
 using Domain.Enum;
+using System.Linq;
 
 namespace Domain.Entity
 {
@@ -17,6 +19,19 @@ namespace Domain.Entity
             int span
         ) : this(periodicType, span, DefaultExcludeIndices)
         { }
+        
+        public virtual bool Equals(SchedulePeriodic? other) =>
+            other is not null
+            && PeriodicType == other.PeriodicType
+            && Span == other.Span
+            && ExcludeIndices.SequenceEqual(other.ExcludeIndices);
+
+        public override int GetHashCode() =>
+            HashCode.Combine(
+                PeriodicType,
+                Span,
+                ExcludeIndices.Aggregate(0, (h, v) => HashCode.Combine(h, v))
+            );
 
         public SchedulePeriodicType PeriodicType { get; } = PeriodicType;
         public int Span { get; } = Span;
