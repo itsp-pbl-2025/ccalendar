@@ -8,9 +8,9 @@ namespace Domain.Entity
     public record SchedulePeriodic(
         SchedulePeriodicType PeriodicType,
         int Span,
+        IReadOnlyList<int> ExcludeIndices,
         CCDateOnly StartDate,
-        CCDateOnly? EndDate = null,
-        IReadOnlyList<int> ExcludeIndices
+        CCDateOnly? EndDate = null
         )
     {
         private static readonly IReadOnlyList<int> DefaultExcludeIndices = new List<int>();
@@ -18,8 +18,10 @@ namespace Domain.Entity
         // ExcludeIndices を省略したい場合の重載コンストラクタ
         public SchedulePeriodic(
             SchedulePeriodicType periodicType,
-            int span
-        ) : this(periodicType, span, DefaultExcludeIndices)
+            int span,
+            CCDateOnly StartDate,
+            CCDateOnly? EndDate = null
+        ) : this(periodicType, span, DefaultExcludeIndices, StartDate, EndDate)
         { }
         
         public virtual bool Equals(SchedulePeriodic? other) =>

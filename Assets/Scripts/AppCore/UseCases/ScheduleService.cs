@@ -41,15 +41,12 @@ namespace AppCore.UseCases
             return _scheduleRepo.GetAll().AsValueEnumerable().ToList();
         }
         //キャッシュ
-        private readonly Dictionary<(int scheduleId, int index), ScheduleDuration>
-            _durationCache = new();
+        private readonly Dictionary<int, SortedDictionary<int, ScheduleDuration>> _durationCache = new();
 
         public List<UnitSchedule> GetSchedulesInDuration(ScheduleDuration duration)
         {
             var ret = new List<UnitSchedule>();
-
-            // TODO: GetDurationByPeriodicの計算回数を少なくするためキャッシュ処理を実装する
-            //DONE
+            
             foreach (var schedule in _scheduleRepo.GetAll())
             {
                 if (schedule.Periodic is null)
@@ -61,7 +58,7 @@ namespace AppCore.UseCases
                     var index = 0;
                     var currentDuration = schedule.Duration;
                     
-                    //周期的スケジュールの側の期限
+                    //周期的スケジュールの側の期限を終日で設定
                     CCDateTime? periodicEnd = schedule.Periodic.EndDate is null
                         ? (CCDateTime?)null
                         : new CCDateTime(
@@ -69,7 +66,7 @@ namespace AppCore.UseCases
                             schedule.Periodic.EndDate.Value.Month.Value,
                             schedule.Periodic.EndDate.Value.Day  .Value,
                             23, 59, 59);
-                    
+                    //スケジュールと周期の期限を比較
                     CCDateTime loopLimit = (periodicEnd is not null &&
                                             periodicEnd.Value.CompareTo(duration.EndTime) < 0)
                         ? periodicEnd.Value
@@ -77,18 +74,30 @@ namespace AppCore.UseCases
                     
                     while (currentDuration.StartTime.CompareTo(loopLimit) <= 0)
                     {
-                        // TODO: SchedulePeriodic.ExcludeIndicesを実装し、特定のindexをはじく
-                        //DONE
-                        if (!_durationCache.TryGetValue((schedule.Id, index), out var nextDuration))
+                        
+                        //キャッシュに保存されているか確認
+                        if (!_durationCache.TryGetValue(schedule.Id, out var inner))
                         {
-                            //無ければ計算して保存
+                            inner = new SortedDictionary<int, ScheduleDuration>();
+                            _durationCache[schedule.Id] = inner;
+                        }
+                        if (!inner.TryGetValue(index, out var nextDuration))
+                        {
                             nextDuration = GetDurationByPeriodic(
                                 schedule.Duration, schedule.Periodic, index);
-
-                            _durationCache[(schedule.Id, index)] = nextDuration;
+                            inner[index] = nextDuration;
                         }
                         
-                        if (schedule.Periodic.ExcludeIndices.Contains(index))
+                        
+                        //ExcludeIndicesと一致するか判定
+                        static bool ContainsIndex(IReadOnlyList<int> list, int value)
+                        {
+                            for (var i = 0; i < list.Count; i++)
+                                if (list[i] == value) return true;
+                            return false;
+                        }
+                        //SchedulePeriodic.ExcludeIndicesと一致する特定のindexをはじく
+                        if (ContainsIndex(schedule.Periodic.ExcludeIndices, index))
                         {
                             index++;
                             currentDuration = nextDuration;

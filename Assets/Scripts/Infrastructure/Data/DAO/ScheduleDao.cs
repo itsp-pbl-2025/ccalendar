@@ -26,8 +26,8 @@ namespace Infrastructure.Data.DAO
                         PeriodicType = sc.Periodic.PeriodicType,
                         Span = sc.Periodic.Span,
                         StartDate = sc.Periodic.StartDate.ToDateTime(),
-                        EndDate = sc.Periodic.EndDate?.ToDateTime()
-                        ExcludeIndices = sc.Periodic.ExcludeIndices,
+                        EndDate = sc.Periodic.EndDate?.ToDateTime(),
+                        ExcludeIndices = sc.Periodic.ExcludeIndices
                     },
             };
         }
@@ -41,9 +41,9 @@ namespace Infrastructure.Data.DAO
                 : new SchedulePeriodic(
                     sc.Periodic.PeriodicType,
                     sc.Periodic.Span,
+                    sc.Periodic.ExcludeIndices ?? new List<int>(),
                     new CCDateTime(sc.Periodic.StartDate).ToDateOnly(),
-                    sc.Periodic.EndDate.HasValue ? new CCDateTime(sc.Periodic.EndDate.Value).ToDateOnly() : null,
-                    sc.Periodic.ExcludeIndices ?? new List<int>()
+                    sc.Periodic.EndDate.HasValue ? new CCDateTime(sc.Periodic.EndDate.Value).ToDateOnly() : null
                     );
             return new Schedule(sc.Id, sc.Title, sc.Description, duration, periodic);
         }
