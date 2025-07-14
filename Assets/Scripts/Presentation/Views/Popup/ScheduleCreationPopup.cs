@@ -8,6 +8,7 @@ using Domain.Entity;
 using Presentation.Presenter;
 using Presentation.Utilities;
 using Presentation.Views.Extensions;
+using Presentation.Views.Scene.Calendar;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -72,11 +73,6 @@ namespace Presentation.Views.Popup
                 _startDate = _endDate = atDay;
             }
             
-            ReloadDateButtonLabel(Limit.Start);
-            ReloadDateButtonLabel(Limit.End);
-            ReloadTimeButtonLabel(Limit.Start);
-            ReloadTimeButtonLabel(Limit.End);
-            
             _isAllDay = isAllDay;
             allDayToggle.isOn = isAllDay;
             
@@ -100,6 +96,8 @@ namespace Presentation.Views.Popup
             _scheduleTitle = schedule.Title;
             _scheduleDescription = schedule.Description;
             
+            _periodic = _originSchedule.Periodic;
+            
             ReloadAll();
         }
 
@@ -114,6 +112,7 @@ namespace Presentation.Views.Popup
             ReloadDateButtonLabel(Limit.End);
             ReloadTimeButtonLabel(Limit.Start);
             ReloadTimeButtonLabel(Limit.End);
+            ReloadRepetitionLabel();
 
             scheduleTitleField.text = _scheduleTitle;
             scheduleDescriptionField.text = _scheduleDescription;
@@ -183,13 +182,12 @@ namespace Presentation.Views.Popup
             var service = InAppContext.Context.GetService<ScheduleService>();
             if (_mode is Mode.New)
             {
-                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration()));
+                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), _periodic));
+                CloseWindow();
             }
             else
             {
             }
-            
-            CloseWindow();
         }
 
         public void OnScheduleTitleChanged(string text)
@@ -320,16 +318,16 @@ namespace Presentation.Views.Popup
                 window.Init(periodic =>
                 {
                     _periodic = periodic;
-                    repetitionButton.Label.text = _periodic.ToExplainString();
-                }, _originSchedule);
+                    ReloadRepetitionLabel();
+                }, _periodic);
             }
             else
             {
                 window.Init(periodic =>
                 {
                     _periodic = periodic;
-                    repetitionButton.Label.text = _periodic.ToExplainString();
-                }, new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration()));
+                    ReloadRepetitionLabel();
+                }, _periodic);
             }
         }
 
@@ -357,6 +355,11 @@ namespace Presentation.Views.Popup
             }
         }
 
+        private void ReloadRepetitionLabel()
+        {
+            repetitionButton.Label.text = _periodic.ToExplainString();
+        }
+        
         private bool ReloadWarn(bool showWarnPopup = false)
         {
             var durationViolate = _isAllDay && _startDate.CompareTo(_endDate) > 0 

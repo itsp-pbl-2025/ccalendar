@@ -40,6 +40,7 @@ namespace Presentation.Views.Popup
         [SerializeField] private VerticalLayoutGroup verticalLayoutGroup;
         [SerializeField] private List<ToggleWithLabel> periodicTypeToggles, weekdayToggles, monthToggles, endDayToggles;
         [SerializeField] private GameObject intervalSettings, weekdaySettings, monthSettings;
+        [SerializeField] private List<GameObject> endDateSettings;
         [SerializeField] private LabelRx intervalText;
         [SerializeField] private CanvasGroup endDateRayGroup, endIndexRayGroup;
         [SerializeField] private ButtonWithLabel endDatePopupButton;
@@ -64,11 +65,10 @@ namespace Presentation.Views.Popup
         private int _endIndex;
         private bool _initialized, _needReload;
 
-        public void Init(Action<SchedulePeriodic> onDefineCallback, Schedule originSchedule = null)
+        public void Init(Action<SchedulePeriodic> onDefineCallback, SchedulePeriodic periodic)
         {
             _callback = onDefineCallback;
 
-            var periodic = originSchedule?.Periodic;
             _periodicType = periodic is not null ? periodic.PeriodicType switch
                 {
                     SchedulePeriodicType.EveryDay => ValuePeriodicType.EveryDay,
@@ -82,8 +82,8 @@ namespace Presentation.Views.Popup
             _span = _periodicType is ValuePeriodicType.EveryWeek or ValuePeriodicType.EveryMonth ? 1 : periodic?.Span ?? 1;
 
             // 毎週設定を作成
-            var startDate = originSchedule is null ? DateTime.Today : originSchedule.Duration.StartTime.ToDateTime();
-            _startDate = new CCDateTime(startDate).ToDateOnly();
+            var startDT = periodic?.StartDate.ToDateTime() ?? DateTime.Today;
+            _startDate = new CCDateOnly(startDT);
             var weekdayFlag = _periodicType is ValuePeriodicType.EveryWeek ? periodic?.Span ?? 0 : 0;
             foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
             {
@@ -92,7 +92,7 @@ namespace Presentation.Views.Popup
 
             if (_periodicType is not ValuePeriodicType.EveryWeek)
             {
-                _weekdaySet[startDate.DayOfWeek] = true;
+                _weekdaySet[_startDate.ToDateTime().DayOfWeek] = true;
             }
             
             // 毎月設定を作成
@@ -100,14 +100,13 @@ namespace Presentation.Views.Popup
             _monthType = monthlyFlag >= 500 ? ValueMonthdayType.FinalWeek : 
                 monthlyFlag >= 100 ? ValueMonthdayType.WeekIndex : ValueMonthdayType.SpecifiedDay;
 
-            _dayOfMonthSpecified = _monthType is ValueMonthdayType.SpecifiedDay && monthlyFlag > 0 ? monthlyFlag : startDate.Day;
+            _dayOfMonthSpecified = _monthType is ValueMonthdayType.SpecifiedDay && monthlyFlag > 0 ? monthlyFlag : startDT.Day;
             _weekIndexSpecified = _monthType is not ValueMonthdayType.SpecifiedDay && monthlyFlag > 0
                 ? (monthlyFlag % 100, (DayOfWeek)(monthlyFlag / 100), monthlyFlag % 100 > 4)
-                : new CCDateOnly(startDate).GetDayOfWeekWithIndex();
+                : new CCDateOnly(startDT).GetDayOfWeekWithIndex();
             
-            // TODO: 終了日設定を作成
-            _endDayType = ValueEndDateType.Endless;
-            _endDate = new CCDateTime(startDate).AddYears(1).ToDateOnly();
+            _endDayType = periodic?.EndDate is null ? ValueEndDateType.Endless : ValueEndDateType.DateLimited;
+            _endDate = _endDayType is ValueEndDateType.DateLimited ? periodic.EndDate.Value : new CCDateTime(startDT).AddYears(1).ToDateOnly();
             _endIndex = 1;
             
             ReloadInit();
@@ -159,10 +158,7 @@ namespace Presentation.Views.Popup
             ReloadAll();
             
             // トグルボタンの初期化
-            foreach (ValuePeriodicType periodic in Enum.GetValues(typeof(ValuePeriodicType)))
-            {
-                _periodicTypeToggles[periodic].Toggle.isOn = periodic == _periodicType;
-            }
+            _periodicTypeToggles[_periodicType].Toggle.isOn = true;
             foreach (var (dayOfWeek, on) in _weekdaySet)
             {
                 _weekdayToggles[dayOfWeek].Toggle.isOn = on;
