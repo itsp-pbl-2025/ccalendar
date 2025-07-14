@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using AppCore.Utilities;
 using Domain.Entity;
 using Domain.Enum;
+using Presentation.Presenter;
+using Presentation.Utilities;
 using Presentation.Views.Extensions;
 using TMPro;
 using UnityEngine;
@@ -37,8 +40,6 @@ namespace Presentation.Views.Popup
         [SerializeField] private VerticalLayoutGroup verticalLayoutGroup;
         [SerializeField] private List<ToggleWithLabel> periodicTypeToggles, weekdayToggles, monthToggles, endDayToggles;
         [SerializeField] private GameObject intervalSettings, weekdaySettings, monthSettings;
-        [SerializeField] private List<GameObject> underEndDateObjects;
-        [SerializeField] private ToggleWithLabel toggleEndDateLimited, toggleEndIndexLimited;
         [SerializeField] private ButtonWithLabel endDatePopupButton;
         [SerializeField] private TMP_InputField intervalInputField, endIndexInputField;
         
@@ -52,9 +53,14 @@ namespace Presentation.Views.Popup
         
         private ValuePeriodicType _periodicType;
         private int _span;
-        private Dictionary<DayOfWeek, bool> _weekdaySet;
+        private readonly Dictionary<DayOfWeek, bool> _weekdaySet = new();
         private ValueMonthdayType _monthType;
+        private int _dayOfMonthSpecified;
+        private (int index, DayOfWeek dayOfWeek) _weekIndexSpecified;
         private ValueEndDateType _endDayType;
+        private CCDateOnly _startDate, _endDate = CCDateOnly.MaxValue;
+        private int _endIndex;
+        private bool _initialized;
 
         public void Init(Action<SchedulePeriodic> onDefineCallback, Schedule originSchedule = null)
         {
@@ -74,6 +80,8 @@ namespace Presentation.Views.Popup
             _span = _periodicType is ValuePeriodicType.EveryWeek or ValuePeriodicType.EveryMonth ? 1 : periodic?.Span ?? 1;
 
             // 毎週設定を作成
+            var startDate = originSchedule is null ? DateTime.Today : originSchedule.Duration.StartTime.ToDateTime();
+            _startDate = new CCDateTime(startDate).ToDateOnly();
             var weekdayFlag = _periodicType is ValuePeriodicType.EveryWeek ? periodic?.Span ?? 0 : 0;
             foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
             {
@@ -82,12 +90,22 @@ namespace Presentation.Views.Popup
 
             if (_periodicType is not ValuePeriodicType.EveryWeek)
             {
-                var startDate = originSchedule is null ? DateTime.Today : originSchedule.Duration.StartTime.ToDateTime();
                 _weekdaySet[startDate.DayOfWeek] = true;
             }
             
             // 毎月設定を作成
+            var monthlyFlag = _periodicType is ValuePeriodicType.EveryMonth ? periodic?.Span ?? 0 : 0;
+            _monthType = monthlyFlag >= 100 ? ValueMonthdayType.WeekIndex : ValueMonthdayType.SpecifiedDay;
+
+            _dayOfMonthSpecified = _monthType is ValueMonthdayType.SpecifiedDay && monthlyFlag > 0 ? monthlyFlag : startDate.Day;
+            _weekIndexSpecified = _monthType is ValueMonthdayType.WeekIndex && monthlyFlag > 0
+                ? (monthlyFlag % 100, (DayOfWeek)(monthlyFlag / 100))
+                : (startDate.Day / 7 + 1, startDate.DayOfWeek);
             
+            // TODO: 終了日設定を作成
+            _endDayType = ValueEndDateType.Endless;
+            _endDate = new CCDateTime(startDate).AddYears(1).ToDateOnly();
+            _endIndex = 1;
             
             ReloadInit();
         }
@@ -95,6 +113,9 @@ namespace Presentation.Views.Popup
         private void ReloadInit()
         {
             _verticalLayoutRect = windowBaseRect.transform as RectTransform;
+            
+            endDatePopupButton.Button.interactable = false;
+            endIndexInputField.interactable = false;
 
             foreach (ValuePeriodicType periodicType in Enum.GetValues(typeof(ValuePeriodicType)))
             {
@@ -103,7 +124,7 @@ namespace Presentation.Views.Popup
 
             foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
             {
-                _weekdayToggles.Add(dayOfWeek, periodicTypeToggles[(int)dayOfWeek]);
+                _weekdayToggles.Add(dayOfWeek, weekdayToggles[(int)dayOfWeek]);
             }
 
             foreach (ValueMonthdayType monthdayType in Enum.GetValues(typeof(ValueMonthdayType)))
@@ -115,12 +136,56 @@ namespace Presentation.Views.Popup
             {
                 _endDayToggles.Add(endDateType, endDayToggles[(int)endDateType]);
             }
+            
+            intervalInputField.text = _span.ToString();
+            endIndexInputField.text = _endIndex.ToString();
+            
+            endDatePopupButton.Label.text = _endDate.ToDateTime().ToString("yyyy年MM月dd日");
+            
+            _monthToggles[ValueMonthdayType.SpecifiedDay].Label.text = $"毎月{_dayOfMonthSpecified}日";
+            _monthToggles[ValueMonthdayType.WeekIndex].Label.text = $"第{_weekIndexSpecified.index}{_weekIndexSpecified.dayOfWeek.ToLongString()}";
 
             ReloadAll();
+            
+            // トグルボタンの初期化
+            _periodicTypeToggles[_periodicType].Toggle.isOn = true;
+            foreach (var (dayOfWeek, on) in _weekdaySet)
+            {
+                _weekdayToggles[dayOfWeek].Toggle.isOn = on;
+            }
+            _monthToggles[_monthType].Toggle.isOn = true;
+            _endDayToggles[_endDayType].Toggle.isOn = true;
+            _initialized = true;
         }
 
         private void ReloadAll()
         {
+            switch (_periodicType)
+            {
+                case ValuePeriodicType.EveryDay:
+                case ValuePeriodicType.EveryYear:
+                    intervalSettings.SetActive(true);
+                    weekdaySettings.SetActive(false);
+                    monthSettings.SetActive(false);
+                    break;
+                case ValuePeriodicType.EveryWeek:
+                    intervalSettings.SetActive(false);
+                    weekdaySettings.SetActive(true);
+                    monthSettings.SetActive(false);
+                    break;
+                case ValuePeriodicType.EveryMonth:
+                    intervalSettings.SetActive(false);
+                    weekdaySettings.SetActive(false);
+                    monthSettings.SetActive(true);
+                    break;
+                case ValuePeriodicType.None:
+                default:
+                    intervalSettings.SetActive(false);
+                    weekdaySettings.SetActive(false);
+                    monthSettings.SetActive(false);
+                    break;
+            }
+            
             if (_verticalLayoutRect)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(_verticalLayoutRect);
@@ -139,10 +204,97 @@ namespace Presentation.Views.Popup
                     return;
                 }
             
+                Debug.Log($"Preferred Size: {Mathf.Abs(lastChildRect.anchoredPosition.y)} + {lastChildRect.rect.size.y * lastChildRect.pivot.y}");
                 windowBaseRect.sizeDelta = new Vector2(windowBaseRect.sizeDelta.x,
-                    Mathf.Abs(lastChildRect.anchoredPosition.y) + lastChildRect.sizeDelta.y);
+                    Mathf.Abs(lastChildRect.rect.y) + lastChildRect.rect.size.y * lastChildRect.pivot.y);
             }
         }
+
+        #region OnPressPeriodicTypeToggles
+        
+        public void OnPressPeriodicTypeNone(bool toggle) => ToggleScheduleType(ValuePeriodicType.None, toggle);
+        public void OnPressPeriodicTypeEveryDay(bool toggle) => ToggleScheduleType(ValuePeriodicType.EveryDay, toggle);
+        public void OnPressPeriodicTypeEveryWeek(bool toggle) => ToggleScheduleType(ValuePeriodicType.EveryWeek, toggle);
+        public void OnPressPeriodicTypeEveryMonth(bool toggle) => ToggleScheduleType(ValuePeriodicType.EveryMonth, toggle);
+        public void OnPressPeriodicTypeEveryYear(bool toggle) => ToggleScheduleType(ValuePeriodicType.EveryYear, toggle);
+        
+        private void ToggleScheduleType(ValuePeriodicType type, bool toggle)
+        {
+            if (toggle) _periodicType = type;
+            _periodicTypeToggles[type].Toggle.interactable = !toggle;
+            
+            ReloadAll();
+        }
+
+        #endregion
+        
+        #region OnPressDayOfWeekToggles
+
+        public void OnPressDayOfWeekSunday(bool toggle) => ToggleDayOfWeek(DayOfWeek.Sunday, toggle);
+        public void OnPressDayOfWeekMonday(bool toggle) => ToggleDayOfWeek(DayOfWeek.Monday, toggle);
+        public void OnPressDayOfWeekTuesday(bool toggle) => ToggleDayOfWeek(DayOfWeek.Tuesday, toggle);
+        public void OnPressDayOfWeekWednesday(bool toggle) => ToggleDayOfWeek(DayOfWeek.Wednesday, toggle);
+        public void OnPressDayOfWeekThursday(bool toggle) => ToggleDayOfWeek(DayOfWeek.Thursday, toggle);
+        public void OnPressDayOfWeekFriday(bool toggle) => ToggleDayOfWeek(DayOfWeek.Friday, toggle);
+        public void OnPressDayOfWeekSaturday(bool toggle) => ToggleDayOfWeek(DayOfWeek.Saturday, toggle);
+        
+        private void ToggleDayOfWeek(DayOfWeek dayOfWeek, bool toggle)
+        {
+            if (_initialized) _weekdaySet[dayOfWeek] = toggle;
+        }
+
+        #endregion
+
+        #region OnPressMonthdayTypeToggles
+
+        public void OnPressMonthdayTypeSpecifiedDay(bool toggle) => ToggleMonthdayType(ValueMonthdayType.SpecifiedDay, toggle);
+        public void OnPressMonthdayTypeWeekIndex(bool toggle) => ToggleMonthdayType(ValueMonthdayType.WeekIndex, toggle);
+        
+        private void ToggleMonthdayType(ValueMonthdayType type, bool toggle)
+        {
+            if (toggle) _monthType = type;
+            _monthToggles[type].Toggle.interactable = !toggle;
+        }
+
+        #endregion
+
+        #region OnPressEndDateTypeToggles
+
+        public void OnPressEndDateTypeEndless(bool toggle) => ToggleEndDateType(ValueEndDateType.Endless, toggle);
+        public void OnPressEndDateTypeDateLimited(bool toggle) => ToggleEndDateType(ValueEndDateType.DateLimited, toggle);
+        public void OnPressEndDateTypeIndexLimited(bool toggle) => ToggleEndDateType(ValueEndDateType.IndexLimited, toggle);
+        
+        private void ToggleEndDateType(ValueEndDateType type, bool toggle)
+        {
+            if (toggle) _endDayType = type;
+
+            switch (_endDayType)
+            {
+                case ValueEndDateType.Endless:
+                    break;
+                case ValueEndDateType.DateLimited:
+                    endDatePopupButton.Button.interactable = !toggle;
+                    break;
+                case ValueEndDateType.IndexLimited:
+                    endIndexInputField.interactable = !toggle;
+                    break;
+            }
+            
+            _endDayToggles[type].Toggle.interactable = !toggle;
+        }
+
+        public void EditEndDateLimited()
+        {
+            var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<DateOnlyPopup>());
+            window.Init(date =>
+            {
+                _endDate = date;
+                endDatePopupButton.Label.text = date.ToDateTime().ToString("yyyy年MM月dd日");
+            }, _endDate);
+            window.SetLimitationSince(_startDate);
+        }
+
+        #endregion
 
         public void SubmitPeriodicWithClosing()
         {
@@ -167,7 +319,14 @@ namespace Presentation.Views.Popup
                         break;
                     case ValuePeriodicType.EveryMonth:
                         var monthSpan = 0;
-                        // TODO: Fill HERE
+                        if (_monthType is ValueMonthdayType.SpecifiedDay)
+                        {
+                            monthSpan = _dayOfMonthSpecified;
+                        }
+                        else
+                        {
+                            monthSpan = _weekIndexSpecified.index * 100 + (int)_weekIndexSpecified.dayOfWeek;
+                        }
                         periodic = new SchedulePeriodic(SchedulePeriodicType.EveryMonth, monthSpan);
                         break;
                     case ValuePeriodicType.EveryYear:

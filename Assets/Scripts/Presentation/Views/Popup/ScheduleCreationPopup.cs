@@ -33,6 +33,7 @@ namespace Presentation.Views.Popup
         private RectTransform _scheduleTitleRect, _scheduleDescriptionRect;
 
         private UnitSchedule _editSchedule;
+        private Schedule _originSchedule;
         private Sequence _seq;
 
         private bool _isStateHide;
@@ -84,6 +85,7 @@ namespace Presentation.Views.Popup
         public void Init(UnitSchedule schedule)
         {
             _editSchedule = schedule;
+            _originSchedule = InAppContext.Context.GetService<ScheduleService>().FindSchedule(schedule.Id);
             _mode = Mode.Edit;
             
             _startDate = schedule.Duration.StartTime.ToDateOnly();
@@ -180,11 +182,7 @@ namespace Presentation.Views.Popup
             var service = InAppContext.Context.GetService<ScheduleService>();
             if (_mode is Mode.New)
             {
-                var duration = _isAllDay
-                    ? new ScheduleDuration(_startDate, _endDate)
-                    : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
-            
-                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, duration));
+                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration()));
             }
             else
             {
@@ -315,7 +313,23 @@ namespace Presentation.Views.Popup
 
         public void OnPressRepetitionButton()
         {
-            throw new NotImplementedException();
+            var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<PeriodicCreationPopup>());
+            if (_originSchedule != null)
+            {
+                window.Init(periodic =>
+                {
+                    _periodic = periodic;
+                    repetitionButton.Label.text = _periodic.ToString();
+                }, _originSchedule);
+            }
+            else
+            {
+                window.Init(periodic =>
+                {
+                    _periodic = periodic;
+                    repetitionButton.Label.text = _periodic.ToString();
+                }, new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration()));
+            }
         }
 
         private void ReloadDateButtonLabel(Limit type)
@@ -377,6 +391,13 @@ namespace Presentation.Views.Popup
             }
             
             return durationViolate;
+        }
+        
+        private ScheduleDuration CreateDuration()
+        {
+            return _isAllDay
+                ? new ScheduleDuration(_startDate, _endDate)
+                : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
         }
     }
 }

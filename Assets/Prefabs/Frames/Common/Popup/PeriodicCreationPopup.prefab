@@ -2274,6 +2274,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Toggle-Wednesday
       objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressDayOfWeekWednesday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3786814872184590801, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2547,6 +2575,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 4434620848561839427}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressPeriodicTypeEveryYear
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2680,6 +2736,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 6283649186499222869}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressEndDateTypeDateLimited
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2693,7 +2777,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1339568697403586754, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
   m_PrefabInstance: {fileID: 1862133077881419152}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7130620021160616343}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad4a0cedba55433d9e8c31729163c5f0, type: 3}
@@ -2702,11 +2786,6 @@ MonoBehaviour:
 --- !u!224 &5565921217487959063 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6118632608681001351, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
-  m_PrefabInstance: {fileID: 1862133077881419152}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7130620021160616343 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8872844475310887943, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
   m_PrefabInstance: {fileID: 1862133077881419152}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2047245797606947430
@@ -2817,6 +2896,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 4434620848561839427}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressPeriodicTypeEveryWeek
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2846,6 +2953,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 664770401565331518, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 664770401565331518, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseWindow
+      objectReference: {fileID: 0}
     - target: {fileID: 1947112351581636360, guid: f269ec99dc4fcde4db31dab160f13a49, type: 3}
       propertyPath: m_Name
       value: PeriodicCreationPopup
@@ -2997,14 +3112,6 @@ MonoBehaviour:
   intervalSettings: {fileID: 3300855305310474987}
   weekdaySettings: {fileID: 6449560502574653967}
   monthSettings: {fileID: 5445915652507843015}
-  underEndDateObjects:
-  - {fileID: 1198692015710009723}
-  - {fileID: 3880841553592372817}
-  - {fileID: 6200397072706388280}
-  - {fileID: 7130620021160616343}
-  - {fileID: 3620808078237415560}
-  toggleEndDateLimited: {fileID: 810853031025921362}
-  toggleEndIndexLimited: {fileID: 6596091662311412813}
   endDatePopupButton: {fileID: 9010975766664430718}
   intervalInputField: {fileID: 6720693403609772173}
   endIndexInputField: {fileID: 585806885998911500}
@@ -3121,6 +3228,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 4434620848561839427}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressPeriodicTypeEveryMonth
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3246,6 +3381,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 6283649186499222869}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressEndDateTypeEndless
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3256,17 +3419,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1339568697403586754, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
   m_PrefabInstance: {fileID: 3255699299248903487}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200397072706388280}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad4a0cedba55433d9e8c31729163c5f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6200397072706388280 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8872844475310887943, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
-  m_PrefabInstance: {fileID: 3255699299248903487}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8775033749260047544 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6118632608681001351, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
@@ -3372,6 +3530,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 6009048674273767620}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressMonthdayTypeSpecifiedDay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3497,6 +3683,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 4434620848561839427}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressPeriodicTypeNone
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3529,6 +3743,34 @@ PrefabInstance:
     - target: {fileID: 1965375843383788625, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Name
       value: Toggle-Sunday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressDayOfWeekSunday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3786814872184590801, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Pivot.x
@@ -3726,6 +3968,34 @@ PrefabInstance:
     - target: {fileID: 1965375843383788625, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Name
       value: Toggle-Friday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressDayOfWeekFriday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3786814872184590801, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Pivot.x
@@ -4010,6 +4280,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Toggle-Thursday
       objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressDayOfWeekThursday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3786814872184590801, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4287,6 +4585,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 6283649186499222869}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressEndDateTypeIndexLimited
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4300,17 +4626,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6118632608681001351, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
   m_PrefabInstance: {fileID: 5268398790268021903}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3620808078237415560 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8872844475310887943, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
-  m_PrefabInstance: {fileID: 5268398790268021903}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6596091662311412813 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1339568697403586754, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
   m_PrefabInstance: {fileID: 5268398790268021903}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3620808078237415560}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad4a0cedba55433d9e8c31729163c5f0, type: 3}
@@ -4468,6 +4789,30 @@ PrefabInstance:
       propertyPath: m_Transition
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EditEndDateLimited
+      objectReference: {fileID: 0}
+    - target: {fileID: 8311308529287832343, guid: de2ed2d0e1860364a8c4caae78836e08, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4596,6 +4941,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 6009048674273767620}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressMonthdayTypeWeekIndex
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4628,6 +5001,34 @@ PrefabInstance:
     - target: {fileID: 1965375843383788625, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Name
       value: Toggle-Monday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressDayOfWeekMonday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3786814872184590801, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Pivot.x
@@ -4902,6 +5303,34 @@ PrefabInstance:
       propertyPath: m_Group
       value: 
       objectReference: {fileID: 4434620848561839427}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressPeriodicTypeEveryDay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8982678788891769895, guid: 78a3144b2b4982646b4e865b3e906ae1, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4934,6 +5363,34 @@ PrefabInstance:
     - target: {fileID: 1965375843383788625, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Name
       value: Toggle-Tuesday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressDayOfWeekTuesday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3786814872184590801, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Pivot.x
@@ -5111,6 +5568,34 @@ PrefabInstance:
     - target: {fileID: 1965375843383788625, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Name
       value: Toggle-Saturday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7095110515011688251}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPressDayOfWeekSaturday
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Presentation.Views.Popup.PeriodicCreationPopup, Presentation
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075074368054193265, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3786814872184590801, guid: 39c24250d4d0c9244b0850782d1421c0, type: 3}
       propertyPath: m_Pivot.x
