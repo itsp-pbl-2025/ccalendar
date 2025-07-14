@@ -60,7 +60,22 @@ namespace AppCore.UseCases
                 {
                     var index = 0;
                     var currentDuration = schedule.Duration;
-                    while (currentDuration.StartTime.CompareTo(duration.EndTime) <= 0)
+                    
+                    //周期的スケジュールの側の期限
+                    CCDateTime? periodicEnd = schedule.Periodic.EndDate is null
+                        ? (CCDateTime?)null
+                        : new CCDateTime(
+                            schedule.Periodic.EndDate.Value.Year .Value,
+                            schedule.Periodic.EndDate.Value.Month.Value,
+                            schedule.Periodic.EndDate.Value.Day  .Value,
+                            23, 59, 59);
+                    
+                    CCDateTime loopLimit = (periodicEnd is not null &&
+                                            periodicEnd.Value.CompareTo(duration.EndTime) < 0)
+                        ? periodicEnd.Value
+                        : duration.EndTime;
+                    
+                    while (currentDuration.StartTime.CompareTo(loopLimit) <= 0)
                     {
                         // TODO: SchedulePeriodic.ExcludeIndicesを実装し、特定のindexをはじく
                         //DONE
