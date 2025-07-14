@@ -4,6 +4,7 @@ using AppCore.Interfaces;
 using Domain.Entity;
 using Domain.Enum;
 using ZLinq;
+using LiteDB;
 
 namespace AppCore.UseCases
 {

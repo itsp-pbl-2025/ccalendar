@@ -29,9 +29,18 @@ namespace Infrastructure.Data.DAO
         public static CCTask ToDomain(this DCCTask ts)
         {
             CCDateTime deadline = new CCDateTime(ts.Deadline);
-            return new CCTask(ts.Id, ts.Title, ts.Description, ts.Priority, deadline, CCTimeSpan.FromTimeSpan(ts.Duration), ts.Periodic is null 
-                ? null 
-                : new TaskPeriodic(ts.Periodic.PeriodicType, ts.Periodic.Span), ts.IsCompleted);
+            return new CCTask(
+                ts.Id, 
+                ts.Title, 
+                ts.Description, 
+                ts.Priority, 
+                deadline, 
+                CCTimeSpan.FromTimeSpan(ts.Duration), 
+                ts.Periodic is null 
+                    ? null 
+                    : new TaskPeriodic(ts.Periodic.PeriodicType, ts.Periodic.Span), 
+                ts.IsCompleted
+            );
         }
     }
 }
