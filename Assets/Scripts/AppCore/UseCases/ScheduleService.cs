@@ -40,12 +40,16 @@ namespace AppCore.UseCases
         {
             return _scheduleRepo.GetAll().AsValueEnumerable().ToList();
         }
+        //キャッシュ
+        private readonly Dictionary<(int scheduleId, int index), ScheduleDuration>
+            _durationCache = new();
 
         public List<UnitSchedule> GetSchedulesInDuration(ScheduleDuration duration)
         {
             var ret = new List<UnitSchedule>();
 
             // TODO: GetDurationByPeriodicの計算回数を少なくするためキャッシュ処理を実装する
+            //DONE
             foreach (var schedule in _scheduleRepo.GetAll())
             {
                 if (schedule.Periodic is null)
@@ -59,7 +63,24 @@ namespace AppCore.UseCases
                     while (currentDuration.StartTime.CompareTo(duration.EndTime) <= 0)
                     {
                         // TODO: SchedulePeriodic.ExcludeIndicesを実装し、特定のindexをはじく
-                        var nextDuration = GetDurationByPeriodic(schedule.Duration, schedule.Periodic, index++);
+                        //DONE
+                        if (!_durationCache.TryGetValue((schedule.Id, index), out var nextDuration))
+                        {
+                            //無ければ計算して保存
+                            nextDuration = GetDurationByPeriodic(
+                                schedule.Duration, schedule.Periodic, index);
+
+                            _durationCache[(schedule.Id, index)] = nextDuration;
+                        }
+                        
+                        if (schedule.Periodic.ExcludeIndices.Contains(index))
+                        {
+                            index++;
+                            currentDuration = nextDuration;
+                            continue;
+                        }
+                        index++;
+                        
                         if (nextDuration.IsCollided(duration))
                         {
                             ret.Add(new UnitSchedule(schedule.Id, schedule.Title, schedule.Description, nextDuration));
@@ -78,7 +99,7 @@ namespace AppCore.UseCases
             {
                 case SchedulePeriodicType.EveryDay:
                     return new ScheduleDuration(duration.StartTime.AddDays(periodic.Span*loop), duration.EndTime.AddDays(periodic.Span*loop));
-                case SchedulePeriodicType.EveryWeekday:
+                case SchedulePeriodicType.EveryWeek:
                 {
                     var weekdays = 
                         Enum.GetValues(typeof(DayOfWeek)).AsValueEnumerable().Select(day => (DayOfWeek)day)
@@ -100,8 +121,7 @@ namespace AppCore.UseCases
                     
                     return new ScheduleDuration(duration.StartTime.AddDays(elapseDays), duration.EndTime.AddDays(elapseDays));
                 }
-                case SchedulePeriodicType.EveryWeek:
-                    return new ScheduleDuration(duration.StartTime.AddDays(7*loop), duration.EndTime.AddDays(7*loop));
+                
                 case SchedulePeriodicType.EveryMonth:
                     return new ScheduleDuration(duration.StartTime.AddMonths(loop), duration.EndTime.AddMonths(loop));
                 case SchedulePeriodicType.EveryYear:
