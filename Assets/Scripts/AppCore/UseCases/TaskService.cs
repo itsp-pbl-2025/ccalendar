@@ -26,17 +26,8 @@ namespace AppCore.UseCases
 
         public bool CompleteTask(CCTask task)
         {
-            // If the task is not periodic, we can simply update the task to completed
-                CCTask completedTask = new CCTask(
-                        Id: task.Id,
-                        Title: task.Title,
-                        Description: task.Description,
-                        Priority: task.Priority,
-                        Deadline: task.Deadline,
-                        Duration: task.Duration,
-                        IsCompleted: true
-                    );
-                    return UpdateTask(completedTask);
+            var completedTask = task with { IsCompleted = true };
+            return UpdateTask(completedTask);
         }
 
         public bool UpdateTask(CCTask task)

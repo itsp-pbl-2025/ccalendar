@@ -16,7 +16,7 @@ namespace Domain.Entity
         public int Priority { get; } = Priority;
         public CCTimeSpan Duration { get; } = Duration;
 
-        public bool IsCompleted { get; } = IsCompleted;
+        public bool IsCompleted { get; set; } = IsCompleted;
         public CCDateTime Deadline { get; } = Deadline;
     }
 }
