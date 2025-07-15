@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AppCore.Interfaces;
+using AppCore.Utilities;
 using Domain.Entity;
 using Domain.Enum;
 using ZLinq;
@@ -94,14 +95,7 @@ namespace AppCore.UseCases
                         
                         //範囲外なら終了
                         if (currentDuration.StartTime.CompareTo(loopLimit) > 0) break;
-                        
-                        //ExcludeIndicesと一致するか判定
-                        static bool ContainsIndex(IReadOnlyList<int> list, int value)
-                        {
-                            for (var i = 0; i < list.Count; i++)
-                                if (list[i] == value) return true;
-                            return false;
-                        }
+
                         //除外インデックスをスキップ
                         if (ContainsIndex(schedule.Periodic.ExcludeIndices, index))
                         {
@@ -115,6 +109,15 @@ namespace AppCore.UseCases
                             ret.Add(new UnitSchedule(schedule.Id, schedule.Title, schedule.Description, currentDuration));
                         }
                         index++;
+                        continue;
+
+                        //ExcludeIndicesと一致するか判定
+                        static bool ContainsIndex(IReadOnlyList<int> list, int value)
+                        {
+                            for (var i = 0; i < list.Count; i++)
+                                if (i == value) return true;
+                            return false;
+                        }
                     }
                 }
             }
@@ -150,9 +153,39 @@ namespace AppCore.UseCases
                     
                     return new ScheduleDuration(duration.StartTime.AddDays(elapseDays), duration.EndTime.AddDays(elapseDays));
                 }
-                
                 case SchedulePeriodicType.EveryMonth:
-                    return new ScheduleDuration(duration.StartTime.AddMonths(loop), duration.EndTime.AddMonths(loop));
+                {
+                    if (periodic.Span < 100)
+                    {
+                        var startTime = duration.StartTime.ToTimeOnly();
+                        var startDate = duration.StartTime.ToDateOnly();
+                        var scheduleSpan = (duration.EndTime - duration.StartTime).ToTimeSpan();
+
+                        if (startDate.Day.Value < periodic.Span) loop++;
+                        
+                        var stepStartDate = new CCDateOnly(startDate.Year.Value, startDate.Month.Value, periodic.Span);
+                        var startDateTime = new CCDateTime(stepStartDate.AddMonths(loop), startTime);
+                        var endDate = new CCDateTime(startDateTime.ToDateTime() + scheduleSpan).ToDateOnly();
+                        return new ScheduleDuration(startDateTime, new CCDateTime(endDate, startTime));
+                    }
+                    else
+                    {
+                        var startTime = duration.StartTime.ToTimeOnly();
+                        var startDate = duration.StartTime.ToDateOnly();
+                        var scheduleSpan = (duration.EndTime - duration.StartTime).ToTimeSpan();
+                        
+                        var index = periodic.Span / 100;
+                        var day = (DayOfWeek)(periodic.Span % 100);
+                        
+                        if (DateTimeExtensions.GetIndexedWeekDay(startDate.Year.Value, startDate.Month.Value, index, day).CompareTo(startDate) > 0) loop++;
+
+                        var stepMonth = startDate.AddMonths(loop);
+                        var stepStartDate = DateTimeExtensions.GetIndexedWeekDay(stepMonth.Year.Value, stepMonth.Month.Value, index, day);
+                        var startDateTime = new CCDateTime(stepStartDate, startTime);
+                        var endDate = new CCDateTime(startDateTime.ToDateTime() + scheduleSpan).ToDateOnly();
+                        return new ScheduleDuration(startDateTime, new CCDateTime(endDate, startTime));
+                    }
+                }
                 case SchedulePeriodicType.EveryYear:
                     return new ScheduleDuration(duration.StartTime.AddYears(loop), duration.EndTime.AddYears(loop));
             }
