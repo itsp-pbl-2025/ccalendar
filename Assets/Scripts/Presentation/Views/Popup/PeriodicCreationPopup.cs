@@ -102,7 +102,7 @@ namespace Presentation.Views.Popup
 
             _dayOfMonthSpecified = _monthType is ValueMonthdayType.SpecifiedDay && monthlyFlag > 0 ? monthlyFlag : startDT.Day;
             _weekIndexSpecified = _monthType is not ValueMonthdayType.SpecifiedDay && monthlyFlag > 0
-                ? (monthlyFlag % 100, (DayOfWeek)(monthlyFlag / 100), monthlyFlag % 100 > 4)
+                ? (monthlyFlag / 100, (DayOfWeek)(monthlyFlag % 100), monthlyFlag / 100 > 4)
                 : new CCDateOnly(startDT).GetDayOfWeekWithIndex();
             
             _endDayType = periodic?.EndDate is null ? ValueEndDateType.Endless : ValueEndDateType.DateLimited;
