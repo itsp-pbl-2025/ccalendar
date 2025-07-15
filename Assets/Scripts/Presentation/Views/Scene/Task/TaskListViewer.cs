@@ -17,13 +17,14 @@ namespace Presentation.Views.Scene.Task
 
         private TaskService _taskService;
         private readonly List<GameObject> _taskItems = new();
+        private EventDispatcher.GlobalEventListener _disposable;
 
         private void Start()
         {
             _taskService = InAppContext.Context.GetService<TaskService>();
 
             // タスクリスト更新イベント登録
-            InAppContext.EventDispatcher.AddGlobalEventListener(this, GlobalEvent.OnTaskCreated, _ => RefreshTaskList());
+            _disposable = InAppContext.EventDispatcher.AddGlobalEventListener(this, GlobalEvent.OnTaskCreated, _ => RefreshTaskList());
 
             RefreshTaskList();
         }
@@ -78,6 +79,11 @@ namespace Presentation.Views.Scene.Task
             }
 
             _taskItems.Clear();
+        }
+
+        private void OnDestroy()
+        {
+            InAppContext.EventDispatcher.RemoveGlobalEventListener(_disposable);
         }
     }
 }
