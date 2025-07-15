@@ -35,6 +35,32 @@ namespace Test.Integration
         }
 
         [Test]
+        public void TestFindSchedule()
+        {
+            var ctx = InTestContext.Context;
+            var service = ctx.GetService<ScheduleService>();
+
+            foreach (var ds in MockSchedule.GetMockSchedules())
+            {
+                service.CreateSchedule(ds.ToDomain());
+            }
+            
+            var schedules = MockSchedule.GetMockSchedules();
+            var scheduleMax = schedules.Count;
+            for (var i = 0; i < scheduleMax; i++)
+            {
+                var schedule = service.FindSchedule(i + 1);
+                Assert.IsNotNull(schedule);
+                Assert.AreEqual(schedule, schedules[i].ToDomain());
+            }
+            
+            Assert.IsNull(service.FindSchedule(0));
+            Assert.IsNull(service.FindSchedule(scheduleMax+1));
+            
+            ctx.Dispose();
+        }
+
+        [Test]
         public void TestUpdateSchedule()
         {
             var ctx = InTestContext.Context;

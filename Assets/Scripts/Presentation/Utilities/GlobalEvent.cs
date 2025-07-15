@@ -11,5 +11,10 @@
         /// InAppContext.ThemeのColorThemeが変更された直後
         /// </summary>
         OnThemeUpdated,
+        
+        /// <summary>
+        /// CalendarSceneでScheduleが作成/変更された直後
+        /// </summary>
+        OnScheduleUpdated,
     }
 }

@@ -43,9 +43,7 @@ namespace Domain.Entity
         }
 
         public SchedulePeriodicType PeriodicType { get; } = PeriodicType;
-        public int Span { get; } = Span > 0 
-            ? Span 
-            : throw new ArgumentOutOfRangeException(nameof(Span), "Spanは1以上の整数です。");
+        public int Span { get; } = Span > 0 ? Span : throw new ArgumentOutOfRangeException(nameof(Span), "Spanは1以上の整数です。");
 
         /// <summary>繰り返しの開始日</summary>
         public CCDateOnly StartDate { get; } = StartDate;

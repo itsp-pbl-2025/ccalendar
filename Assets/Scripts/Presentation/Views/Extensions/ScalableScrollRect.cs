@@ -148,7 +148,7 @@ namespace Presentation.Views.Extensions
                         content.anchoredPosition += _unitPageWidth * stepDirection * Vector2.right;
                     }
                     _prevOffsetX = content.anchoredPosition.x;
-                    _onPageSteppedCallback?.Invoke(pageStepped);
+                    if (pageStepped is not 0) _onPageSteppedCallback?.Invoke(pageStepped);
                 }
                 horizontal = true;
                 vertical = true;

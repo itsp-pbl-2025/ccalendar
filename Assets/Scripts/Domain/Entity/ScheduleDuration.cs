@@ -13,34 +13,37 @@ namespace Domain.Entity
             StartTime = startTime;
             EndTime = endTime;
             IsAllDay = isAllDay;
+            Index = 0;
         }
         
         /**
          * 期間を指定する(終日でない)場合のコンストラクタ.
          */
-        public ScheduleDuration(CCDateTime startTime, CCDateTime endTime)
+        public ScheduleDuration(CCDateTime startTime, CCDateTime endTime, int index = 0)
             : this(startTime, endTime, false)
         {
             if (startTime.CompareTo(endTime) > 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(endTime), "The end time must be later than the start time.");
             }
+            Index = index;
         }
         
         /**
          * 終日の場合のコンストラクタ.
          */
-        public ScheduleDuration(CCDateOnly day)
+        public ScheduleDuration(CCDateOnly day, int index = 0)
         {
             StartTime = new CCDateTime(day, new CCTimeOnly(0, 0, 0));
             EndTime = new CCDateTime(day, new CCTimeOnly(23, 59, 59));
             IsAllDay = true;
+            Index = index;
         }
         
         /**
          * 終日(複数日)の場合のコンストラクタ.
          */
-        public ScheduleDuration(CCDateOnly day, CCDateOnly endDay)
+        public ScheduleDuration(CCDateOnly day, CCDateOnly endDay, int index = 0)
         {
             if (day.CompareTo(endDay) > 0)
             {
@@ -49,11 +52,13 @@ namespace Domain.Entity
             StartTime = new CCDateTime(day, new CCTimeOnly(0, 0, 0));
             EndTime = new CCDateTime(endDay, new CCTimeOnly(23, 59, 59));
             IsAllDay = true;
+            Index = index;
         }
         
         public CCDateTime StartTime { get; }
         public CCDateTime EndTime { get; }
         public bool IsAllDay { get; }
+        public int Index { get; }
 
         public bool IsInSet(CCDateTime time)
         {

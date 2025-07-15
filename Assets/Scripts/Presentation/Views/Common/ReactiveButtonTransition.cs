@@ -25,7 +25,10 @@ namespace Presentation.Views.Common
             Animation
         }
         
-        [SerializeField] private ButtonRP buttonRP;
+        [SerializeReference] private MonoBehaviour buttonRP;
+        
+        private IButtonState _targetButton;
+        private IButtonState TargetButton => _targetButton ??= buttonRP as IButtonState;
 
         [SerializeField] private Transition transitionMode = Transition.ColorTint;
 
@@ -51,11 +54,13 @@ namespace Presentation.Views.Common
         public class ReactiveButtonTransitionEditor : Editor
         {
             private SerializedProperty _scriptProp;
+            private SerializedProperty _buttonProp;
             private SerializedProperty _modeProp;
 
             private void OnEnable()
             {
                 _scriptProp = serializedObject.FindProperty("m_Script");
+                _buttonProp = serializedObject.FindProperty("buttonRP");
                 _modeProp = serializedObject.FindProperty("transitionMode");
             }
 
@@ -67,33 +72,100 @@ namespace Presentation.Views.Common
                 EditorGUILayout.PropertyField(_scriptProp);
                 EditorGUI.EndDisabledGroup();
                 
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(_buttonProp);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    UnityEngine.Object assignedObject = _buttonProp.objectReferenceValue;
+
+                    if (assignedObject != null)
+                    {
+                        if (assignedObject is GameObject assignedGameObject)
+                        {
+                            var foundButtonState = assignedGameObject.GetComponent<IButtonState>() as MonoBehaviour;
+
+                            if (foundButtonState == null)
+                            {
+                                Debug.LogError($"GameObject '{assignedGameObject.name}' does not contain any MonoBehaviour implementing IButtonState. Assigning null to {_buttonProp.name}.");
+                                _buttonProp.objectReferenceValue = null;
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"GameObject '{assignedGameObject.name}' was assigned. Automatically setting {_buttonProp.name} to the first found IButtonState implementer: '{foundButtonState.GetType().Name}'.");
+                                _buttonProp.objectReferenceValue = foundButtonState;
+                            }
+                        }
+                        else if (assignedObject is MonoBehaviour assignedMonoBehaviour)
+                        {
+                            // Case 2: ドラッグされたのが MonoBehaviour コンポーネントそのものの場合
+                            if (assignedMonoBehaviour is not IButtonState)
+                            {
+                                if (assignedMonoBehaviour.gameObject.TryGetComponent(out IButtonState buttonState))
+                                {
+                                    var buttonStateObject = buttonState as MonoBehaviour;
+                                    if (buttonStateObject)
+                                    {
+                                        _buttonProp.objectReferenceValue = buttonStateObject;
+                                    }
+                                    else
+                                    {
+                                        Debug.LogError($"'{assignedMonoBehaviour.name}' (Type: {assignedMonoBehaviour.GetType().Name}) does not implement IButtonState. Assigning null to {_buttonProp.name}.");
+                                        _buttonProp.objectReferenceValue = null;
+                                    }
+                                }
+                                else
+                                {
+                                    // IButtonState を実装していない MonoBehaviour がアサインされた場合
+                                    Debug.LogError($"'{assignedMonoBehaviour.name}' (Type: {assignedMonoBehaviour.GetType().Name}) does not implement IButtonState. Assigning null to {_buttonProp.name}.");
+                                    _buttonProp.objectReferenceValue = null;
+                                }
+                            }
+                            else
+                            {
+                                // 適切に IButtonState を実装しているので、そのまま受け入れる
+                                // この場合、_buttonProp.objectReferenceValue は既に assignedMonoBehaviour を指している
+                                // ので、明示的な再代入は不要だが、処理の流れとして代入しても問題はない
+                                // foundButtonStateMonoBehaviour = assignedMonoBehaviour; // 必要であれば値を保持
+                            }
+                        }
+                        else
+                        {
+                            // MonoBehaviour でも GameObject でもないオブジェクトがアサインされた場合
+                            Debug.LogError($"Assigned object '{assignedObject.name}' is not a GameObject or MonoBehaviour. Assigning null to {_buttonProp.name}.");
+                            _buttonProp.objectReferenceValue = null;
+                        }
+                    }
+
+                    serializedObject.ApplyModifiedProperties();
+                }
+                
                 EditorGUILayout.PropertyField(_modeProp);
 
                 switch ((Transition)_modeProp.enumValueIndex)
                 {
                     case Transition.ColorTint:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "colorTypes", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
+                            "m_Script", "buttonRP", "transitionMode", "colorTypes", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
                         break;
                     case Transition.ColorType:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "colorTints", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
+                            "m_Script", "buttonRP", "transitionMode", "colorTints", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
                         break;
                     case Transition.ColorAssign:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "colorTints", "colorTypes", "targetImage", "spriteState", "animator", "animationTriggers");
+                            "m_Script", "buttonRP", "transitionMode", "colorTints", "colorTypes", "targetImage", "spriteState", "animator", "animationTriggers");
                         break;
                     case Transition.SpriteSwap:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "animator", "animationTriggers");
+                            "m_Script", "buttonRP", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "animator", "animationTriggers");
                         break;
                     case Transition.Animation:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "targetImage", "spriteState");
+                            "m_Script", "buttonRP", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "targetImage", "spriteState");
                         break;
                     default:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
+                            "m_Script", "buttonRP", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
                         break;
                 }
                 
@@ -106,7 +178,12 @@ namespace Presentation.Views.Common
         /// </summary>
         private void Reset()
         {
-            buttonRP = GetComponentInParent<ButtonRP>();
+            foreach (var child in transform.GetComponentsInChildren<MonoBehaviour>())
+            {
+                if (child is not IButtonState buton) continue;
+                buttonRP = child;
+                _targetButton = buton;
+            }
             targetGraphic = TryGetComponent<Graphic>(out var g) ? g : null;
             targetImage = TryGetComponent<Image>(out var i) ? i : null;
             animator = TryGetComponent<Animator>(out var a) ? a : null;
@@ -127,7 +204,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Color Tint Transition is enabled, but no Graphic is assigned.");
                         return;
                     }
-                    buttonRP.State
+                    TargetButton.State
                         .Subscribe(t => ApplyColorTint(t.state, t.instant))
                         .AddTo(this);
                     break;
@@ -137,7 +214,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Color Type Transition is enabled, but no Graphic is assigned.");
                         return;
                     }
-                    buttonRP.State
+                    TargetButton.State
                         .Subscribe(t => ApplyColorType(t.state, t.instant))
                         .AddTo(this);
                     break;
@@ -147,7 +224,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Color Assign Transition is enabled, but no Graphic is assigned.");
                         return;
                     }
-                    buttonRP.State
+                    TargetButton.State
                         .Subscribe(t => ApplyColorAssign(t.state, t.instant))
                         .AddTo(this);
                     break;
@@ -158,7 +235,7 @@ namespace Presentation.Views.Common
                         return;   
                     }
                     _originalSprite = targetImage.sprite;
-                    buttonRP.State
+                    TargetButton.State
                         .Subscribe(t => ApplySpriteSwap(t.state))
                         .AddTo(this);
                     break;
@@ -168,7 +245,7 @@ namespace Presentation.Views.Common
                         Debug.LogError("Animation Transition is enabled, but no Animator is assigned.");
                         return;
                     }
-                    buttonRP.State
+                    TargetButton.State
                         .Subscribe(t => ApplyAnimation(t.state))
                         .AddTo(this);
                     break;
@@ -178,14 +255,14 @@ namespace Presentation.Views.Common
             }
         }
 
-        private void ApplyColorTint(ButtonRP.ButtonSelectionState state, bool instant)
+        private void ApplyColorTint(ButtonSelectionState state, bool instant)
         {
             var to = state switch
             {
-                ButtonRP.ButtonSelectionState.Normal => colorTints.normalColor,
-                ButtonRP.ButtonSelectionState.Highlighted => colorTints.highlightedColor,
-                ButtonRP.ButtonSelectionState.Pressed => colorTints.pressedColor,
-                ButtonRP.ButtonSelectionState.Selected => colorTints.selectedColor,
+                ButtonSelectionState.Normal => colorTints.normalColor,
+                ButtonSelectionState.Highlighted => colorTints.highlightedColor,
+                ButtonSelectionState.Pressed => colorTints.pressedColor,
+                ButtonSelectionState.Selected => colorTints.selectedColor,
                 _ => colorTints.disabledColor,
             } * colorTints.colorMultiplier;
 
@@ -197,14 +274,14 @@ namespace Presentation.Views.Common
         }
 
         private Sequence _seq;
-        private void ApplyColorType(ButtonRP.ButtonSelectionState state, bool instant)
+        private void ApplyColorType(ButtonSelectionState state, bool instant)
         {
             var to = state switch
             {
-                ButtonRP.ButtonSelectionState.Normal => colorTypes.normalColor,
-                ButtonRP.ButtonSelectionState.Highlighted => colorTypes.highlightedColor,
-                ButtonRP.ButtonSelectionState.Pressed => colorTypes.pressedColor,
-                ButtonRP.ButtonSelectionState.Selected => colorTypes.selectedColor,
+                ButtonSelectionState.Normal => colorTypes.normalColor,
+                ButtonSelectionState.Highlighted => colorTypes.highlightedColor,
+                ButtonSelectionState.Pressed => colorTypes.pressedColor,
+                ButtonSelectionState.Selected => colorTypes.selectedColor,
                 _ => colorTypes.disabledColor,
             };
 
@@ -240,39 +317,39 @@ namespace Presentation.Views.Common
             }
         }
         
-        private void ApplyColorAssign(ButtonRP.ButtonSelectionState state, bool instant)
+        private void ApplyColorAssign(ButtonSelectionState state, bool instant)
         {
             _seq?.Kill();
             
             var to = state switch
             {
-                ButtonRP.ButtonSelectionState.Normal => colorAssigns.normalColor,
-                ButtonRP.ButtonSelectionState.Highlighted => colorAssigns.highlightedColor,
-                ButtonRP.ButtonSelectionState.Pressed => colorAssigns.pressedColor,
-                ButtonRP.ButtonSelectionState.Selected => colorAssigns.selectedColor,
+                ButtonSelectionState.Normal => colorAssigns.normalColor,
+                ButtonSelectionState.Highlighted => colorAssigns.highlightedColor,
+                ButtonSelectionState.Pressed => colorAssigns.pressedColor,
+                ButtonSelectionState.Selected => colorAssigns.selectedColor,
                 _ => colorAssigns.disabledColor,
             };
             
             _seq = DOTween.Sequence().Append(DOVirtual.Color(targetGraphic.color, to, instant ? 0f : colorAssigns.fadeDuration, c => targetGraphic.color = c));
         }
 
-        private void ApplySpriteSwap(ButtonRP.ButtonSelectionState state)
+        private void ApplySpriteSwap(ButtonSelectionState state)
         {
             targetImage.sprite = state switch
             {
-                ButtonRP.ButtonSelectionState.Normal => _originalSprite,
-                ButtonRP.ButtonSelectionState.Highlighted => spriteState.highlightedSprite
+                ButtonSelectionState.Normal => _originalSprite,
+                ButtonSelectionState.Highlighted => spriteState.highlightedSprite
                     ? spriteState.highlightedSprite : _originalSprite,
-                ButtonRP.ButtonSelectionState.Pressed => spriteState.pressedSprite
+                ButtonSelectionState.Pressed => spriteState.pressedSprite
                     ? spriteState.pressedSprite : _originalSprite,
-                ButtonRP.ButtonSelectionState.Selected => spriteState.highlightedSprite
+                ButtonSelectionState.Selected => spriteState.highlightedSprite
                     ? spriteState.highlightedSprite : _originalSprite,
                 _ => spriteState.disabledSprite
                     ? spriteState.disabledSprite : _originalSprite,
             };
         }
         
-        private void ApplyAnimation(ButtonRP.ButtonSelectionState state)
+        private void ApplyAnimation(ButtonSelectionState state)
         {
             if (_prevAnimationTrigger != "")
             {
@@ -286,10 +363,10 @@ namespace Presentation.Views.Common
             
             var animationTrigger = state switch
             {
-                ButtonRP.ButtonSelectionState.Normal => animationTriggers.normalTrigger,
-                ButtonRP.ButtonSelectionState.Highlighted => animationTriggers.highlightedTrigger,
-                ButtonRP.ButtonSelectionState.Pressed => animationTriggers.pressedTrigger,
-                ButtonRP.ButtonSelectionState.Selected => animationTriggers.selectedTrigger,
+                ButtonSelectionState.Normal => animationTriggers.normalTrigger,
+                ButtonSelectionState.Highlighted => animationTriggers.highlightedTrigger,
+                ButtonSelectionState.Pressed => animationTriggers.pressedTrigger,
+                ButtonSelectionState.Selected => animationTriggers.selectedTrigger,
                 _ => animationTriggers.disabledTrigger,
             };
             
