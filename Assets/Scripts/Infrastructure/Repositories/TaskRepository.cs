@@ -10,8 +10,11 @@ namespace Infrastructure.Repositories
     public class TaskRepository : ITaskRepository
     {
         private readonly ILiteCollection<DCCTask> _col;
-        
-        public TaskRepository(LiteDatabase db) => _col = db.GetCollection<DCCTask>("task");
+
+        public TaskRepository(LiteDatabase db)
+        {
+            _col = db.GetCollection<DCCTask>("task");   
+        }
         
         public CCTask Insert(CCTask ccTask)
         {

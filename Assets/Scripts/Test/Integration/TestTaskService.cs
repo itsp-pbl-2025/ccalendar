@@ -1,5 +1,8 @@
+using System;
+using System.Linq;
 using AppCore.UseCases;
 using Domain.Entity;
+using Domain.Enum;
 using Infrastructure.Data.DAO;
 using NUnit.Framework;
 using Test.MockData;
@@ -90,6 +93,33 @@ namespace Test.Integration
             }
             Assert.IsTrue(tasks.Count == 0);
             
+            ctx.Dispose();
+        }
+        
+        [Test]
+        public void TestCompleteTask_NonPeriodic()
+        {
+            var ctx = InTestContext.Context;
+            var service = ctx.GetService<TaskService>();
+
+            // 登録前は存在しないので false
+            var np = new CCTask(
+                Id: 1,
+                Title: "NonPeriodic",
+                Description: "Desc",
+                Priority: 1,
+                Deadline: CCDateTime.Today.AddDays(1)
+            );
+            Assert.IsFalse(service.CompleteTask(np));
+
+            // タスク登録 → 完了
+            service.CreateTask(np);
+            var saved = service.GetTask().First(t => t.Id == 1);
+            Assert.IsTrue(service.CompleteTask(saved));
+
+            var completed = service.GetTask().First(t => t.Id == 1);
+            Assert.IsTrue(completed.IsCompleted);
+
             ctx.Dispose();
         }
     }
