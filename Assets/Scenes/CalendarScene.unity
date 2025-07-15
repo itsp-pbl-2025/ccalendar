@@ -3614,11 +3614,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984768324}
   m_CullTransparentMesh: 1
---- !u!20 &986700890 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 7456196797583569811, guid: 70fd1607782178c4b9ee9a90445449fe, type: 3}
-  m_PrefabInstance: {fileID: 1191628753}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1011444338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3747,7 +3742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1937232828612034521, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.9438247
+      value: 0.9384058
       objectReference: {fileID: 0}
     - target: {fileID: 1937232828612034521, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_AnchorMin.y
@@ -3756,7 +3751,7 @@ PrefabInstance:
     - target: {fileID: 4567376349890465261, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 986700890}
+      objectReference: {fileID: 0}
     - target: {fileID: 4567376349890465261, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -3847,7 +3842,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7543135488190898681, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 2259
+      value: 2208
       objectReference: {fileID: 0}
     - target: {fileID: 8870084552112784406, guid: 78adb5b611ddd1e4fa3a94bfa6551a3c, type: 3}
       propertyPath: m_IsActive
@@ -4440,7 +4435,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1438443173228079493, guid: 70fd1607782178c4b9ee9a90445449fe, type: 3}
       propertyPath: scene
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1438443173228079493, guid: 70fd1607782178c4b9ee9a90445449fe, type: 3}
       propertyPath: canvas
