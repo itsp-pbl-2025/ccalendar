@@ -20,6 +20,12 @@ namespace Presentation.Views.Scene.Task
         private TaskListViewer _taskManager;
         private Sequence _seq;
         private bool _isClosing;
+
+        public void Init(TaskListViewer taskManager)
+        {
+            _taskManager = taskManager;
+            canvasGroup.alpha = 0f;
+        }
         
         public override void OnOpenWindow()
         {
@@ -53,7 +59,7 @@ namespace Presentation.Views.Scene.Task
         public void MoveScene(int intType)
         {
             var scene = (SceneOf)intType;
-            InAppContext.SceneLoader.ChangeScene(scene);
+            InAppContext.SceneLoader.ChangeScene(scene, unload:true);
         }
         
         public override void CloseWindow()
