@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using AppCore.Interfaces;
+using AppCore.Native;
 using AppCore.UseCases;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -33,6 +34,7 @@ namespace Test
                 _serviceFactories.Add(typeof(HistoryService), name => new HistoryService(HistoryRepo, name));
                 _serviceFactories.Add(typeof(TaskService), name => new TaskService(TaskRepo, name));
                 _serviceFactories.Add(typeof(Task2ScheduleService), name => new Task2ScheduleService(this, name));
+                _serviceFactories.Add(typeof(NativeService), name => new NativeService(name));
             }
             
             public T GetService<T>(string name = "") where T : IService
