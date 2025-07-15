@@ -68,7 +68,7 @@ namespace AppCore.UseCases
                 new SchedulePeriodic(periodic.PeriodicType, periodic.Span, periodic.ExcludeIndices, periodic.StartDate, modifyAt.AddDays(-1))));
             
             var sPeriodic = schedule.Periodic;
-            var newPeriodic = sPeriodic is null ? null : new SchedulePeriodic(sPeriodic.PeriodicType, sPeriodic.Span, sPeriodic.ExcludeIndices, modifyAt, sPeriodic.EndDate));
+            var newPeriodic = sPeriodic is null ? null : new SchedulePeriodic(sPeriodic.PeriodicType, sPeriodic.Span, sPeriodic.ExcludeIndices, modifyAt, sPeriodic.EndDate);
             CreateSchedule(new Schedule(0, schedule.Title, schedule.Description, schedule.Duration, newPeriodic));
 
             return true;
