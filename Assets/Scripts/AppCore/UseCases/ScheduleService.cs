@@ -74,6 +74,32 @@ namespace AppCore.UseCases
             return true;
         }
         
+        public bool DeleteScheduleAt(int scheduleId, int index)
+        {
+            var (id, title, description, duration, periodic) = _scheduleRepo.Get(scheduleId);
+            if (periodic is null) return false;
+            if (periodic.ExcludeIndices.AsValueEnumerable().Contains(index)) return false;
+            
+            var indices = new List<int>(periodic.ExcludeIndices) { index };
+
+            UpdateSchedule(new Schedule(id, title, description, duration,
+                new SchedulePeriodic(periodic.PeriodicType, periodic.Span, indices, periodic.StartDate, periodic.EndDate)));
+            
+            return true;
+        }
+
+        public bool DeleteScheduleForward(int scheduleId, CCDateOnly modifyAt)
+        {
+            var (id, title, description, duration, periodic) = _scheduleRepo.Get(scheduleId);
+            if (periodic is null) return false;
+            if (periodic.EndDate is not null && periodic.EndDate.Value.CompareTo(modifyAt) < 0) return false;
+            
+            UpdateSchedule(new Schedule(id, title, description, duration,
+                new SchedulePeriodic(periodic.PeriodicType, periodic.Span, periodic.ExcludeIndices, periodic.StartDate, modifyAt.AddDays(-1))));
+            
+            return true;
+        }
+        
         public List<Schedule> GetSchedules()
         {
             return _scheduleRepo.GetAll().AsValueEnumerable().ToList();
