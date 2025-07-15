@@ -48,14 +48,7 @@ namespace Presentation.Views.Scene.Task
         {
             if (taskItemPrefab == null || taskListParent == null) return;
 
-            float totalSize = _taskItems.Select(item => ((RectTransform)item.transform).sizeDelta.y).Sum();
-            totalSize += itemSpacing * (_taskItems.Count - 1);
-
             var taskItem = Instantiate(taskItemPrefab, taskListParent);
-            if (taskItem.transform is RectTransform itemTransform)
-            {
-                itemTransform.localPosition = new Vector3(0.0f, -totalSize, 0.0f);
-            }
             _taskItems.Add(taskItem);
 
             SetTaskItemData(taskItem, task);
