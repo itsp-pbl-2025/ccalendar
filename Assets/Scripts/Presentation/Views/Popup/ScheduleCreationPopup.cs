@@ -35,7 +35,6 @@ namespace Presentation.Views.Popup
 
         private RectTransform _scheduleTitleRect, _scheduleDescriptionRect;
 
-        private UnitSchedule _editSchedule;
         private Schedule _originSchedule;
         private Sequence _seq;
 
@@ -82,7 +81,6 @@ namespace Presentation.Views.Popup
 
         public void Init(UnitSchedule schedule)
         {
-            _editSchedule = schedule;
             _originSchedule = InAppContext.Context.GetService<ScheduleService>().FindSchedule(schedule.Id);
             _mode = Mode.Edit;
             
@@ -185,6 +183,13 @@ namespace Presentation.Views.Popup
             {
                 service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
                 CloseWindow();
+                InAppContext.EventDispatcher.SendGlobalEvent(GlobalEvent.OnScheduleUpdated);
+            }
+            else if (_periodic is null)
+            {
+                service.UpdateSchedule(new Schedule(_originSchedule.Id, _scheduleTitle, _scheduleDescription, CreateDuration(), _originSchedule.Periodic));
+                CloseWindow();
+                InAppContext.EventDispatcher.SendGlobalEvent(GlobalEvent.OnScheduleUpdated);
             }
             else
             {
