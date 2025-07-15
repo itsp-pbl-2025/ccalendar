@@ -74,7 +74,7 @@ namespace Presentation.Views.Scene.Calendar
         public void MoveScene(int intType)
         {
             var scene = (SceneOf)intType;
-            InAppContext.SceneLoader.ChangeScene(scene);
+            InAppContext.SceneLoader.ChangeScene(scene, unload:true);
         }
 
         private async UniTask CloseWindowAsync()

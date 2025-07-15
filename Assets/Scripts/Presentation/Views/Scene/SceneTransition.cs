@@ -11,7 +11,7 @@ namespace Presentation.Views.Scene
         BlackOut,
     }
     
-    public class SceneTransition
+    public record SceneTransition
     {
         public const float TimeTransitionDefault = 0.333f;
         public TransitionType Transition;
@@ -21,6 +21,19 @@ namespace Presentation.Views.Scene
         public float TimeBeforeOut = 0.0f, TimeTransitionOut = TimeTransitionDefault;
         public Vector2 DirectionOut;
         public Ease EasingOut = Ease.InOutQuad;
+
+        public SceneTransition(SceneTransition transition)
+        {
+            Transition = transition.Transition;
+            TimeBeforeIn = transition.TimeBeforeIn;
+            TimeTransitionIn = transition.TimeTransitionIn;
+            DirectionIn = transition.DirectionIn;
+            EasingIn = transition.EasingIn;
+            TimeBeforeOut = transition.TimeBeforeOut;
+            TimeTransitionOut = transition.TimeTransitionOut;
+            DirectionOut = transition.DirectionOut;
+            EasingOut = transition.EasingOut;
+        }
 
         #region TransitionPreset
 
