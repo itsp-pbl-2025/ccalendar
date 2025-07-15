@@ -68,11 +68,11 @@ namespace Presentation.Views.Scene
             if (st is null)
             {
                 transitioner.ShowCanvasFast();
+                completeCallback?.Invoke();
+                return;
             }
-            else
-            {
-                transitioner.ShowCanvasWithAnimation(st, completeCallback);
-            }
+
+            transitioner.ShowCanvasWithAnimation(st, completeCallback);
         }
 
         public void SceneTransitionOut(SceneTransition st, Action completeCallback = null)
@@ -80,6 +80,7 @@ namespace Presentation.Views.Scene
             if (st is null)
             {
                 transitioner.HideCanvasFast();
+                completeCallback?.Invoke();
                 return;
             }
             
@@ -88,6 +89,7 @@ namespace Presentation.Views.Scene
 
         public void OnSceneUnload()
         {
+            Debug.Log($"[{scene}] I'm unloading now!");
         }
     }
 }

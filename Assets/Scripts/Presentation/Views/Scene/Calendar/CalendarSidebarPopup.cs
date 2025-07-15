@@ -70,9 +70,11 @@ namespace Presentation.Views.Scene.Calendar
             window.Init(_calendarManager.CurrentTargetDate, false);
         }
 
-        public void MoveToTaskScene()
+        [EnumAction(typeof(SceneOf))]
+        public void MoveScene(int intType)
         {
-            throw new NotImplementedException();
+            var scene = (SceneOf)intType;
+            InAppContext.SceneLoader.ChangeScene(scene, unload:true);
         }
 
         private async UniTask CloseWindowAsync()

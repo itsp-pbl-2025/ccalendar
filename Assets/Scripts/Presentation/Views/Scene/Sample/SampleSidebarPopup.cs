@@ -1,6 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Presentation.Presenter;
 using Presentation.Views.Common;
+using Presentation.Views.Extensions;
 using Presentation.Views.Popup;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +34,13 @@ namespace Presentation.Views.Scene.Sample
         {
             // URLを開く
             Application.OpenURL(url);
+        }
+        
+        [EnumAction(typeof(SceneOf))]
+        public void MoveScene(int intType)
+        {
+            var scene = (SceneOf)intType;
+            InAppContext.SceneLoader.ChangeScene(scene, unload:true);
         }
 
         public void ApplicationQuit()

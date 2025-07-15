@@ -6,6 +6,7 @@ using AppCore.UseCases;
 using Domain.Entity;
 using Presentation.Presenter;
 using Presentation.Utilities;
+using Presentation.Views.Popup;
 
 namespace Presentation.Views.Scene.Task
 {
@@ -79,6 +80,12 @@ namespace Presentation.Views.Scene.Task
             }
 
             _taskItems.Clear();
+        }
+
+        public void ShowSidebar()
+        {
+            var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<TaskSidebarPopup>());
+            window.Init(this);
         }
 
         private void OnDestroy()

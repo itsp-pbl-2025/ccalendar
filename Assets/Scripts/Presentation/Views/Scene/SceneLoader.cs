@@ -5,6 +5,7 @@ using Presentation.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.SceneManagement;
+using ZLinq;
 
 namespace Presentation.Views.Scene
 {
@@ -49,10 +50,20 @@ namespace Presentation.Views.Scene
         /// <param name="scene">自分自身を報告</param>
         public void SubmitScene(AdditiveScene scene)
         {
+            var sceneBefore = _currentScene;
+            if (scene.Scene is not SceneOf.Base)
+            {
+                Debug.Log($"current scene switched to {scene.Scene}");
+                _currentScene = scene.Scene;
+            }
             _loadedScenes.Add(scene.Scene, scene);
+            
             if (_transitionWaiting.Remove(scene.Scene, out var transition))
             {
-                if (transition) PlaySceneTransition(scene.Scene, _currentScene, _nextTransition);
+                if (transition)
+                {
+                    PlaySceneTransition(scene.Scene, sceneBefore, _nextTransition is null ? null : new SceneTransition(_nextTransition));
+                }
             }
             _nextTransition = null;
         }
@@ -115,14 +126,21 @@ namespace Presentation.Views.Scene
         {
             if (_loadedScenes.TryGetValue(from, out var fromScene))
             {
-                fromScene.SceneTransitionIn(st, () => _keepScenes.Remove(from));
+                fromScene.SceneTransitionIn(st, () =>
+                {
+                    _keepScenes.Remove(from);
+                });
             }
 
             if (_loadedScenes.TryGetValue(to, out var toScene))
             {
                 if (_unloadWithTransition)
                 {
-                    toScene.SceneTransitionOut(st, () => UnloadAdditiveScene(to));
+                    toScene.SceneTransitionOut(st, () =>
+                    {
+                        var success = UnloadAdditiveScene(to);
+                        if (!success) Debug.LogWarning("Failed to unload scene!");
+                    });
                 }
                 else
                 {
@@ -136,12 +154,15 @@ namespace Presentation.Views.Scene
         /// </summary>
         public void UnloadWithoutCurrentScene()
         {
-            foreach (var (type, additive) in _loadedScenes)
+            var scenesToUnload = _loadedScenes.AsValueEnumerable()
+                .Where(kvp => !_keepScenes.Contains(kvp.Key) && kvp.Key != SceneOf.Base && kvp.Key != _currentScene)
+                .ToList();
+
+            foreach (var (type, additive) in scenesToUnload)
             {
-                if (_keepScenes.Contains(type)) continue;
-                if (type is SceneOf.Base || type == _currentScene) continue;
                 additive.OnSceneUnload();
                 SceneManager.UnloadSceneAsync(type.ToName());
+                _loadedScenes.Remove(type);
             }
         }
 
@@ -153,7 +174,7 @@ namespace Presentation.Views.Scene
         public bool UnloadAdditiveScene(SceneOf scene)
         {
             if (_keepScenes.Contains(scene)) return false;
-            if (!_loadedScenes.TryGetValue(scene, out var additive)) return false;
+            if (!_loadedScenes.Remove(scene, out var additive)) return false;
             
             additive.OnSceneUnload();
             SceneManager.UnloadSceneAsync(scene.ToName());

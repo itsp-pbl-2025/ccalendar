@@ -272,7 +272,7 @@ namespace Presentation.Views.Popup
         {
             if (_modified)
             {
-                PopupManager.Instance.ShowDoublePopup("編集中の予定を破棄しますか？", "はい", ClosingWithConfirm, "いいえ");
+                PopupManager.Instance.ShowDoublePopup("編集中の予定を破棄しますか？", "はい", CloseWindow, "いいえ");
             }
             else
             {

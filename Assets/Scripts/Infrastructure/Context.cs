@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using AppCore.Interfaces;
+using AppCore.Native;
 using AppCore.UseCases;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -30,6 +31,8 @@ namespace Infrastructure
             _services.Add(new HolidayService(this));
             _services.Add(new HistoryService(HistoryRepo));
             _services.Add(new TaskService(TaskRepo));
+            _services.Add(new Task2ScheduleService(this));
+            _services.Add(new NativeService());
 
             foreach (var service in _services)
             {
