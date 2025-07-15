@@ -70,6 +70,11 @@ namespace Presentation.Views.Scene.Calendar
             window.Init(_calendarManager.CurrentTargetDate, false);
         }
 
+        public void MoveToTaskScene()
+        {
+            throw new NotImplementedException();
+        }
+
         private async UniTask CloseWindowAsync()
         {
             const float timeFadeOut = 0.1f;
