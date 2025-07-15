@@ -17,6 +17,13 @@ namespace Domain.Entity
             Month = new Month(month);
             Day = new Day(day);
         }
+
+        public CCDateOnly(DateTime dateTime)
+        {
+            Year = new Year(dateTime.Year);
+            Month = new Month(dateTime.Month);
+            Day = new Day(dateTime.Day);
+        }
         
         public static CCDateOnly Today => CCDateTime.Today.ToDateOnly();
 

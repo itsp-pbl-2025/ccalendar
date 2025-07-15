@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using AppCore.UseCases;
+using AppCore.Utilities;
 using DG.Tweening;
 using Domain.Entity;
+using Domain.Enum;
 using Presentation.Presenter;
 using Presentation.Utilities;
 using Presentation.Views.Extensions;
+using Presentation.Views.Scene.Calendar;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,17 +30,18 @@ namespace Presentation.Views.Popup
         [SerializeField] private ButtonRP hideButton;
         [SerializeField] private RectTransform scheduleTitleArea, scheduleDescriptionArea;
         [SerializeField] private TMP_InputField scheduleTitleField, scheduleDescriptionField;
-        [SerializeField] private ButtonWithLabel startDateButton, startTimeButton, endDateButton, endTimeButton, repetitionButton;
+        [SerializeField] private ButtonWithLabel deleteButton, startDateButton, startTimeButton, endDateButton, endTimeButton, repetitionButton;
         [SerializeField] private Toggle allDayToggle;
 
         private RectTransform _scheduleTitleRect, _scheduleDescriptionRect;
 
-        private UnitSchedule _editSchedule;
+        private UnitSchedule _targetSchedule;
+        private Schedule _originSchedule;
         private Sequence _seq;
 
         private bool _isStateHide;
         private string _scheduleTitle, _scheduleDescription;
-        private bool _titleUpdated, _descriptionUpdated;
+        private bool _titleUpdated, _descriptionUpdated, _modified;
         
         private Mode _mode;
         private CCDateOnly _startDate, _endDate;
@@ -70,20 +74,17 @@ namespace Presentation.Views.Popup
                 _startDate = _endDate = atDay;
             }
             
-            ReloadDateButtonLabel(Limit.Start);
-            ReloadDateButtonLabel(Limit.End);
-            ReloadTimeButtonLabel(Limit.Start);
-            ReloadTimeButtonLabel(Limit.End);
-            
             _isAllDay = isAllDay;
             allDayToggle.isOn = isAllDay;
+            deleteButton.gameObject.SetActive(false);
             
             ReloadAll();
         }
 
         public void Init(UnitSchedule schedule)
         {
-            _editSchedule = schedule;
+            _targetSchedule = schedule;
+            _originSchedule = InAppContext.Context.GetService<ScheduleService>().FindSchedule(schedule.Id);
             _mode = Mode.Edit;
             
             _startDate = schedule.Duration.StartTime.ToDateOnly();
@@ -96,6 +97,8 @@ namespace Presentation.Views.Popup
 
             _scheduleTitle = schedule.Title;
             _scheduleDescription = schedule.Description;
+            
+            _periodic = _originSchedule.Periodic;
             
             ReloadAll();
         }
@@ -111,6 +114,7 @@ namespace Presentation.Views.Popup
             ReloadDateButtonLabel(Limit.End);
             ReloadTimeButtonLabel(Limit.Start);
             ReloadTimeButtonLabel(Limit.End);
+            ReloadRepetitionLabel();
 
             scheduleTitleField.text = _scheduleTitle;
             scheduleDescriptionField.text = _scheduleDescription;
@@ -180,53 +184,120 @@ namespace Presentation.Views.Popup
             var service = InAppContext.Context.GetService<ScheduleService>();
             if (_mode is Mode.New)
             {
-                var duration = _isAllDay
-                    ? new ScheduleDuration(_startDate, _endDate)
-                    : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
-            
-                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, duration));
+                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
+                CloseWindow();
+                InAppContext.EventDispatcher.SendGlobalEvent(GlobalEvent.OnScheduleUpdated);
+            }
+            else if (_periodic is null)
+            {
+                service.UpdateSchedule(new Schedule(_originSchedule.Id, _scheduleTitle, _scheduleDescription, CreateDuration(), _originSchedule.Periodic));
+                CloseWindow();
+                InAppContext.EventDispatcher.SendGlobalEvent(GlobalEvent.OnScheduleUpdated);
             }
             else
             {
+                var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<EnumSelectPopup>());
+                window.Init("定期的な予定の変更範囲", 
+                    mod => {
+                        switch (mod)
+                        {
+                            case ScheduleModify.EditSingle:
+                                service.ModifyScheduleAt(_targetSchedule.Id, _targetSchedule.Duration.Index,
+                                    new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
+                                break;
+                            case ScheduleModify.EditForward:
+                                service.ModifyScheduleForward(_targetSchedule.Id, _targetSchedule.Duration.StartTime.ToDateOnly(),
+                                    new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
+                                break;
+                            case ScheduleModify.EditAll:
+                                service.UpdateSchedule(new Schedule(_originSchedule.Id, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(mod), mod, null);
+                        }
+                        CloseWindow();
+                    }, 
+                    enumLabel: new Dictionary<ScheduleModify, string> {
+                        { ScheduleModify.EditSingle, "この予定" },
+                        { ScheduleModify.EditForward, "以降全ての予定" },
+                        { ScheduleModify.EditAll, "全ての予定" }
+                });
             }
-            
-            CloseWindow();
+        }
+
+        public void DeleteWithClosing()
+        {
+            if (_mode is Mode.New) return;
+            var service = InAppContext.Context.GetService<ScheduleService>();
+           
+            if (_periodic is null)
+            {
+                service.DeleteSchedule(new Schedule(_originSchedule.Id, _scheduleTitle, _scheduleDescription, CreateDuration(), _originSchedule.Periodic));
+                CloseWindow();
+                InAppContext.EventDispatcher.SendGlobalEvent(GlobalEvent.OnScheduleUpdated);
+            }
+            else
+            {
+                var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<EnumSelectPopup>());
+                window.Init("定期的な予定の変更範囲",
+                    mod =>
+                    {
+                        switch (mod)
+                        {
+                            case ScheduleModify.EditSingle:
+                                service.DeleteScheduleAt(_targetSchedule.Id, _targetSchedule.Duration.Index);
+                                break;
+                            case ScheduleModify.EditForward:
+                                service.DeleteScheduleForward(_targetSchedule.Id, _targetSchedule.Duration.StartTime.ToDateOnly());
+                                break;
+                            case ScheduleModify.EditAll:
+                                service.DeleteSchedule(_originSchedule);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(mod), mod, null);
+                        }
+
+                        CloseWindow();
+                    },
+                    enumLabel: new Dictionary<ScheduleModify, string>
+                    {
+                        { ScheduleModify.EditSingle, "この予定" },
+                        { ScheduleModify.EditForward, "以降全ての予定" },
+                        { ScheduleModify.EditAll, "全ての予定" }
+                    });
+            }
+        }
+
+        public void ClosingWithConfirm()
+        {
+            if (_modified)
+            {
+                PopupManager.Instance.ShowDoublePopup("編集中の予定を破棄しますか？", "はい", ClosingWithConfirm, "いいえ");
+            }
+            else
+            {
+                CloseWindow();
+            }
         }
 
         public void OnScheduleTitleChanged(string text)
         {
             _scheduleTitle = text;
             _titleUpdated = true;
-
-            // LayoutRebuilder.ForceRebuildLayoutImmediate(scheduleTitleField.textComponent.transform as RectTransform);
-            // var viewport = scheduleTitleField.textViewport;
-            // for (var i = 0; i < viewport.childCount; i++)
-            // {
-            //     if (viewport.GetChild(i) is RectTransform rctf)
-            //     {
-            //         rctf.anchoredPosition = Vector2.zero;
-            //     }
-            // }
+            _modified = true;
         }
 
         public void OnScheduleDescriptionChanged(string text)
         {
             _scheduleDescription = text;
             _descriptionUpdated = true;
-            
-            // var viewport = scheduleDescriptionField.textViewport;
-            // for (var i = 0; i < viewport.childCount; i++)
-            // {
-            //     if (viewport.GetChild(i) is RectTransform rctf)
-            //     {
-            //         rctf.anchoredPosition = Vector2.zero;
-            //     }
-            // }
+            _modified = true;
         }
 
         public void ToggleAllDay(bool isOn)
         {
             _isAllDay = isOn;
+            _modified = true;
 
             if (isOn)
             {
@@ -257,6 +328,7 @@ namespace Presentation.Views.Popup
                 window.Init(date =>
                 {
                     _startDate = date;
+                    _modified = true;
                     ReloadDateButtonLabel(Limit.Start);
                     if (_startDate.CompareTo(_endDate) > 0)
                     {
@@ -271,6 +343,7 @@ namespace Presentation.Views.Popup
                 window.Init(date =>
                 {
                     _endDate = date;
+                    _modified = true;
                     ReloadDateButtonLabel(Limit.End);
                     if (_endDate.CompareTo(_startDate) < 0)
                     {
@@ -292,6 +365,7 @@ namespace Presentation.Views.Popup
                 {
                     var diff = _endTime.WithDate(_endDate) - _startTime.WithDate(_startDate);
                     _startTime = time;
+                    _modified = true;
                     ReloadTimeButtonLabel(Limit.Start);
                     
                     var after = new CCDateTime(_startTime.WithDate(_startDate).AddSeconds(diff.TotalSeconds));
@@ -307,6 +381,7 @@ namespace Presentation.Views.Popup
                 window.Init(time =>
                 {
                     _endTime = time;
+                    _modified = true;
                     ReloadTimeButtonLabel(Limit.End);
                     ReloadWarn();
                 }, _endTime);
@@ -315,7 +390,26 @@ namespace Presentation.Views.Popup
 
         public void OnPressRepetitionButton()
         {
-            throw new NotImplementedException();
+            var periodicDefault = _periodic ?? new SchedulePeriodic(SchedulePeriodicType.None, 1, _startDate);
+            var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<PeriodicCreationPopup>());
+            if (_originSchedule != null)
+            {
+                window.Init(periodic =>
+                {
+                    _periodic = periodic;
+                    _modified = true;
+                    ReloadRepetitionLabel();
+                }, periodicDefault);
+            }
+            else
+            {
+                window.Init(periodic =>
+                {
+                    _periodic = periodic;
+                    _modified = true;
+                    ReloadRepetitionLabel();
+                }, periodicDefault);
+            }
         }
 
         private void ReloadDateButtonLabel(Limit type)
@@ -342,6 +436,11 @@ namespace Presentation.Views.Popup
             }
         }
 
+        private void ReloadRepetitionLabel()
+        {
+            repetitionButton.Label.text = _periodic.ToExplainString();
+        }
+        
         private bool ReloadWarn(bool showWarnPopup = false)
         {
             var durationViolate = _isAllDay && _startDate.CompareTo(_endDate) > 0 
@@ -377,6 +476,18 @@ namespace Presentation.Views.Popup
             }
             
             return durationViolate;
+        }
+        
+        private ScheduleDuration CreateDuration()
+        {
+            return _isAllDay
+                ? new ScheduleDuration(_startDate, _endDate)
+                : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
+        }
+
+        private SchedulePeriodic CreatePeriodic()
+        {
+            return _periodic is null ? null : _periodic.PeriodicType is SchedulePeriodicType.None ? null : _periodic;
         }
     }
 }

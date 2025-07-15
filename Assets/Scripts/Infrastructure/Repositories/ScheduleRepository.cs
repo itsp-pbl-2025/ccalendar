@@ -37,6 +37,12 @@ namespace Infrastructure.Repositories
             return _col.Delete(schedule.Id);
         }
         
+        public Schedule Get(int id)
+        {
+            var dSchedule = _col.FindById(id);
+            return dSchedule?.ToDomain();
+        }
+        
         public ICollection<Schedule> GetAll()
         {
             var result = new List<Schedule>();

@@ -23,7 +23,13 @@ namespace AppCore.UseCases
         {
             _taskRepo.Insert(task);
         }
-        
+
+        public bool CompleteTask(CCTask task)
+        {
+            var completedTask = task with { IsCompleted = true };
+            return UpdateTask(completedTask);
+        }
+
         public bool UpdateTask(CCTask task)
         {
             return _taskRepo.Update(task);

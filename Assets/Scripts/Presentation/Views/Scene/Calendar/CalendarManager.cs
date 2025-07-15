@@ -5,6 +5,7 @@ using DG.Tweening;
 using Domain.Entity;
 using Domain.Enum;
 using Presentation.Presenter;
+using Presentation.Utilities;
 using Presentation.Views.Extensions;
 using Presentation.Views.Popup;
 using UnityEngine;
@@ -58,6 +59,8 @@ namespace Presentation.Views.Scene.Calendar
             _targetDate = CCDateOnly.Today;
             _scheduleService = InAppContext.Context.GetService<ScheduleService>();
             _historyService = InAppContext.Context.GetService<HistoryService>();
+
+            InAppContext.EventDispatcher.AddGlobalEventListener(this, GlobalEvent.OnScheduleUpdated, _ => { ReloadScheduleAll(); });
             
             SwitchMode(_historyService.TryGetHistory(HistoryType.PreviousCalendarType, out CalendarType type) ? type : CalendarType.OneDay);
         }
@@ -317,8 +320,6 @@ namespace Presentation.Views.Scene.Calendar
 
         private void StepScrollPage(int stepPages)
         {
-            if (stepPages is 0) return;
-            
             // 日付アイコンを移動させる
             switch (_calendarType)
             {
@@ -332,7 +333,7 @@ namespace Presentation.Views.Scene.Calendar
 
                     switch (stepPages)
                     {
-                        case > 2 or < -2:
+                        case 0 or > 2 or < -2:
                             CleanupAllDaySchedules(true);
                             
                             for (var offset = -1; offset < 2; offset++)
@@ -388,7 +389,7 @@ namespace Presentation.Views.Scene.Calendar
 
                     switch (stepPages)
                     {
-                        case > 8 or < -8:
+                        case 0 or > 8 or < -8:
                             CleanupAllDaySchedules(true);
                             
                             for (var offset = -3; offset < 6; offset++)
@@ -444,7 +445,7 @@ namespace Presentation.Views.Scene.Calendar
                     
                     switch (stepPages)
                     {
-                        case > 2 or < -2:
+                        case 0 or > 2 or < -2:
                             CleanupAllDaySchedules(true);
                             
                             for (var offset = -7; offset < 14; offset++)
@@ -496,7 +497,7 @@ namespace Presentation.Views.Scene.Calendar
 
                     switch (stepPages)
                     {
-                        case > 2 or < -2:
+                        case 0 or > 2 or < -2:
                             CleanupAllMonthlySchedules(true);
                             
                             for (var offset = -1; offset < 2; offset++)
@@ -589,6 +590,7 @@ namespace Presentation.Views.Scene.Calendar
         /// </summary>
         /// <param name="offset">日付からの日距離</param>
         /// <param name="targetDate">更新の基準となる日付</param>
+        /// <param name="dayPage"></param>
         private void FillScheduleInDayContainer(int offset, CCDateOnly targetDate, RectTransform dayPage = null)
         {
             if (dayPage is null && !_dayPageContents.TryGetValue(offset, out dayPage)) return;
@@ -827,6 +829,12 @@ namespace Presentation.Views.Scene.Calendar
         }
 
         #endregion
+
+        private void ReloadScheduleAll()
+        {
+            _cachedSchedules.Clear();
+            StepScrollPage(0);
+        }
         
         private static bool IsCalendarModeWeek(CalendarType type)
         {

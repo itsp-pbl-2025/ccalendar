@@ -2,9 +2,7 @@
 using Presentation.Utilities;
 using TMPro;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Presentation.Views.Extensions
@@ -171,6 +169,90 @@ namespace Presentation.Views.Extensions
             EditorUtility.SetDirty(selectedGameObject);
         }
         
+        #endregion
+
+        #region ButtonRP
+
+        private static bool MayReplacingButton()
+        {
+            return Selection.activeGameObject && Selection.activeGameObject.GetComponent<Button>() && !Selection.activeGameObject.GetComponent<ButtonRP>();
+        }
+
+        [MenuItem("GameObject/UI/Replace Button To Reactive", true, 1032)]
+        public static bool ValidateReplaceButtonRP()
+        {
+            return MayReplacingButton();
+        }
+
+        [MenuItem("GameObject/UI/Replace Button To Reactive", false, 1032)]
+        public static void ReplaceButtonRP()
+        {
+            var selectedGameObject = Selection.activeGameObject;
+            if (!selectedGameObject)
+            {
+                Debug.LogWarning("No GameObject selected for Button replacement.");
+                return;
+            }
+
+            if (!selectedGameObject.TryGetComponent<Button>(out var oldButton))
+            {
+                Debug.LogWarning($"Selected GameObject '{selectedGameObject.name}' does not have an Button component.");
+                return;
+            }
+
+            Undo.RegisterCompleteObjectUndo(selectedGameObject, "Replace Button with ButtonRP");
+            
+            // 元のImageコンポーネントを削除して、ReactiveImageコンポーネントを追加する
+            var serialize = JsonUtility.ToJson(oldButton);
+            Object.DestroyImmediate(oldButton);
+            var buttonRP = selectedGameObject.AddComponent<ButtonRP>();
+            JsonUtility.FromJsonOverwrite(serialize, buttonRP);
+
+            EditorUtility.SetDirty(selectedGameObject);
+        }
+
+        #endregion
+
+        #region ToggleRP
+
+        private static bool MayReplacingToggle()
+        {
+            return Selection.activeGameObject && Selection.activeGameObject.GetComponent<Toggle>() && !Selection.activeGameObject.GetComponent<ToggleRP>();
+        }
+
+        [MenuItem("GameObject/UI/Replace Toggle To Reactive", true, 1022)]
+        public static bool ValidateReplaceToggleRP()
+        {
+            return MayReplacingToggle();
+        }
+
+        [MenuItem("GameObject/UI/Replace Toggle To Reactive", false, 1022)]
+        public static void ReplaceToggleRP()
+        {
+            var selectedGameObject = Selection.activeGameObject;
+            if (!selectedGameObject)
+            {
+                Debug.LogWarning("No GameObject selected for Toggle replacement.");
+                return;
+            }
+
+            if (!selectedGameObject.TryGetComponent<Toggle>(out var oldToggle))
+            {
+                Debug.LogWarning($"Selected GameObject '{selectedGameObject.name}' does not have an Toggle component.");
+                return;
+            }
+
+            Undo.RegisterCompleteObjectUndo(selectedGameObject, "Replace Toggle with ToggleRP");
+            
+            // 元のImageコンポーネントを削除して、ReactiveImageコンポーネントを追加する
+            var serialize = JsonUtility.ToJson(oldToggle);
+            Object.DestroyImmediate(oldToggle);
+            var buttonRP = selectedGameObject.AddComponent<ToggleRP>();
+            JsonUtility.FromJsonOverwrite(serialize, buttonRP);
+
+            EditorUtility.SetDirty(selectedGameObject);
+        }
+
         #endregion
 
         private static Canvas FindCanvasForUIObject()
