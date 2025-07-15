@@ -13,6 +13,11 @@
         OnThemeUpdated,
         
         /// <summary>
+        /// 新規タスクが作成された直後
+        /// </summary>
+        OnTaskCreated,
+        
+        /// <summary>
         /// CalendarSceneでScheduleが作成/変更された直後
         /// </summary>
         OnScheduleUpdated,
