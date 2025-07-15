@@ -41,6 +41,14 @@ namespace AppCore.UseCases
         {
             return _scheduleRepo.Remove(schedule);
         }
+
+        public bool ModifyScheduleAt(int scheduleId, int index, Schedule schedule)
+        {
+            var original = _scheduleRepo.Get(scheduleId);
+            if (original.Periodic is null) return false;
+            // TODO: fill here
+            return true;
+        }
         
         public List<Schedule> GetSchedules()
         {
@@ -130,7 +138,7 @@ namespace AppCore.UseCases
             switch (periodic.PeriodicType)
             {
                 case SchedulePeriodicType.EveryDay:
-                    return new ScheduleDuration(duration.StartTime.AddDays(periodic.Span*loop), duration.EndTime.AddDays(periodic.Span*loop));
+                    return new ScheduleDuration(duration.StartTime.AddDays(periodic.Span*loop), duration.EndTime.AddDays(periodic.Span*loop), loop);
                 case SchedulePeriodicType.EveryWeek:
                 {
                     var weekdays = 
@@ -151,7 +159,7 @@ namespace AppCore.UseCases
                         if (weekdays[next]) i++;
                     }
                     
-                    return new ScheduleDuration(duration.StartTime.AddDays(elapseDays), duration.EndTime.AddDays(elapseDays));
+                    return new ScheduleDuration(duration.StartTime.AddDays(elapseDays), duration.EndTime.AddDays(elapseDays), loop);
                 }
                 case SchedulePeriodicType.EveryMonth:
                 {
@@ -166,7 +174,7 @@ namespace AppCore.UseCases
                         var stepStartDate = new CCDateOnly(startDate.Year.Value, startDate.Month.Value, periodic.Span);
                         var startDateTime = new CCDateTime(stepStartDate.AddMonths(loop), startTime);
                         var endDate = new CCDateTime(startDateTime.ToDateTime() + scheduleSpan).ToDateOnly();
-                        return new ScheduleDuration(startDateTime, new CCDateTime(endDate, startTime));
+                        return new ScheduleDuration(startDateTime, new CCDateTime(endDate, startTime), loop);
                     }
                     else
                     {
@@ -183,11 +191,11 @@ namespace AppCore.UseCases
                         var stepStartDate = DateTimeExtensions.GetIndexedWeekDay(stepMonth.Year.Value, stepMonth.Month.Value, index, day);
                         var startDateTime = new CCDateTime(stepStartDate, startTime);
                         var endDate = new CCDateTime(startDateTime.ToDateTime() + scheduleSpan).ToDateOnly();
-                        return new ScheduleDuration(startDateTime, new CCDateTime(endDate, startTime));
+                        return new ScheduleDuration(startDateTime, new CCDateTime(endDate, startTime), loop);
                     }
                 }
                 case SchedulePeriodicType.EveryYear:
-                    return new ScheduleDuration(duration.StartTime.AddYears(loop), duration.EndTime.AddYears(loop));
+                    return new ScheduleDuration(duration.StartTime.AddYears(loop), duration.EndTime.AddYears(loop), loop);
             }
             
             return duration;
