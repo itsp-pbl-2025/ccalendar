@@ -1,11 +1,10 @@
-﻿using System;
-using Domain.Entity;
+﻿using Domain.Entity;
 using Presentation.Presenter;
 using Presentation.Views.Popup;
 using TMPro;
 using UnityEngine;
 
-namespace Presentation.Views.Private
+namespace Presentation.Views.Scene.Private
 {
     public class DhiraSceneManager : MonoBehaviour
     {

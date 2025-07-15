@@ -173,48 +173,6 @@ namespace Presentation.Views.Extensions
         
         #endregion
 
-        #region ScalableScrollRect
-
-        private static bool MayReplacingScrollRect()
-        {
-            return Selection.activeGameObject && Selection.activeGameObject.GetComponent<ScrollRect>() && !Selection.activeGameObject.GetComponent<ScalableScrollRect>();
-        }
-
-        [MenuItem("GameObject/UI/Replace ScrollRect As Scalable", true, 1031)]
-        public static bool ValidateReplaceScrollRect()
-        {
-            return !MayReplacingLabel();
-        }
-
-        [MenuItem("GameObject/UI/Replace ScrollRect As Scalable", false, 1031)]
-        public static void ReplaceScrollRect()
-        {
-            var selectedGameObject = Selection.activeGameObject;
-            if (!selectedGameObject)
-            {
-                Debug.LogWarning("No GameObject selected for ScrollRect replacement.");
-                return;
-            }
-
-            if (!selectedGameObject.TryGetComponent<ScrollRect>(out var oldScrollRect))
-            {
-                Debug.LogWarning($"Selected GameObject '{selectedGameObject.name}' does not have an ScrollRect component.");
-                return;
-            }
-
-            Undo.RegisterCompleteObjectUndo(selectedGameObject, "Replace ScrollRect with ScalableScrollRect");
-            
-            // 元のImageコンポーネントを削除して、ReactiveImageコンポーネントを追加する
-            var serialize = JsonUtility.ToJson(oldScrollRect);
-            Object.DestroyImmediate(oldScrollRect);
-            var labelRx = selectedGameObject.AddComponent<ScalableScrollRect>();
-            JsonUtility.FromJsonOverwrite(serialize, labelRx);
-
-            EditorUtility.SetDirty(selectedGameObject);
-        }
-
-        #endregion
-        
         private static Canvas FindCanvasForUIObject()
         {
             var canvas = Object.FindAnyObjectByType<Canvas>();
@@ -229,6 +187,63 @@ namespace Presentation.Views.Extensions
             }
 
             return canvas;
+        }
+        
+        [MenuItem("Tools/OnscheUI/Fix RegularPrefab RxAlpha", false, 50)]
+        public static void FixImageRxLabelRxAlphaOverrides()
+        {
+            var guids = AssetDatabase.FindAssets("t:GameObject");
+            var initializedCount = 0;
+
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+                if (PrefabUtility.GetPrefabAssetType(prefabAsset) != PrefabAssetType.Regular) continue;
+                
+                var prefabRoot = PrefabUtility.LoadPrefabContents(path);
+
+                var changed = false;
+                var imageRxs = prefabRoot.GetComponentsInChildren<ImageRx>(true);
+                foreach (var imageRx in imageRxs)
+                {
+                    var serializedImageRx = new SerializedObject(imageRx);
+                    var mAlphaProp = serializedImageRx.FindProperty("mAlpha");
+
+                    if (mAlphaProp != null)
+                    {
+                        mAlphaProp.floatValue = mAlphaProp.floatValue; // 値を.prefabファイルに明示的に書き込む
+                        serializedImageRx.ApplyModifiedProperties();
+                        changed = true;
+                        Debug.Log($"Initialized mAlpha to 1f for ImageRx on original prefab: {prefabAsset.name} (Component: {imageRx.name})");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"mAlpha property not found on ImageRx component of prefab: {prefabAsset.name} (Component: {imageRx.name}). Check field name.");
+                    }
+                }
+
+                // Prefab の変更を保存
+                if (changed)
+                {
+                    PrefabUtility.SaveAsPrefabAsset(prefabRoot, path);
+                    initializedCount++;
+                }
+
+                // Prefab の内容をアンロード
+                PrefabUtility.UnloadPrefabContents(prefabRoot);
+            }
+
+            if (initializedCount > 0)
+            {
+                AssetDatabase.SaveAssets(); // すべての変更をアセットデータベースに保存
+                Debug.Log($"Finished initializing mAlpha to 1f for {initializedCount} Original Prefabs.");
+            }
+            else
+            {
+                Debug.Log("No Original Prefabs found needing mAlpha initialization, or all were already 1f.");
+            }
         }
     }
 }

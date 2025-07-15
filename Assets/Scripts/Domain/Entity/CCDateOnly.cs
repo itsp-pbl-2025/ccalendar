@@ -70,6 +70,18 @@ namespace Domain.Entity
             return HashCode.Combine(Year, Month, Day);
         }
 
+        public static int operator -(CCDateOnly a, CCDateOnly b)
+        {
+            switch (a.CompareTo(b))
+            {
+                case 1:
+                    return (int)(a.ToDateTime().Date - b.ToDateTime().Date).TotalDays;
+                case -1:
+                    return -(int)(b.ToDateTime().Date - a.ToDateTime().Date).TotalDays;
+            }
+            return 0;
+        }
+
         public bool IsDefault()
         {
             return Year.Value == 1 && Month.Value == 1 && Day.Value == 1;

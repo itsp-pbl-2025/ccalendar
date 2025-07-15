@@ -33,6 +33,20 @@ namespace Presentation.Views.Extensions
                 RenewColor();
             }
         }
+        
+        public override Color color
+        {
+            get => base.color;
+            set
+            {
+                if (!base.color.IsApproximatedTo(value))
+                {
+                    colorType = ColorOf.Custom;
+                }
+
+                base.color = value;
+            }
+        }
 
 #if UNITY_EDITOR
         
@@ -80,10 +94,12 @@ namespace Presentation.Views.Extensions
 
         private void RenewColorInEditor()
         {
-            if (colorType is not ColorOf.Custom)
+            base.color = colorType switch
             {
-                color = AssetInEditor.Theme.GetColor(colorType);
-            }
+                ColorOf.Custom => color.SetAlpha(alpha),
+                ColorOf.Transparent => Color.clear,
+                _ => AssetInEditor.Theme.GetColor(colorType).SetAlpha(alpha)
+            };
 
             if (!font)
             {
@@ -131,8 +147,12 @@ namespace Presentation.Views.Extensions
 
         private void RenewColor()
         {
-            if (colorType is ColorOf.Custom) return;
-            color = InAppContext.Theme.GetColor(colorType);
+            base.color = colorType switch
+            {
+                ColorOf.Custom => color.SetAlpha(alpha),
+                ColorOf.Transparent => Color.clear,
+                _ => InAppContext.Theme.GetColor(colorType).SetAlpha(alpha)
+            };
         }
     }
 }

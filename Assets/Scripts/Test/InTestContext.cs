@@ -32,6 +32,7 @@ namespace Test
                 _serviceFactories.Add(typeof(HolidayService), name => new HolidayService(this, name));
                 _serviceFactories.Add(typeof(HistoryService), name => new HistoryService(HistoryRepo, name));
                 _serviceFactories.Add(typeof(TaskService), name => new TaskService(TaskRepo, name));
+                _serviceFactories.Add(typeof(Task2ScheduleService), name => new Task2ScheduleService(this, name));
             }
             
             public T GetService<T>(string name = "") where T : IService

@@ -4,7 +4,7 @@ using Presentation.Views.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Presentation.Views.Sample
+namespace Presentation.Views.Scene.Sample
 {
     public class SampleAreaVisualizer : MonoBehaviour
     {

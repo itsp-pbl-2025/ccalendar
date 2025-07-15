@@ -1,5 +1,7 @@
 ﻿using System;
 using DG.Tweening;
+using Presentation.Presenter;
+using Presentation.Utilities;
 using Presentation.Views.Extensions;
 using R3;
 using UnityEngine;
@@ -17,6 +19,7 @@ namespace Presentation.Views.Common
         {
             None,
             ColorTint,
+            ColorType,
             ColorAssign,
             SpriteSwap,
             Animation
@@ -28,6 +31,7 @@ namespace Presentation.Views.Common
 
         [SerializeField] private Graphic targetGraphic;
         [SerializeField] private ColorBlock colorTints = ColorBlock.defaultColorBlock;
+        [SerializeField] private ColorTypeBlock colorTypes = ColorTypeBlock.defaultColorTypeBlock;
         [SerializeField] private ColorBlock colorAssigns = ColorBlock.defaultColorBlock;
 
         [SerializeField] private Image targetImage;
@@ -69,24 +73,27 @@ namespace Presentation.Views.Common
                 {
                     case Transition.ColorTint:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
+                            "m_Script", "transitionMode", "colorTypes", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
+                        break;
+                    case Transition.ColorType:
+                        DrawPropertiesExcluding(serializedObject,
+                            "m_Script", "transitionMode", "colorTints", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
                         break;
                     case Transition.ColorAssign:
-                        
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "colorTints", "targetImage", "spriteState", "animator", "animationTriggers");
+                            "m_Script", "transitionMode", "colorTints", "colorTypes", "targetImage", "spriteState", "animator", "animationTriggers");
                         break;
                     case Transition.SpriteSwap:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorAssigns", "animator", "animationTriggers");
+                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "animator", "animationTriggers");
                         break;
                     case Transition.Animation:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorAssigns", "targetImage", "spriteState");
+                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "targetImage", "spriteState");
                         break;
                     default:
                         DrawPropertiesExcluding(serializedObject,
-                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
+                            "m_Script", "transitionMode", "targetGraphic", "colorTints", "colorTypes", "colorAssigns", "targetImage", "spriteState", "animator", "animationTriggers");
                         break;
                 }
                 
@@ -122,6 +129,16 @@ namespace Presentation.Views.Common
                     }
                     buttonRP.State
                         .Subscribe(t => ApplyColorTint(t.state, t.instant))
+                        .AddTo(this);
+                    break;
+                case Transition.ColorType:
+                    if (!targetGraphic)
+                    {
+                        Debug.LogError("Color Type Transition is enabled, but no Graphic is assigned.");
+                        return;
+                    }
+                    buttonRP.State
+                        .Subscribe(t => ApplyColorType(t.state, t.instant))
                         .AddTo(this);
                     break;
                 case Transition.ColorAssign:
@@ -180,6 +197,49 @@ namespace Presentation.Views.Common
         }
 
         private Sequence _seq;
+        private void ApplyColorType(ButtonRP.ButtonSelectionState state, bool instant)
+        {
+            var to = state switch
+            {
+                ButtonRP.ButtonSelectionState.Normal => colorTypes.normalColor,
+                ButtonRP.ButtonSelectionState.Highlighted => colorTypes.highlightedColor,
+                ButtonRP.ButtonSelectionState.Pressed => colorTypes.pressedColor,
+                ButtonRP.ButtonSelectionState.Selected => colorTypes.selectedColor,
+                _ => colorTypes.disabledColor,
+            };
+
+            var fromColor = targetGraphic.color;
+            var toColor = to switch
+            {
+                ColorOf.Custom => fromColor.SetAlpha(targetGraphic.color.a),
+                ColorOf.Transparent => Color.clear, 
+                _ => InAppContext.Theme.GetColor(to).SetAlpha(targetGraphic.color.a)
+            };
+
+            if (instant)
+            {
+                AtCompletedState();
+            }
+            else
+            {
+                _seq = DOTween.Sequence()
+                    .Append(DOVirtual.Color(fromColor, toColor, colorTypes.fadeDuration, c => targetGraphic.color = c))
+                    .OnComplete(AtCompletedState);
+            }
+
+            return;
+
+            void AtCompletedState()
+            {
+                if (targetGraphic is ImageRx imageRx)
+                    imageRx.colorType = to;
+                else if (targetGraphic is LabelRx labelRx)
+                    labelRx.colorType = to;
+                else
+                    targetGraphic.color = toColor;
+            }
+        }
+        
         private void ApplyColorAssign(ButtonRP.ButtonSelectionState state, bool instant)
         {
             _seq?.Kill();

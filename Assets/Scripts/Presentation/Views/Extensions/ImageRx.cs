@@ -14,6 +14,7 @@ namespace Presentation.Views.Extensions
     public class ImageRx : Image
     {
         [SerializeField] private ColorOf mColorType;
+        [SerializeField, Range(0f, 1f)] private float mAlpha = 1f;
 
         // ReSharper disable once InconsistentNaming
         public ColorOf colorType
@@ -34,26 +35,44 @@ namespace Presentation.Views.Extensions
             }
         }
 
-#if UNITY_EDITOR
+        // ReSharper disable once InconsistentNaming
+        public float alpha
+        {
+            get => mAlpha;
+            set
+            {
+                base.color = base.color.SetAlpha(value);
+                mAlpha = value;
+            }
+        }
         
         public override Color color
         {
             get => base.color;
             set
             {
-                colorType = ColorOf.Custom;
-                base.color = value; 
+                if (!base.color.IsApproximatedTo(value))
+                {
+                    colorType = ColorOf.Custom;
+                }
+
+                mAlpha = value.a;
+                base.color = value;
             }
         }
+
+#if UNITY_EDITOR
         
         [CustomEditor(typeof(ImageRx))]
         [CanEditMultipleObjects]
         public class ImageRxEditor : ImageEditor
         {
             private SerializedProperty _colorProp;
+            private SerializedProperty _alphaProp;
             protected override void OnEnable()
             {
                 _colorProp = serializedObject.FindProperty("mColorType");
+                _alphaProp = serializedObject.FindProperty("mAlpha");
                 base.OnEnable();
             }
 
@@ -64,6 +83,7 @@ namespace Presentation.Views.Extensions
                 EditorGUILayout.LabelField("基本的には以下から色を選択してください。", EditorStyles.label);
                 EditorGUI.BeginChangeCheck();
                 EditorGUILayout.PropertyField(_colorProp);
+                EditorGUILayout.PropertyField(_alphaProp);
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
@@ -90,9 +110,13 @@ namespace Presentation.Views.Extensions
 
         private void RenewColorInEditor()
         {
-            if (colorType is ColorOf.Custom) return;
-            base.color = AssetInEditor.Theme.GetColor(colorType);
-            
+            base.color = colorType switch
+            {
+                ColorOf.Custom => color.SetAlpha(mAlpha),
+                ColorOf.Transparent => Color.clear,
+                _ => AssetInEditor.Theme.GetColor(colorType).SetAlpha(mAlpha)
+            };
+
             SetVerticesDirty();
         }
         
@@ -129,8 +153,12 @@ namespace Presentation.Views.Extensions
 
         private void RenewColor()
         {
-            if (colorType is ColorOf.Custom) return;
-            base.color = InAppContext.Theme.GetColor(colorType);
+            base.color = colorType switch
+            {
+                ColorOf.Custom => base.color.SetAlpha(mAlpha),
+                ColorOf.Transparent => Color.clear,
+                _ => InAppContext.Theme.GetColor(colorType).SetAlpha(mAlpha)
+            };
         }
     }
 }

@@ -51,6 +51,7 @@ namespace Presentation.Utilities
                 ColorOf.TextSaturday => _theme.textSaturday,
                 ColorOf.TextHoliday => _theme.textHoliday,
                 ColorOf.Link => _theme.textLink,
+                ColorOf.Transparent => Color.clear,
                 _ => Color.magenta,
             };
         }
