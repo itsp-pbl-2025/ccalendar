@@ -47,12 +47,12 @@ namespace Presentation.Views.Scene.Task
 
         public void ExecuteAutoFill()
         {
-            var t2s = InAppContext.Context.GetService<Task2ScheduleService>();
-            var task = InAppContext.Context.GetService<TaskService>();
+            var t2sService = InAppContext.Context.GetService<Task2ScheduleService>();
+            var taskService = InAppContext.Context.GetService<TaskService>();
             var now = CCTimeOnly.Now;
             var start = new CCDateTime(CCDateOnly.Today, new CCTimeOnly(now.Hour.Value, 0, 0).AddHours(1));
             
-            t2s.GenerateSchedule(task.GetTask(), start);
+            t2sService.GenerateSchedule(taskService.GetTask(), start);
         }
 
         [EnumAction(typeof(SceneOf))]

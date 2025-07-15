@@ -5,6 +5,7 @@ using Presentation.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.SceneManagement;
+using ZLinq;
 
 namespace Presentation.Views.Scene
 {
@@ -153,14 +154,16 @@ namespace Presentation.Views.Scene
         /// </summary>
         public void UnloadWithoutCurrentScene()
         {
-            foreach (var (type, additive) in _loadedScenes)
+            var scenesToUnload = _loadedScenes.AsValueEnumerable()
+                .Where(kvp => !_keepScenes.Contains(kvp.Key) && kvp.Key != SceneOf.Base && kvp.Key != _currentScene)
+                .ToList();
+
+            foreach (var (type, additive) in scenesToUnload)
             {
-                if (_keepScenes.Contains(type)) continue;
-                if (type is SceneOf.Base || type == _currentScene) continue;
                 additive.OnSceneUnload();
                 SceneManager.UnloadSceneAsync(type.ToName());
+                _loadedScenes.Remove(type);
             }
-            _loadedScenes.Clear();
         }
 
         /// <summary>
