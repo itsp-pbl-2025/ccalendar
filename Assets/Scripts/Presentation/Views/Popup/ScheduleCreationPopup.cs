@@ -35,6 +35,7 @@ namespace Presentation.Views.Popup
 
         private RectTransform _scheduleTitleRect, _scheduleDescriptionRect;
 
+        private UnitSchedule _targetSchedule;
         private Schedule _originSchedule;
         private Sequence _seq;
 
@@ -81,6 +82,7 @@ namespace Presentation.Views.Popup
 
         public void Init(UnitSchedule schedule)
         {
+            _targetSchedule = schedule;
             _originSchedule = InAppContext.Context.GetService<ScheduleService>().FindSchedule(schedule.Id);
             _mode = Mode.Edit;
             
@@ -193,6 +195,31 @@ namespace Presentation.Views.Popup
             }
             else
             {
+                var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<EnumSelectPopup>());
+                window.Init("定期的な予定の変更範囲", 
+                    mod => {
+                        switch (mod)
+                        {
+                            case ScheduleModify.EditSingle:
+                                service.ModifyScheduleAt(_targetSchedule.Id, _targetSchedule.Duration.Index,
+                                    new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
+                                break;
+                            case ScheduleModify.EditForward:
+                                service.ModifyScheduleForward(_targetSchedule.Id, _targetSchedule.Duration.StartTime.ToDateOnly(),
+                                    new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
+                                break;
+                            case ScheduleModify.EditAll:
+                                service.UpdateSchedule(new Schedule(_originSchedule.Id, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()))
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(mod), mod, null);
+                        }
+                    }, 
+                    enumLabel: new Dictionary<ScheduleModify, string> {
+                        { ScheduleModify.EditSingle, "この予定" },
+                        { ScheduleModify.EditForward, "以降全ての予定" },
+                        { ScheduleModify.EditAll, "全ての予定" }
+                });
             }
         }
 

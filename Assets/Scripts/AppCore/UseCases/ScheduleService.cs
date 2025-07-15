@@ -44,9 +44,33 @@ namespace AppCore.UseCases
 
         public bool ModifyScheduleAt(int scheduleId, int index, Schedule schedule)
         {
-            var original = _scheduleRepo.Get(scheduleId);
-            if (original.Periodic is null) return false;
-            // TODO: fill here
+            var (id, title, description, duration, periodic) = _scheduleRepo.Get(scheduleId);
+            if (periodic is null) return false;
+            if (periodic.ExcludeIndices.AsValueEnumerable().Contains(index)) return false;
+            
+            var indices = new List<int>(periodic.ExcludeIndices) { index };
+
+            UpdateSchedule(new Schedule(id, title, description, duration,
+                new SchedulePeriodic(periodic.PeriodicType, periodic.Span, indices, periodic.StartDate, periodic.EndDate)));
+            
+            CreateSchedule(new Schedule(0, schedule.Title, schedule.Description, schedule.Duration));
+            
+            return true;
+        }
+
+        public bool ModifyScheduleForward(int scheduleId, CCDateOnly modifyAt, Schedule schedule)
+        {
+            var (id, title, description, duration, periodic) = _scheduleRepo.Get(scheduleId);
+            if (periodic is null) return false;
+            if (periodic.EndDate is not null && periodic.EndDate.Value.CompareTo(modifyAt) < 0) return false;
+            
+            UpdateSchedule(new Schedule(id, title, description, duration,
+                new SchedulePeriodic(periodic.PeriodicType, periodic.Span, periodic.ExcludeIndices, periodic.StartDate, modifyAt.AddDays(-1))));
+            
+            var sPeriodic = schedule.Periodic;
+            var newPeriodic = sPeriodic is null ? null : new SchedulePeriodic(sPeriodic.PeriodicType, sPeriodic.Span, sPeriodic.ExcludeIndices, modifyAt, sPeriodic.EndDate));
+            CreateSchedule(new Schedule(0, schedule.Title, schedule.Description, schedule.Duration, newPeriodic));
+
             return true;
         }
         
