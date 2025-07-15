@@ -209,7 +209,7 @@ namespace Presentation.Views.Popup
                                     new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
                                 break;
                             case ScheduleModify.EditAll:
-                                service.UpdateSchedule(new Schedule(_originSchedule.Id, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()))
+                                service.UpdateSchedule(new Schedule(_originSchedule.Id, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(nameof(mod), mod, null);
