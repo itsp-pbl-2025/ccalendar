@@ -5,6 +5,7 @@ using AppCore.UseCases;
 using AppCore.Utilities;
 using DG.Tweening;
 using Domain.Entity;
+using Domain.Enum;
 using Presentation.Presenter;
 using Presentation.Utilities;
 using Presentation.Views.Extensions;
@@ -182,7 +183,7 @@ namespace Presentation.Views.Popup
             var service = InAppContext.Context.GetService<ScheduleService>();
             if (_mode is Mode.New)
             {
-                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), _periodic));
+                service.CreateSchedule(new Schedule(0, _scheduleTitle, _scheduleDescription, CreateDuration(), CreatePeriodic()));
                 CloseWindow();
             }
             else
@@ -312,6 +313,7 @@ namespace Presentation.Views.Popup
 
         public void OnPressRepetitionButton()
         {
+            var periodicDefault = _periodic ?? new SchedulePeriodic(SchedulePeriodicType.None, 1, _startDate);
             var window = PopupManager.Instance.ShowPopup(InAppContext.Prefabs.GetPopup<PeriodicCreationPopup>());
             if (_originSchedule != null)
             {
@@ -319,7 +321,7 @@ namespace Presentation.Views.Popup
                 {
                     _periodic = periodic;
                     ReloadRepetitionLabel();
-                }, _periodic);
+                }, periodicDefault);
             }
             else
             {
@@ -327,7 +329,7 @@ namespace Presentation.Views.Popup
                 {
                     _periodic = periodic;
                     ReloadRepetitionLabel();
-                }, _periodic);
+                }, periodicDefault);
             }
         }
 
@@ -402,6 +404,11 @@ namespace Presentation.Views.Popup
             return _isAllDay
                 ? new ScheduleDuration(_startDate, _endDate)
                 : new ScheduleDuration(new CCDateTime(_startDate, _startTime), new CCDateTime(_endDate, _endTime));
+        }
+
+        private SchedulePeriodic CreatePeriodic()
+        {
+            return _periodic is null ? null : _periodic.PeriodicType is SchedulePeriodicType.None ? null : _periodic;
         }
     }
 }
